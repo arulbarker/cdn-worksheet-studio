@@ -1,0 +1,16 @@
+name: Purge jsDelivr
+
+# Setiap rilis baru di main, kosongkan cache jsDelivr supaya Canvas langsung memuat versi terbaru.
+on:
+  push:
+    branches: [main]
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          for f in worksheet-studio.js canvas-shell.html; do
+            curl -sS "https://purge.jsdelivr.net/gh/${{ github.repository }}@main/$f"
+            echo
+          done

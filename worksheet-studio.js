@@ -1,0 +1,3404 @@
+/* Worksheet Studio - bundle CDN. HASIL BUILD (npm run build:cdn), jangan diedit tangan. */
+(function () {
+  var st = document.createElement('style');
+  st.textContent = "@font-face{font-family:'Andika';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/andika/Andika-Regular.ttf') format('truetype');font-weight:400}\n@font-face{font-family:'Andika';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/andika/Andika-Bold.ttf') format('truetype');font-weight:700}\n@font-face{font-family:'ComicNeue';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/comicneue/ComicNeue-Bold.ttf') format('truetype');font-weight:400 700}\n@font-face{font-family:'Poppins';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/poppins/Poppins-Regular.ttf') format('truetype');font-weight:400}\n@font-face{font-family:'Poppins';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/poppins/Poppins-Bold.ttf') format('truetype');font-weight:700}\n@font-face{font-family:'Tinos';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/tinos/Tinos-Regular.ttf') format('truetype');font-weight:400}\n@font-face{font-family:'Tinos';src:url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/tinos/Tinos-Bold.ttf') format('truetype');font-weight:700}\n:root{--ink:#1e1b4b;--bg:#f1f5f9;--card:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#ec4899;--ok:#16a34a}\n*{box-sizing:border-box}\n[hidden]{display:none !important}\nbody{margin:0;font-family:'Andika',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px}\nbutton{font:inherit}\n.sidebar{position:fixed;top:0;bottom:0;left:0;width:min(86vw,320px);background:var(--ink);color:#e0e7ff;transform:translateX(-100%);transition:transform .2s;z-index:30;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(196,181,253,.25) transparent}\n.sidebar::-webkit-scrollbar{width:6px}\n.sidebar::-webkit-scrollbar-thumb{background:rgba(196,181,253,.25);border-radius:9999px}\nbody.nav-open .sidebar{transform:none;box-shadow:12px 0 40px -12px rgba(2,6,23,.6)}\n.scrim{display:none}\nbody.nav-open .scrim{display:block;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:20}\n.sidebar-brand{position:sticky;top:0;z-index:2;background:var(--ink);display:flex;align-items:center;justify-content:space-between;padding:12px 16px;font-size:17px}\n.sidebar-nav{padding:4px 10px 24px}\n.j-paud{--jc:#ea580c;--jbg:#fff7ed;--jnav:#fb923c}\n.j-sd13{--jc:#15803d;--jbg:#f0fdf4;--jnav:#4ade80}\n.j-sd46{--jc:#1d4ed8;--jbg:#eff6ff;--jnav:#60a5fa}\n.j-lintas{--jc:#7e22ce;--jbg:#faf5ff;--jnav:#c084fc}\n.nav-sec{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;margin:18px 0 4px;padding:6px 10px;border:0;border-radius:8px;background:transparent;color:inherit;font:inherit;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:left;cursor:pointer;opacity:.85}\n.nav-sec::before{content:'';flex:none;width:10px;height:10px;border-radius:50%;background:var(--jnav,#c4b5fd)}\n.nav-sec:hover,.nav-sec.on{opacity:1;background:rgba(255,255,255,.1)}\n.nav-item{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:8px 10px 8px 16px;border:0;border-left:3px solid transparent;border-radius:8px;background:transparent;color:inherit;text-align:left;cursor:pointer;opacity:.9}\n.nav-item:hover{background:rgba(255,255,255,.06);opacity:1}\n.nav-item.on{background:rgba(255,255,255,.14);border-left-color:var(--jnav,#c4b5fd);color:#ffffff;font-weight:700;opacity:1}\n.nav-count{flex:none;font-style:normal;font-size:11px;min-width:24px;text-align:center;border-radius:999px;padding:2px 7px;background:rgba(255,255,255,.12)}\n.nav-item.on .nav-count{background:var(--jnav,#c4b5fd);color:var(--ink)}\n.topbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:6px 12px;background:var(--card);border-bottom:1px solid var(--line)}\n.topbar strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.icon-btn{min-width:44px;min-height:44px;border:0;background:transparent;color:inherit;font-size:20px;cursor:pointer;border-radius:8px}\n.workspace{display:flex;flex-direction:column;gap:16px;padding:16px}\n.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}\n.step h3{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:15px}\n.step h3 i{font-style:normal;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#ffffff;display:inline-flex;align-items:center;justify-content:center;font-size:12px}\n.opt+.opt{margin-top:12px}\n.opt-label{margin:0 0 6px;font-size:13px;color:var(--muted)}\n.chips{display:flex;flex-wrap:wrap;gap:6px}\n.chip{min-height:44px;padding:8px 14px;border:1px solid #cbd5e1;border-radius:999px;background:#ffffff;cursor:pointer;font-size:14px}\n.chip.on{background:#eef2ff;border-color:var(--brand);color:#4338ca;font-weight:700}\n.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 16px;border:1px solid #cbd5e1;border-radius:10px;background:#ffffff;color:var(--text);cursor:pointer;font-weight:600;text-decoration:none}\n.btn:disabled{opacity:.5;cursor:default}\n.btn-primary{background:linear-gradient(90deg,var(--brand),var(--brand2));color:#ffffff;border:0}\n.btn-success{background:var(--ok);color:#ffffff;border-color:var(--ok)}\n.btn-danger{background:#dc2626;color:#ffffff;border-color:#dc2626}\n.btn-block{width:100%}\n.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}\n.busy{font-size:13px;color:var(--muted)}\n.stage{display:flex;flex-direction:column-reverse;gap:12px}\n.thumbs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}\n.thumb{flex:none;width:64px;padding:3px;border:2px solid transparent;border-radius:6px;background:#ffffff;cursor:pointer;display:flex;flex-direction:column;gap:2px;font-size:11px;align-items:center}\n.thumb.on{border-color:var(--brand)}\n.thumb>svg,.sheet>svg{display:block;width:100%;height:auto}\n.sheet{background:#ffffff;box-shadow:0 4px 18px rgba(15,23,42,.18);width:100%;max-width:820px;margin:0 auto}\n.bundle-bar{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}\n.bundle-list{display:flex;flex-wrap:wrap;gap:6px;flex:1}\n.bundle-item{display:inline-flex;align-items:center;gap:4px;background:#eef2ff;border-radius:8px;padding:2px 4px 2px 10px;font-size:13px}\n.bundle-item button{min-width:36px;min-height:36px;border:0;background:transparent;cursor:pointer;font-size:18px}\n.ui-modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50;opacity:0;transition:opacity .15s}\n.ui-modal.show{opacity:1}\n.ui-modal-box{background:#ffffff;border-radius:14px;padding:18px;max-width:380px;width:100%}\n.ui-modal-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:12px}\n.ui-toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#0f172a;color:#ffffff;padding:10px 16px;border-radius:10px;z-index:60;font-size:14px}\n.chip-ai{border-style:dashed;border-color:var(--brand2);color:#be185d;font-weight:700}\n.ai-box{max-width:520px;max-height:90vh;overflow-y:auto}\n.ai-title{margin:0 0 10px;font-size:17px}\n.ai-input{display:block;width:100%;min-height:44px;margin-top:6px;padding:8px 12px;border:1px solid #cbd5e1;border-radius:10px;font:inherit}\n.ai-status{font-size:13px;color:var(--muted);min-height:18px}\n.ai-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0}\n.ai-cell{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;text-align:center}\n.ai-cell img,.ai-spin{display:block;width:100%;aspect-ratio:1;border-radius:8px;background:#f8fafc;object-fit:contain}\n.ai-spin{background:linear-gradient(90deg,#eef2ff,#fce7f3,#eef2ff);background-size:200% 100%;animation:ai-shimmer 1.2s linear infinite}\n@keyframes ai-shimmer{to{background-position:-200% 0}}\n.ai-saved-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}\n.ui-modal-box .btn-block{margin-top:10px}\n.mode-switch{display:flex;gap:6px;padding:12px 16px 0}\n.mode-btn{flex:1;min-height:44px;border:1px solid #cbd5e1;border-radius:12px;background:#ffffff;font-weight:700;cursor:pointer}\n.mode-btn.on{background:linear-gradient(90deg,var(--brand),var(--brand2));color:#ffffff;border-color:transparent}\nbody.mode-ai .workspace{display:none}\nbody.mode-presisi .ai-mode{display:none}\n.ai-mode{display:flex;flex-direction:column;gap:16px;padding:16px}\n.aim-hero{background:linear-gradient(135deg,#eef2ff,#fce7f3);border-radius:16px;padding:18px;margin-bottom:16px}\n.aim-hero h2{margin:0 0 4px;font-size:20px}\n.aim-hero p{margin:0 0 12px;color:var(--muted);font-size:14px}\n.aim-hero .aim-scope{margin:10px 0 0;font-size:13px;text-align:center}\n.aim-step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}\n.aim-step-h{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:16px}\n.aim-step-h i{flex:none;font-style:normal;width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#ffffff;display:inline-flex;align-items:center;justify-content:center;font-size:13px}\n.aim-hint{margin:-6px 0 12px;font-size:13px;color:var(--muted)}\n.aim-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px}\n.aim-tab{min-height:48px;padding:8px 10px;border:2px solid var(--line);border-radius:12px;background:#ffffff;color:var(--jc,#4338ca);font-weight:700;cursor:pointer}\n.aim-tab.on{border-color:var(--jc,var(--brand));background:var(--jbg,#eef2ff)}\n.aim-filter{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:12px;padding:8px 8px 8px 12px;border-radius:10px;background:var(--jbg);color:var(--jc);font-size:14px}\n.aim-filter strong{flex:1}\n.aim-filter-x{min-height:40px;padding:6px 12px;border:1px solid currentColor;border-radius:999px;background:#ffffff;color:inherit;font:inherit;font-size:13px;cursor:pointer}\n.aim-jblk+.aim-jblk{margin-top:18px;padding-top:14px;border-top:1px dashed var(--line)}\n.aim-jj{display:inline-block;margin:0 0 4px;padding:3px 10px;border-radius:999px;background:var(--jbg);color:var(--jc);font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}\n.aim-grp{margin:12px 0 6px;padding-left:8px;border-left:3px solid var(--jc,var(--brand));font-size:13px;font-weight:700;color:#334155}\n.aim-jblk .chip.on{background:var(--jbg);border-color:var(--jc);color:var(--jc)}\n.aim-field+.aim-field,.aim-step .ai-input{margin-top:14px}\n.aim-label{margin:0 0 6px;font-size:13px;font-weight:700;color:#334155}\n.aim-more{margin-top:14px;border-top:1px solid var(--line)}\n.aim-more summary{display:flex;align-items:center;min-height:44px;padding-top:6px;color:var(--muted);font-size:14px;font-weight:700;cursor:pointer}\n.aim-more[open] summary{margin-bottom:6px}\n.aim-buat{margin-top:16px;min-height:52px;font-size:16px}\n.aim-meta{display:flex;align-items:center;gap:6px;margin-top:8px;font-size:14px;font-weight:700;min-width:0}\n.aim-meta span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.aim-tag{flex:none;padding:2px 8px;border-radius:999px;background:var(--jbg,#eef2ff);color:var(--jc,#4338ca);font-size:11px}\n.aim-acak{min-height:56px;font-size:17px}\n.aim-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}\n.aim-status{flex:1;min-width:140px;font-size:13px;color:var(--muted)}\n.aim-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}\n.aim-card{position:relative;background:var(--card);border:2px solid transparent;border-top:4px solid var(--jc,var(--line));border-radius:12px;padding:8px;box-shadow:0 2px 10px rgba(15,23,42,.08)}\n.aim-card.on{border-color:var(--brand);border-top-color:var(--brand)}\n.aim-prev>svg{display:block;width:100%;height:auto}\n.aim-badge{position:absolute;top:12px;left:12px;background:#f59e0b;color:#ffffff;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px}\n.aim-card-actions{display:flex;gap:6px;margin-top:8px}\n.aim-card-actions .btn{flex:1;padding:6px 4px;font-size:13px}\n.aim-empty{color:var(--muted);text-align:center;padding:40px 16px;background:var(--card);border-radius:12px}\n.bundle-wrap{padding:0 16px 16px}\n.sheet-wrap{position:relative;width:100%;max-width:820px;margin:0 auto}\n.sheet{cursor:zoom-in}\n.aim-prev{position:relative;cursor:zoom-in}\n.eye-btn{position:absolute;top:8px;right:8px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(15,23,42,.78);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 8px rgba(15,23,42,.3)}\n.eye-btn:hover{background:var(--brand)}\n.viewer{position:fixed;inset:0;z-index:70;background:#0f172a;display:flex;flex-direction:column}\n.viewer-bar{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 12px;color:#ffffff}\n.viewer-label{flex:1;min-width:140px;font-size:14px;font-weight:600}\n.viewer-btn{min-width:44px;min-height:44px;padding:0 12px;border:0;border-radius:10px;background:rgba(255,255,255,.14);color:#ffffff;font-size:18px;font-weight:700;cursor:pointer}\n.viewer-btn:disabled{opacity:.35;cursor:default}\n.viewer-stage{flex:1;overflow:auto;padding:12px}\n.viewer-page{margin:0 auto;background:#ffffff;box-shadow:0 6px 30px rgba(0,0,0,.5)}\n.viewer-page>svg{display:block;width:100%;height:auto}\n@media (min-width:1024px){\n  .ai-mode{display:grid;grid-template-columns:360px 1fr;align-items:start}\n  .aim-controls{position:sticky;top:72px;max-height:calc(100vh - 88px);overflow-y:auto}\n}\n@media (min-width:1024px){\n  .sidebar{transform:none;width:260px}\n  .main{margin-left:260px;transition:margin-left .2s}\n  body.nav-hidden .sidebar{transform:translateX(-100%)}\n  body.nav-hidden .main{margin-left:0}\n  .workspace{display:grid;grid-template-columns:360px 1fr;align-items:start}\n  .panel-settings{position:sticky;top:72px;max-height:calc(100vh - 88px);overflow-y:auto}\n  .stage{flex-direction:row}\n  .thumbs{flex-direction:column;overflow:visible}\n}\n";
+  document.head.appendChild(st);
+  var boot = document.getElementById('ws-boot');
+  if (boot) boot.remove();
+  document.body.insertAdjacentHTML('afterbegin', "<aside class=\"sidebar\">\n  <div class=\"sidebar-brand\">\n    <strong data-i18n=\"app.title\">Worksheet Studio</strong>\n    <button type=\"button\" class=\"icon-btn\" data-action=\"nav-tutup\" data-i18n-aria=\"aria.tutup\">&#x2715;</button>\n  </div>\n  <nav id=\"nav\" class=\"sidebar-nav\"></nav>\n</aside>\n<div class=\"scrim\" data-action=\"nav-tutup\"></div>\n<main class=\"main\">\n  <header class=\"topbar\">\n    <button type=\"button\" class=\"icon-btn\" data-action=\"nav-toggle\" data-i18n-aria=\"aria.buka\">&#9776;</button>\n    <strong data-i18n=\"app.title\">Worksheet Studio</strong>\n  </header>\n  <div class=\"mode-switch\">\n    <button type=\"button\" class=\"mode-btn\" data-action=\"mode\" data-mode=\"ai\" data-i18n=\"mode.ai\">Worksheet AI</button>\n    <button type=\"button\" class=\"mode-btn\" data-action=\"mode\" data-mode=\"presisi\" data-i18n=\"mode.presisi\">Presisi</button>\n  </div>\n  <div id=\"ai-mode\" class=\"ai-mode\"></div>\n  <div class=\"workspace\">\n    <section class=\"panel-settings\">\n      <div id=\"settings\"></div>\n      <button type=\"button\" class=\"btn btn-primary btn-block\" data-action=\"buat\" data-i18n=\"btn.buat\">Buat Worksheet</button>\n    </section>\n    <section class=\"panel-preview\">\n      <div class=\"toolbar\">\n        <button type=\"button\" class=\"btn\" data-action=\"acak\" data-i18n=\"btn.acak\">Acak Ulang</button>\n        <button type=\"button\" class=\"btn\" data-action=\"bundle\" data-i18n=\"btn.bundle\">+ Bundle</button>\n        <button type=\"button\" class=\"btn btn-success\" data-action=\"pdf\" data-i18n=\"btn.pdf\">Unduh PDF</button>\n        <span id=\"busy\" class=\"busy\" hidden data-i18n=\"msg.pdfProses\">Menyiapkan PDF</span>\n      </div>\n      <div class=\"stage\">\n        <div id=\"thumbs\" class=\"thumbs\"></div>\n        <div class=\"sheet-wrap\">\n          <div id=\"sheet\" class=\"sheet\"></div>\n          <button type=\"button\" class=\"eye-btn\" data-action=\"lihat\" data-i18n-aria=\"view.lihat\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/></svg></button>\n        </div>\n      </div>\n    </section>\n  </div>\n  <div class=\"bundle-wrap\">\n    <div class=\"bundle-bar\">\n      <strong><span data-i18n=\"bundle.title\">Bundle</span> (<span id=\"bundle-count\">0</span>)</strong>\n      <div id=\"bundle-list\" class=\"bundle-list\"></div>\n      <button type=\"button\" class=\"btn btn-success\" data-action=\"bundle-pdf\" data-i18n=\"bundle.unduh\">Unduh Bundle PDF</button>\n    </div>\n  </div>\n</main>");
+})();
+/* core/namespace.js */
+globalThis.WS = globalThis.WS || {};
+
+/* core/rng.js */
+(function (WS) {
+  'use strict';
+
+  function create(seed) {
+    let a = (seed >>> 0) || 1;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function int(rnd, min, max) {
+    return min + Math.floor(rnd() * (max - min + 1));
+  }
+
+  function pick(rnd, arr) {
+    return arr[Math.floor(rnd() * arr.length)];
+  }
+
+  function shuffle(rnd, arr) {
+    const out = arr.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(rnd() * (i + 1));
+      const tmp = out[i];
+      out[i] = out[j];
+      out[j] = tmp;
+    }
+    return out;
+  }
+
+  function bag(rnd, arr) {
+    let pool = [];
+    let last;
+    return function next() {
+      if (!pool.length) {
+        pool = shuffle(rnd, arr);
+        if (pool.length > 1 && pool[pool.length - 1] === last) pool.unshift(pool.pop());
+      }
+      last = pool.pop();
+      return last;
+    };
+  }
+
+  function derive(seed, n) {
+    return (Math.imul((seed >>> 0) ^ 0x9E3779B9, 2654435761) + Math.imul(n + 1, 40503)) >>> 0;
+  }
+
+  function newSeed() {
+    return (Math.floor(Math.random() * 4294967295) >>> 0) || 1;
+  }
+
+  WS.rng = { create, int, pick, shuffle, bag, derive, newSeed };
+})(globalThis.WS);
+
+/* core/paper.js */
+(function (WS) {
+  'use strict';
+
+  const SIZES = { A4: [210, 297], F4: [215, 330], Letter: [215.9, 279.4] };
+  const LABELS = { A4: 'A4', F4: 'F4 (Folio)', Letter: 'Letter' };
+
+  function size(kertas, orientasi) {
+    const s = SIZES[kertas] || SIZES.A4;
+    return orientasi === 'lanskap' ? { w: s[1], h: s[0] } : { w: s[0], h: s[1] };
+  }
+
+  WS.paper = { SIZES, LABELS, size, MARGIN: 10 };
+})(globalThis.WS);
+
+/* core/autofit.js */
+(function (WS) {
+  'use strict';
+
+  function rows(area, n, gap) {
+    const g = n > 1 ? gap : 0;
+    const h = (area.h - g * (n - 1)) / n;
+    const out = [];
+    for (let i = 0; i < n; i++) out.push({ x: area.x, y: area.y + i * (h + g), w: area.w, h });
+    return out;
+  }
+
+  function icons(box, count, maxSize, gapRatio) {
+    if (!count) return [];
+    const gr = gapRatio == null ? 0.18 : gapRatio;
+    let best = null;
+    for (let lines = 1; lines <= count; lines++) {
+      const per = Math.ceil(count / lines);
+      const size = Math.min(box.h / (lines + gr * (lines - 1)), box.w / (per + gr * (per - 1)), maxSize);
+      if (!best || size > best.size + 1e-9) best = { size, lines, per };
+    }
+    const s = best.size;
+    const gap = s * gr;
+    const totalH = best.lines * s + (best.lines - 1) * gap;
+    const y0 = box.y + (box.h - totalH) / 2;
+    const out = [];
+    for (let i = 0; i < count; i++) {
+      const line = Math.floor(i / best.per);
+      const col = i % best.per;
+      out.push({ x: box.x + col * (s + gap), y: y0 + line * (s + gap), size: s });
+    }
+    return out;
+  }
+
+  WS.fit = { rows, icons };
+})(globalThis.WS);
+
+/* core/registry.js */
+(function (WS) {
+  'use strict';
+
+  const JENJANG = [
+    { id: 'paud', label: 'PAUD – TK' },
+    { id: 'sd13', label: 'SD Kelas 1–3' },
+    { id: 'sd46', label: 'SD Kelas 4–6' },
+    { id: 'lintas', label: 'Lintas Jenjang' }
+  ];
+
+  const GROUPS = [
+    { id: 'motorik', jenjang: 'paud', label: 'Motorik Halus' },
+    { id: 'huruf', jenjang: 'paud', label: 'Huruf & Pra-Membaca' },
+    { id: 'angka', jenjang: 'paud', label: 'Angka & Berhitung' },
+    { id: 'mewarnai', jenjang: 'paud', label: 'Mewarnai' },
+    { id: 'mencocokkan', jenjang: 'paud', label: 'Mencocokkan' },
+    { id: 'logika', jenjang: 'paud', label: 'Logika Visual' },
+    { id: 'puzzle-paud', jenjang: 'paud', label: 'Labirin & Dot-to-Dot' },
+    { id: 'bindo-dasar', jenjang: 'sd13', label: 'Bahasa Indonesia Dasar' },
+    { id: 'menulis', jenjang: 'sd13', label: 'Latihan Menulis' },
+    { id: 'mtk-dasar', jenjang: 'sd13', label: 'Matematika Dasar' },
+    { id: 'mtk-terapan', jenjang: 'sd13', label: 'Matematika Terapan' },
+    { id: 'puzzle-sd', jenjang: 'sd13', label: 'Puzzle Edukatif' },
+    { id: 'mtk-lanjut', jenjang: 'sd46', label: 'Matematika Lanjut' },
+    { id: 'bindo-lanjut', jenjang: 'sd46', label: 'Bahasa Indonesia Lanjut' },
+    { id: 'ipas', jenjang: 'sd46', label: 'IPAS' },
+    { id: 'pancasila', jenjang: 'sd46', label: 'Pendidikan Pancasila' },
+    { id: 'english', jenjang: 'lintas', label: 'Bahasa Inggris' },
+    { id: 'agama', jenjang: 'lintas', label: 'Agama Islam' },
+    { id: 'kuis', jenjang: 'lintas', label: 'Lembar Soal / Ulangan' },
+    { id: 'pendukung', jenjang: 'lintas', label: 'Lembar Pendukung' }
+  ];
+
+  const REQUIRED = ['id', 'grup', 'jenjang', 'nama', 'judul', 'instruksi', 'layout', 'defaults', 'generatePage'];
+  const recipes = new Map();
+
+  function define(cfg) {
+    for (const k of REQUIRED) {
+      if (cfg[k] == null) throw new Error('Resep ' + (cfg.id || '?') + ' tanpa ' + k);
+    }
+    if (recipes.has(cfg.id)) throw new Error('Resep duplikat: ' + cfg.id);
+    if (!GROUPS.some(g => g.id === cfg.grup)) throw new Error('Grup tidak dikenal: ' + cfg.grup);
+    if (typeof cfg.generatePage !== 'function') throw new Error('Resep ' + cfg.id + ': generatePage harus fungsi');
+    if (WS.layouts && !WS.layouts[cfg.layout]) throw new Error('Layout tidak dikenal: ' + cfg.layout);
+    const r = Object.assign({ hasAnswers: true, opsi: [] }, cfg);
+    recipes.set(cfg.id, r);
+    return r;
+  }
+
+  function get(id) {
+    const r = recipes.get(id);
+    if (!r) throw new Error('Resep tidak ditemukan: ' + id);
+    return r;
+  }
+
+  function byGroup(grupId) {
+    return Array.from(recipes.values()).filter(r => r.grup === grupId);
+  }
+
+  function all() {
+    return Array.from(recipes.values());
+  }
+
+  function group(id) {
+    return GROUPS.find(g => g.id === id);
+  }
+
+  WS.registry = { JENJANG, GROUPS, define, get, byGroup, all, group };
+})(globalThis.WS);
+
+/* core/doc.js */
+(function (WS) {
+  'use strict';
+
+  const COMMON_DEFAULTS = { kesulitan: 'mudah', halaman: 1, gaya: 'ceria', kertas: 'A4', orientasi: 'potret', kunci: true };
+
+  function text(v, params) {
+    return typeof v === 'function' ? v(params) : v;
+  }
+
+  function normalize(recipe, params) {
+    return Object.assign({}, COMMON_DEFAULTS, recipe.defaults, params || {});
+  }
+
+  function create(resepId, params, seed) {
+    const recipe = WS.registry.get(resepId);
+    const p = normalize(recipe, params);
+    const s = (seed >>> 0) || WS.rng.newSeed();
+    const area = WS.page.contentArea(p, recipe);
+    const env = { area, aspect: area.h / area.w };
+    const pages = [];
+    for (let i = 0; i < p.halaman; i++) {
+      const rnd = WS.rng.create(WS.rng.derive(s, i));
+      pages.push(recipe.generatePage(p, rnd, Object.assign({ pageIndex: i }, env)));
+    }
+    return { v: 1, resepId, params: p, seed: s, judul: text(recipe.judul, p), instruksi: text(recipe.instruksi, p), pages };
+  }
+
+  WS.doc = { COMMON_DEFAULTS, normalize, create, text };
+})(globalThis.WS);
+
+/* render/svg.js */
+(function (WS) {
+  'use strict';
+
+  function n(v) {
+    return String(Math.round(v * 100) / 100);
+  }
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function attrs(a) {
+    let out = '';
+    for (const k in a) {
+      const v = a[k];
+      if (v == null || v === false) continue;
+      out += ' ' + k + '="' + (typeof v === 'number' ? n(v) : esc(v)) + '"';
+    }
+    return out;
+  }
+
+  function el(tag, a, children) {
+    const at = attrs(a || {});
+    return children == null ? '<' + tag + at + '/>' : '<' + tag + at + '>' + children + '</' + tag + '>';
+  }
+
+  function text(x, y, str, a) {
+    return el('text', Object.assign({ x, y }, a || {}), esc(str));
+  }
+
+  WS.svg = { n, esc, attrs, el, text };
+})(globalThis.WS);
+
+/* render/ai-themes.js */
+(function (WS) {
+  'use strict';
+
+  const themes = new Map();
+
+  function add(theme) {
+    themes.set(theme.id, theme);
+  }
+
+  function get(id) {
+    return themes.get(id);
+  }
+
+  function list() {
+    return Array.from(themes.values()).sort((a, b) => a.created - b.created);
+  }
+
+  function remove(id) {
+    themes.delete(id);
+  }
+
+  function parse(name) {
+    const m = /^ai:([a-z0-9-]+)\/([a-z0-9-]+)$/.exec(String(name));
+    return m ? { themeId: m[1], slug: m[2] } : null;
+  }
+
+  function names(themeId) {
+    const th = get(themeId);
+    return th ? th.items.map(it => 'ai:' + th.id + '/' + it.slug) : [];
+  }
+
+  function item(name) {
+    const p = parse(name);
+    const th = p && get(p.themeId);
+    return th ? th.items.find(it => it.slug === p.slug) || null : null;
+  }
+
+  function image(name, variant) {
+    const p = parse(name);
+    const th = p && get(p.themeId);
+    if (!th) return null;
+    const other = variant === 'black' ? 'color' : 'black';
+    return (th.images[variant] || {})[p.slug] || (th.images[other] || {})[p.slug] || null;
+  }
+
+  WS.aiThemes = { add, get, list, remove, parse, names, item, image };
+})(globalThis.WS);
+
+/* render/icons.js */
+(function (WS) {
+  'use strict';
+
+  const BASE = 'https://cdn.jsdelivr.net/npm/openmoji@15.1.0/';
+
+  const ICONS = {
+    apel: { hex: '1F34E', label: 'Apel', tema: 'buah' },
+    pisang: { hex: '1F34C', label: 'Pisang', tema: 'buah' },
+    jeruk: { hex: '1F34A', label: 'Jeruk', tema: 'buah' },
+    anggur: { hex: '1F347', label: 'Anggur', tema: 'buah' },
+    stroberi: { hex: '1F353', label: 'Stroberi', tema: 'buah' },
+    semangka: { hex: '1F349', label: 'Semangka', tema: 'buah' },
+    wortel: { hex: '1F955', label: 'Wortel', tema: 'makanan' },
+    keju: { hex: '1F9C0', label: 'Keju', tema: 'makanan' },
+    kucing: { hex: '1F408', label: 'Kucing', tema: 'hewan' },
+    anjing: { hex: '1F415', label: 'Anjing', tema: 'hewan' },
+    ikan: { hex: '1F41F', label: 'Ikan', tema: 'hewan' },
+    'anak-ayam': { hex: '1F425', label: 'Anak Ayam', tema: 'hewan' },
+    kelinci: { hex: '1F407', label: 'Kelinci', tema: 'hewan' },
+    lebah: { hex: '1F41D', label: 'Lebah', tema: 'hewan' },
+    'kupu-kupu': { hex: '1F98B', label: 'Kupu-kupu', tema: 'hewan' },
+    gajah: { hex: '1F418', label: 'Gajah', tema: 'hewan' },
+    tikus: { hex: '1F401', label: 'Tikus', tema: 'hewan' },
+    monyet: { hex: '1F412', label: 'Monyet', tema: 'hewan' },
+    beruang: { hex: '1F43B', label: 'Beruang', tema: 'hewan' },
+    mobil: { hex: '1F697', label: 'Mobil', tema: 'kendaraan' },
+    bus: { hex: '1F68C', label: 'Bus', tema: 'kendaraan' },
+    sepeda: { hex: '1F6B2', label: 'Sepeda', tema: 'kendaraan' },
+    pesawat: { hex: '2708', label: 'Pesawat', tema: 'kendaraan' },
+    perahu: { hex: '26F5', label: 'Perahu', tema: 'kendaraan' },
+    kereta: { hex: '1F682', label: 'Kereta', tema: 'kendaraan' },
+    bunga: { hex: '1F338', label: 'Bunga', tema: 'alam' },
+    bintang: { hex: '2B50', label: 'Bintang', tema: 'alam' },
+    matahari: { hex: '2600', label: 'Matahari', tema: 'alam' },
+    pohon: { hex: '1F333', label: 'Pohon', tema: 'alam' },
+    bulan: { hex: '1F319', label: 'Bulan', tema: 'alam' },
+    rumah: { hex: '1F3E0', label: 'Rumah', tema: 'benda' },
+    bola: { hex: '26BD', label: 'Bola', tema: 'benda' },
+    gunting: { hex: '2702', label: 'Gunting', tema: 'alat' }
+  };
+
+  const TEMA = { buah: 'Buah', hewan: 'Hewan', kendaraan: 'Kendaraan', alam: 'Alam' };
+
+  const PAIRS = [
+    { from: 'lebah', to: 'bunga' },
+    { from: 'tikus', to: 'keju' },
+    { from: 'kelinci', to: 'wortel' },
+    { from: 'monyet', to: 'pisang' },
+    { from: 'anak-ayam', to: 'rumah' },
+    { from: 'anjing', to: 'bola' },
+    { from: 'kupu-kupu', to: 'bunga' },
+    { from: 'mobil', to: 'rumah' }
+  ];
+
+  const FALLBACK = '<circle cx="36" cy="36" r="26" fill="none" stroke="#999999" stroke-width="3"/>';
+  const cache = { color: {}, black: {} };
+
+  function exists(name) {
+    return Object.prototype.hasOwnProperty.call(ICONS, name) || !!WS.aiThemes.item(name);
+  }
+
+  function byTema(tema) {
+    if (String(tema).startsWith('ai:')) return WS.aiThemes.names(tema.slice(3));
+    return Object.keys(ICONS).filter(k => ICONS[k].tema === tema);
+  }
+
+  function label(name) {
+    if (ICONS[name]) return ICONS[name].label;
+    const it = WS.aiThemes.item(name);
+    return it ? it.nama : '';
+  }
+
+  function temaChoices() {
+    return [{ v: 'acak', label: 'Acak' }]
+      .concat(Object.keys(TEMA).map(k => ({ v: k, label: TEMA[k] })))
+      .concat(WS.aiThemes.list().map(th => ({ v: 'ai:' + th.id, label: th.topik + ' (AI)' })));
+  }
+
+  function url(name, variant) {
+    return BASE + variant + '/svg/' + ICONS[name].hex + '.svg';
+  }
+
+  function innerOf(svgText) {
+    const start = svgText.indexOf('>', svgText.indexOf('<svg')) + 1;
+    const end = svgText.lastIndexOf('</svg>');
+    return svgText.slice(start, end).replace(/\sid="[^"]*"/g, '');
+  }
+
+  function set(variant, name, svgText) {
+    cache[variant][name] = innerOf(svgText);
+  }
+
+  function has(variant, name) {
+    return cache[variant][name] != null;
+  }
+
+  async function load(names, variant) {
+    const todo = names.filter(nm => ICONS[nm] && !has(variant, nm));
+    await Promise.all(todo.map(async nm => {
+      try {
+        const res = await fetch(url(nm, variant));
+        if (res.ok) set(variant, nm, await res.text());
+      } catch (e) {
+        console.warn('Ikon gagal dimuat: ' + nm);
+      }
+    }));
+    const ai = names.filter(nm => WS.aiThemes.parse(nm));
+    if (ai.length && WS.stickers) await WS.stickers.ensure(ai, variant);
+  }
+
+  function use(name, x, y, size, variant) {
+    if (WS.aiThemes.parse(name)) {
+      const src = WS.aiThemes.image(name, variant);
+      if (src) return WS.svg.el('image', { x, y, width: size, height: size, 'xlink:href': src, preserveAspectRatio: 'xMidYMid meet' });
+    }
+    return WS.svg.el('svg', { x, y, width: size, height: size, viewBox: '0 0 72 72' }, cache[variant][name] || FALLBACK);
+  }
+
+  WS.icons = { BASE, ICONS, TEMA, PAIRS, exists, byTema, label, temaChoices, url, innerOf, set, has, load, use };
+})(globalThis.WS);
+
+/* render/themes.js */
+(function (WS) {
+  'use strict';
+
+  const S = WS.svg;
+  const M = WS.paper.MARGIN;
+
+  function labelW(str, size) {
+    return str.length * size * 0.52;
+  }
+
+  function fields(x, y, w, labels, font, size, color) {
+    const gap = 6;
+    const each = (w - gap * (labels.length - 1)) / labels.length;
+    let out = '';
+    labels.forEach((lb, i) => {
+      const fx = x + i * (each + gap);
+      const txt = lb + ':';
+      out += S.text(fx, y, txt, { 'font-family': font, 'font-size': size, fill: color });
+      out += S.el('line', { x1: fx + labelW(txt, size) + 1, y1: y + 0.8, x2: fx + each, y2: y + 0.8, stroke: color, 'stroke-width': 0.3 });
+    });
+    return out;
+  }
+
+  function pageNo(ctx, y, font, color) {
+    if (ctx.pageCount <= 1) return '';
+    return S.text(ctx.w / 2, y, 'Hal. ' + ctx.pageNo + '/' + ctx.pageCount, { 'font-family': font, 'font-size': 3, fill: color, 'text-anchor': 'middle' });
+  }
+
+  function titleOf(ctx) {
+    return ctx.kunci ? 'Kunci Jawaban: ' + ctx.judul : ctx.judul;
+  }
+
+  const ceria = {
+    id: 'ceria',
+    label: 'Ceria Warna-warni',
+    iconVariant: 'color',
+    font: { title: 'ComicNeue', body: 'Andika' },
+    ink: '#334155',
+    answerColor: '#dc2626',
+    icons: ['beruang', 'bintang'],
+    chrome(ctx) {
+      const x0 = M, y0 = M, w = ctx.w - 2 * M, h = ctx.h - 2 * M;
+      const ix = x0 + 8, iw = w - 16;
+      let svg = '<defs><linearGradient id="g-ceria" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f472b6"/><stop offset="1" stop-color="#fb923c"/></linearGradient></defs>';
+      svg += S.el('rect', { x: 0, y: 0, width: ctx.w, height: ctx.h, fill: '#fffdf5' });
+      svg += S.el('rect', { x: x0, y: y0, width: w, height: h, rx: 6, fill: 'none', stroke: '#fbbf24', 'stroke-width': 2.4 });
+      svg += S.el('rect', { x: x0 + 3, y: y0 + 3, width: w - 6, height: h - 6, rx: 4, fill: 'none', stroke: '#f472b6', 'stroke-width': 0.6, 'stroke-dasharray': '2 1.5' });
+      let y = y0 + 12;
+      svg += fields(ix, y, iw, ['Nama', 'Kelas', 'Tanggal'], 'Andika', 3.6, '#92400e');
+      y += 5;
+      svg += S.el('rect', { x: ix, y, width: iw, height: 13, rx: 6.5, fill: 'url(#g-ceria)' });
+      svg += S.text(ctx.w / 2, y + 9, titleOf(ctx), { 'font-family': 'ComicNeue', 'font-weight': 'bold', 'font-size': 7, fill: '#ffffff', 'text-anchor': 'middle' });
+      y += 19.5;
+      svg += S.text(ctx.w / 2, y, ctx.instruksi, { 'font-family': 'Andika', 'font-size': 4, fill: '#9a3412', 'text-anchor': 'middle' });
+      y += 5;
+      const fy = y0 + h - 18;
+      for (let i = 0; i < 3; i++) svg += WS.icons.use('bintang', ix + i * 8, fy + 2, 7, 'color');
+      svg += S.text(ix + 26, fy + 7.5, 'Hebat!', { 'font-family': 'ComicNeue', 'font-weight': 'bold', 'font-size': 4.5, fill: '#a16207' });
+      svg += WS.icons.use('beruang', ix + iw - 13, fy - 1, 13, 'color');
+      svg += pageNo(ctx, fy + 7.5, 'Andika', '#a16207');
+      return { svg, area: { x: ix, y, w: iw, h: fy - 3 - y } };
+    },
+    badge(nr, cx, cy, r) {
+      return S.el('circle', { cx, cy, r, fill: '#60a5fa' }) +
+        S.text(cx, cy + r * 0.38, String(nr), { 'font-family': 'ComicNeue', 'font-weight': 'bold', 'font-size': r * 1.1, fill: '#ffffff', 'text-anchor': 'middle' });
+    },
+    answerBox(x, y, w, h) {
+      return S.el('rect', { x, y, width: w, height: h, rx: Math.min(w, h) * 0.14, fill: '#eff6ff', stroke: '#60a5fa', 'stroke-width': 0.6, 'stroke-dasharray': '1.6 1.2' });
+    },
+    rowBg(x, y, w, h) {
+      return S.el('rect', { x, y, width: w, height: h, rx: Math.min(4, h * 0.2), fill: '#ffffff', stroke: '#fde68a', 'stroke-width': 0.5 });
+    }
+  };
+
+  const minimalis = {
+    id: 'minimalis',
+    label: 'Minimalis Montessori',
+    iconVariant: 'color',
+    font: { title: 'Poppins', body: 'Poppins' },
+    ink: '#5b5147',
+    answerColor: '#c2410c',
+    icons: [],
+    chrome(ctx) {
+      const x0 = M + 4, w = ctx.w - 2 * (M + 4);
+      let svg = S.el('rect', { x: 0, y: 0, width: ctx.w, height: ctx.h, fill: '#fdfcf9' });
+      let y = M + 6;
+      svg += fields(x0, y, w, ['Nama', 'Tanggal'], 'Poppins', 3.4, '#6b7280');
+      y += 9;
+      svg += S.text(x0, y, (ctx.meta.grup + ' · ' + ctx.meta.level).toUpperCase(), { 'font-family': 'Poppins', 'font-size': 2.8, fill: '#8b9a86' });
+      y += 8;
+      svg += S.text(x0, y, titleOf(ctx), { 'font-family': 'Poppins', 'font-weight': 'bold', 'font-size': 7.5, fill: '#3f4a3c' });
+      y += 6.5;
+      svg += S.text(x0, y, ctx.instruksi, { 'font-family': 'Poppins', 'font-size': 3.6, fill: '#6b7280' });
+      y += 5;
+      const fy = ctx.h - M - 6;
+      svg += S.el('line', { x1: x0, y1: fy - 4, x2: x0 + w, y2: fy - 4, stroke: '#eee7dc', 'stroke-width': 0.4 });
+      svg += S.text(x0, fy, ctx.meta.jenjang + ' · ' + ctx.meta.grup, { 'font-family': 'Poppins', 'font-size': 2.8, fill: '#9ca3af' });
+      svg += S.text(x0 + w, fy, ctx.profil.footer || ctx.profil.nama || '', { 'font-family': 'Poppins', 'font-size': 2.8, fill: '#9ca3af', 'text-anchor': 'end' });
+      svg += pageNo(ctx, fy, 'Poppins', '#9ca3af');
+      return { svg, area: { x: x0, y, w, h: fy - 8 - y } };
+    },
+    badge(nr, cx, cy, r) {
+      return S.text(cx, cy + r * 0.4, (nr < 10 ? '0' : '') + nr, { 'font-family': 'Poppins', 'font-weight': 'bold', 'font-size': r * 1.2, fill: '#a7c4a0', 'text-anchor': 'middle' });
+    },
+    answerBox(x, y, w, h) {
+      return S.el('rect', { x, y, width: w, height: h, rx: Math.min(w, h) * 0.12, fill: 'none', stroke: '#c9b8a6', 'stroke-width': 0.5 });
+    },
+    rowBg(x, y, w, h) {
+      return S.el('line', { x1: x, y1: y + h, x2: x + w, y2: y + h, stroke: '#eee7dc', 'stroke-width': 0.4 });
+    }
+  };
+
+  const lkpd = {
+    id: 'lkpd',
+    label: 'Klasik Sekolah (LKPD)',
+    iconVariant: 'black',
+    font: { title: 'Tinos', body: 'Tinos' },
+    ink: '#111111',
+    answerColor: '#dc2626',
+    icons: [],
+    chrome(ctx) {
+      const x0 = M, w = ctx.w - 2 * M, h = ctx.h - 2 * M;
+      const ix = x0 + 5, iw = w - 10;
+      const base = { 'font-family': 'Tinos', fill: '#111111' };
+      let svg = S.el('rect', { x: 0, y: 0, width: ctx.w, height: ctx.h, fill: '#ffffff' });
+      svg += S.el('rect', { x: x0, y: x0, width: w, height: h, fill: 'none', stroke: '#111111', 'stroke-width': 0.6 });
+      svg += S.el('rect', { x: x0 + 1.5, y: x0 + 1.5, width: w - 3, height: h - 3, fill: 'none', stroke: '#111111', 'stroke-width': 0.25 });
+      let y = x0 + 5;
+      if (ctx.profil.logo) svg += S.el('image', { x: ix, y, width: 16, height: 16, 'xlink:href': ctx.profil.logo, preserveAspectRatio: 'xMidYMid meet' });
+      svg += S.text(ctx.w / 2, y + 7, (ctx.profil.nama || 'Nama Sekolah').toUpperCase(), Object.assign({ 'font-weight': 'bold', 'font-size': 5.2, 'text-anchor': 'middle' }, base));
+      svg += S.text(ctx.w / 2, y + 12.5, 'Lembar Kerja Peserta Didik (LKPD) · ' + ctx.meta.grup + ' · ' + ctx.meta.jenjang, Object.assign({ 'font-size': 3.2, 'text-anchor': 'middle' }, base));
+      y += 18;
+      svg += S.el('line', { x1: ix, y1: y, x2: ix + iw, y2: y, stroke: '#111111', 'stroke-width': 0.8 });
+      svg += S.el('line', { x1: ix, y1: y + 1.2, x2: ix + iw, y2: y + 1.2, stroke: '#111111', 'stroke-width': 0.25 });
+      y += 9;
+      svg += fields(ix, y, iw, ['Nama', 'No. Absen', 'Nilai'], 'Tinos', 3.6, '#111111');
+      y += 10;
+      const title = titleOf(ctx).toUpperCase();
+      svg += S.text(ctx.w / 2, y, title, Object.assign({ 'font-weight': 'bold', 'font-size': 5, 'text-anchor': 'middle' }, base));
+      const tw = Math.min(iw, title.length * 5 * 0.55);
+      svg += S.el('line', { x1: ctx.w / 2 - tw / 2, y1: y + 1.2, x2: ctx.w / 2 + tw / 2, y2: y + 1.2, stroke: '#111111', 'stroke-width': 0.35 });
+      y += 7;
+      svg += S.text(ix, y, 'Petunjuk: ' + ctx.instruksi, Object.assign({ 'font-size': 3.6 }, base));
+      y += 4;
+      const fy = x0 + h - 7;
+      svg += S.text(ix, fy, 'Paraf Orang Tua: ____________', Object.assign({ 'font-size': 3.4 }, base));
+      svg += S.text(ix + iw, fy - 9, 'Guru Kelas', Object.assign({ 'font-size': 3.4, 'text-anchor': 'end' }, base));
+      svg += S.el('line', { x1: ix + iw - 38, y1: fy, x2: ix + iw, y2: fy, stroke: '#111111', 'stroke-width': 0.3 });
+      svg += pageNo(ctx, fy, 'Tinos', '#111111');
+      return { svg, area: { x: ix, y, w: iw, h: fy - 14 - y } };
+    },
+    badge(nr, cx, cy, r) {
+      return S.text(cx, cy + r * 0.4, nr + '.', { 'font-family': 'Tinos', 'font-weight': 'bold', 'font-size': r * 1.2, fill: '#111111', 'text-anchor': 'middle' });
+    },
+    answerBox(x, y, w, h) {
+      return S.el('rect', { x, y, width: w, height: h, fill: 'none', stroke: '#111111', 'stroke-width': 0.45 });
+    },
+    rowBg(x, y, w, h) {
+      return S.el('line', { x1: x, y1: y + h, x2: x + w, y2: y + h, stroke: '#999999', 'stroke-width': 0.3, 'stroke-dasharray': '0.6 0.8' });
+    }
+  };
+
+  WS.themes = { ceria, minimalis, lkpd };
+  WS.themeKit = { fields, pageNo, titleOf };
+})(globalThis.WS);
+
+/* render/layouts.js */
+(function (WS) {
+  'use strict';
+
+  const S = WS.svg;
+  const n = WS.svg.n;
+
+  function lurus(x1, x2, cy) {
+    return 'M' + n(x1) + ' ' + n(cy) + ' L' + n(x2) + ' ' + n(cy);
+  }
+
+  function zigzag(x1, x2, cy, amp) {
+    const k = 2 * Math.max(2, Math.round((x2 - x1) / 36));
+    let d = 'M' + n(x1) + ' ' + n(cy);
+    for (let i = 1; i < k; i++) d += ' L' + n(x1 + (x2 - x1) * i / k) + ' ' + n(i % 2 ? cy - amp : cy + amp);
+    return d + ' L' + n(x2) + ' ' + n(cy);
+  }
+
+  function gelombang(x1, x2, cy, amp) {
+    const k = 2 * Math.max(1, Math.round((x2 - x1) / 50));
+    const hw = (x2 - x1) / k;
+    let d = 'M' + n(x1) + ' ' + n(cy);
+    for (let i = 0; i < k; i++) {
+      d += ' Q' + n(x1 + hw * (i + 0.5)) + ' ' + n(i % 2 ? cy + 2 * amp : cy - 2 * amp) + ' ' + n(x1 + hw * (i + 1)) + ' ' + n(cy);
+    }
+    return d;
+  }
+
+  function lengkung(x1, x2, cy, amp) {
+    return 'M' + n(x1) + ' ' + n(cy) + ' Q' + n((x1 + x2) / 2) + ' ' + n(cy - 2 * amp) + ' ' + n(x2) + ' ' + n(cy);
+  }
+
+  function tangga(x1, x2, cy, amp) {
+    const k = 4, sw = (x2 - x1) / k, sh = 2 * amp / k;
+    let d = 'M' + n(x1) + ' ' + n(cy + amp);
+    for (let i = 0; i < k; i++) d += ' H' + n(x1 + sw * (i + 0.5)) + ' V' + n(cy + amp - sh * (i + 1)) + ' H' + n(x1 + sw * (i + 1));
+    return d;
+  }
+
+  const SHAPES = { lurus, zigzag, gelombang, lengkung, tangga };
+
+  function iconSet(page, keys) {
+    const s = new Set();
+    page.items.forEach(it => keys(it).forEach(nm => s.add(nm)));
+    return Array.from(s);
+  }
+
+  function cells(area, n, gap) {
+    const cols = n > 1 && area.w / area.h > 1.15 ? 2 : 1;
+    const per = Math.ceil(n / cols);
+    const colW = (area.w - gap * 2 * (cols - 1)) / cols;
+    const out = [];
+    for (let c = 0; c < cols; c++) {
+      WS.fit.rows({ x: area.x + c * (colW + gap * 2), y: area.y, w: colW, h: area.h }, per, gap).forEach(r => out.push(r));
+    }
+    return out.slice(0, n);
+  }
+
+  const barisPenuh = {
+    icons(page) {
+      return iconSet(page, it => it.icons);
+    },
+    render(page, area, theme, ctx) {
+      const rows = cells(area, page.items.length, 3);
+      let out = '';
+      rows.forEach((r, i) => {
+        const it = page.items[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.12);
+        const badgeR = Math.min(r.h * 0.22, 5);
+        out += theme.badge(i + 1, r.x + pad + badgeR, r.y + r.h / 2, badgeR);
+        const box = Math.min(r.h * 0.74, 28);
+        const bx = r.x + r.w - pad - box;
+        const by = r.y + (r.h - box) / 2;
+        out += theme.answerBox(bx, by, box, box);
+        if (ctx.kunci) {
+          out += S.text(bx + box / 2, by + box * 0.7, it.answer, { 'font-family': theme.font.title, 'font-weight': 'bold', 'font-size': box * 0.55, fill: theme.answerColor, 'text-anchor': 'middle' });
+        }
+        const ix = r.x + pad + badgeR * 2 + 4;
+        const iconBox = { x: ix, y: r.y + pad, w: bx - 4 - ix, h: r.h - pad * 2 };
+        WS.fit.icons(iconBox, it.icons.length, 26).forEach((p, k) => {
+          out += WS.icons.use(it.icons[k], p.x, p.y, p.size, ctx.iconVariant);
+        });
+      });
+      return out;
+    }
+  };
+
+  const garisTulis = {
+    icons(page) {
+      return iconSet(page, it => [it.from, it.to]);
+    },
+    render(page, area, theme, ctx) {
+      const rows = WS.fit.rows(area, page.items.length, 3);
+      let out = '';
+      rows.forEach((r, i) => {
+        const it = page.items[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.12);
+        const s = Math.min(r.h * 0.7, 24);
+        const cy = r.y + r.h / 2;
+        out += WS.icons.use(it.from, r.x + pad, cy - s / 2, s, ctx.iconVariant);
+        out += WS.icons.use(it.to, r.x + r.w - pad - s, cy - s / 2, s, ctx.iconVariant);
+        const x1 = r.x + pad + s + 3;
+        const x2 = r.x + r.w - pad - s - 3;
+        const amp = Math.min(r.h * 0.3, 10) * (it.amp || 1);
+        const shape = SHAPES[it.shape] || lurus;
+        out += S.el('path', { d: shape(x1, x2, cy, amp), fill: 'none', stroke: '#9ca3af', 'stroke-width': 0.9, 'stroke-dasharray': '2.2 1.8', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+        out += S.el('circle', { cx: x1, cy: startY(shape, cy, amp), r: 1.4, fill: '#16a34a' });
+      });
+      return out;
+    }
+  };
+
+  const kanvasPenuh = {
+    icons(page) {
+      return iconSet(page, it => [it.from, it.to]);
+    },
+    render(page, area, theme, ctx) {
+      const it = page.items[0];
+      const cell = Math.min(area.w / it.cols, area.h / it.rows);
+      const ox = area.x + (area.w - cell * it.cols) / 2;
+      const oy = area.y + (area.h - cell * it.rows) / 2;
+      let d = '';
+      const seg = (x1, y1, x2, y2) => { d += 'M' + n(x1) + ' ' + n(y1) + 'L' + n(x2) + ' ' + n(y2); };
+      for (let r = 0; r < it.rows; r++) {
+        for (let c = 0; c < it.cols; c++) {
+          const w = it.cells[r][c], x = ox + c * cell, y = oy + r * cell;
+          if (w & 1) seg(x, y, x + cell, y);
+          if (w & 8) seg(x, y, x, y + cell);
+          if (r === it.rows - 1 && (w & 4)) seg(x, y + cell, x + cell, y + cell);
+          if (c === it.cols - 1 && (w & 2)) seg(x + cell, y, x + cell, y + cell);
+        }
+      }
+      let out = S.el('path', { d, fill: 'none', stroke: theme.ink, 'stroke-width': Math.max(0.5, Math.min(1.2, cell * 0.06)), 'stroke-linecap': 'round' });
+      if (ctx.kunci) {
+        const pts = it.solution.map(p => n(ox + (p[0] + 0.5) * cell) + ',' + n(oy + (p[1] + 0.5) * cell)).join(' ');
+        out += S.el('polyline', { points: pts, fill: 'none', stroke: theme.answerColor, 'stroke-width': Math.max(0.8, cell * 0.14), 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'stroke-opacity': 0.8 });
+      }
+      const s = cell * 0.8;
+      out += WS.icons.use(it.from, ox + it.start[0] * cell + cell * 0.1, oy + it.start[1] * cell + cell * 0.1, s, ctx.iconVariant);
+      out += WS.icons.use(it.to, ox + it.end[0] * cell + cell * 0.1, oy + it.end[1] * cell + cell * 0.1, s, ctx.iconVariant);
+      return out;
+    }
+  };
+
+  function startY(shape, cy, amp) {
+    return shape === tangga ? cy + amp : cy;
+  }
+
+  const gunting = {
+    icons(page) {
+      return ['gunting'].concat(page.items[0].baris.map(b => b.icon));
+    },
+    render(page, area, theme, ctx) {
+      const baris = page.items[0].baris;
+      const rows = WS.fit.rows(area, baris.length, 3);
+      let out = '';
+      rows.forEach((r, i) => {
+        const b = baris[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.1);
+        const cy = r.y + r.h / 2;
+        const s = Math.min(r.h * 0.62, 26);
+        const sc = Math.min(r.h * 0.42, 14);
+        const amp = Math.min(r.h * 0.26, 11) * (b.amp || 1);
+        const shape = SHAPES[b.shape] || lurus;
+        const x1 = r.x + pad + sc + 1.5;
+        const x2 = r.x + r.w - pad - s - 3;
+        const y0 = startY(shape, cy, amp);
+        out += WS.icons.use('gunting', r.x + pad, Math.max(r.y, Math.min(r.y + r.h - sc, y0 - sc / 2)), sc, ctx.iconVariant);
+        out += S.el('path', { d: shape(x1, x2, cy, amp), fill: 'none', stroke: '#1f2937', 'stroke-width': 0.8, 'stroke-dasharray': '3 2', 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' });
+        out += WS.icons.use(b.icon, r.x + r.w - pad - s, cy - s / 2, s, ctx.iconVariant);
+      });
+      return out;
+    }
+  };
+
+  const STATUS = {
+    baru: 'Menunggu giliran…',
+    gambar: 'AI sedang menggambar…',
+    cek: 'Memeriksa kualitas…',
+    gagal: 'Gagal dibuat — tekan Buat ulang',
+    batal: 'Dibatalkan'
+  };
+
+  const gambarAi = {
+    icons() {
+      return [];
+    },
+    render(page, area, theme, ctx) {
+      const it = page.items[0];
+      let box = area;
+      let tail = '';
+      if (ctx.kunci) {
+        box = { x: area.x, y: area.y, w: area.w, h: area.h * 0.62 };
+        const lines = (it.kunci && it.kunci.length ? it.kunci : ['-']).slice(0, 20);
+        const top = box.y + box.h + 6;
+        const cols = lines.length > 10 ? 2 : 1;
+        const per = Math.ceil(lines.length / cols);
+        const lh = Math.min(6.5, (area.y + area.h - top) / per);
+        const fs = Math.min(4.2, lh * 0.75);
+        lines.forEach((ln, i) => {
+          const c = Math.floor(i / per), r = i % per;
+          tail += S.text(area.x + c * area.w / cols, top + lh * (r + 0.8), ln, { 'font-family': theme.font.body, 'font-size': fs, fill: theme.answerColor });
+        });
+      }
+      if (it.image) {
+        return S.el('image', { x: box.x, y: box.y, width: box.w, height: box.h, 'xlink:href': it.image, preserveAspectRatio: 'xMidYMid meet' }) + tail;
+      }
+      return S.el('rect', { x: box.x, y: box.y, width: box.w, height: box.h, rx: 4, fill: '#f1f5f9', stroke: '#cbd5e1', 'stroke-width': 0.5, 'stroke-dasharray': '2 2' }) +
+        S.text(box.x + box.w / 2, box.y + box.h / 2, STATUS[it.status] || STATUS.baru, { 'font-family': theme.font.body, 'font-size': 5, fill: '#64748b', 'text-anchor': 'middle' }) + tail;
+    }
+  };
+
+  WS.shapes = SHAPES;
+  WS.layouts = { 'baris-penuh': barisPenuh, 'garis-tulis': garisTulis, 'kanvas-penuh': kanvasPenuh, gunting, 'gambar-ai': gambarAi };
+})(globalThis.WS);
+
+/* render/text.js */
+(function (WS) {
+  'use strict';
+
+  const K = 0.52;
+
+  function width(str, fs, k) {
+    return String(str).length * fs * (k || K);
+  }
+
+  function wrap(str, maxW, fs, k) {
+    const max = Math.max(1, Math.floor(maxW / (fs * (k || K)) + 1e-9));
+    const words = String(str).replace(/\s+/g, ' ').trim().split(' ');
+    const lines = [];
+    let cur = '';
+    words.forEach(word => {
+      let w = word;
+      while (w.length > max) {
+        if (cur) {
+          lines.push(cur);
+          cur = '';
+        }
+        lines.push(w.slice(0, max));
+        w = w.slice(max);
+      }
+      if (!cur) cur = w;
+      else if ((cur + ' ' + w).length <= max) cur += ' ' + w;
+      else {
+        lines.push(cur);
+        cur = w;
+      }
+    });
+    if (cur) lines.push(cur);
+    return lines.length ? lines : [''];
+  }
+
+  WS.text = { K, wrap, width };
+})(globalThis.WS);
+
+/* render/layout-soal.js */
+(function (WS) {
+  'use strict';
+
+  const S = WS.svg;
+  const LETTERS = ['a', 'b', 'c', 'd'];
+  const STATUS = {
+    baru: 'Menunggu giliran…',
+    tulis: 'AI sedang menulis soal…',
+    cek: 'Memeriksa soal…',
+    gagal: 'Gagal dibuat — tekan Buat ulang',
+    batal: 'Dibatalkan'
+  };
+
+  function plan(data, w, fs, imgH) {
+    const lh = fs * 1.45;
+    const pre = fs * 1.8;
+    const blocks = [];
+    if (imgH) blocks.push({ kind: 'img', h: imgH });
+    if (data.bacaan) {
+      const lines = [];
+      data.bacaan.split(/\n+/).map(p => p.trim()).filter(Boolean).forEach(p => WS.text.wrap(p, w - fs * 2, fs).forEach(l => lines.push(l)));
+      blocks.push({ kind: 'bacaan', lines, h: lines.length * lh + fs * 1.6 });
+    }
+    data.soal.forEach((s, i) => {
+      const q = WS.text.wrap(s.tanya, w - pre, fs);
+      let extra;
+      let opts = null;
+      if (s.tipe === 'pg') {
+        const colW = (w - pre) / 2 - fs;
+        opts = s.pilihan.map((p, k) => WS.text.wrap(LETTERS[k] + '. ' + p, colW, fs));
+        extra = (Math.max(opts[0].length, opts[1].length) + Math.max(opts[2].length, opts[3].length)) * lh;
+      } else if (s.tipe === 'isian') extra = lh * 1.4;
+      else if (s.tipe === 'bs') extra = lh;
+      else extra = lh * 2.8;
+      blocks.push({ kind: 'soal', no: i + 1, s, q, opts, h: q.length * lh + extra });
+    });
+    const gap = fs * 0.9;
+    const total = blocks.reduce((a, b) => a + b.h, 0) + gap * Math.max(0, blocks.length - 1);
+    return { blocks, total, lh, pre, gap };
+  }
+
+  function fit(data, area, wantImg) {
+    for (const img of wantImg ? [true, false] : [false]) {
+      const imgH = img ? Math.min(area.h * 0.26, area.w * 0.5) : 0;
+      for (let fs = 5.2; fs >= 3.0 - 1e-9; fs -= 0.2) {
+        const p = plan(data, area.w, fs, imgH);
+        if (p.total <= area.h) return Object.assign(p, { fs, imgH });
+      }
+    }
+    let soal = data.soal.slice();
+    while (soal.length > 1) {
+      soal = soal.slice(0, -1);
+      const p = plan(Object.assign({}, data, { soal }), area.w, 3.0, 0);
+      if (p.total <= area.h) return Object.assign(p, { fs: 3.0, imgH: 0 });
+    }
+    return Object.assign(plan(Object.assign({}, data, { soal, bacaan: '' }), area.w, 3.0, 0), { fs: 3.0, imgH: 0 });
+  }
+
+  function textAt(x, y, str, fs, theme, extra) {
+    return S.text(x, y, str, Object.assign({ 'font-family': theme.font.body, 'font-size': fs, fill: theme.ink }, extra || {}));
+  }
+
+  function line(x1, x2, y, theme) {
+    return S.el('line', { x1, y1: y, x2, y2: y, stroke: theme.ink, 'stroke-width': 0.3, 'stroke-dasharray': '1 1' });
+  }
+
+  function renderSoal(it, area, theme) {
+    const p = fit(it.data, area, !!(it.image || it.status === 'gambar'));
+    const gap = p.gap + (p.blocks.length > 1 ? (area.h - p.total) / (p.blocks.length - 1) : 0);
+    const lh = p.lh, fs = p.fs, pre = p.pre;
+    let y = area.y;
+    let out = '';
+    p.blocks.forEach(b => {
+      if (b.kind === 'img') {
+        out += it.image
+          ? S.el('image', { x: area.x, y, width: area.w, height: b.h, 'xlink:href': it.image, preserveAspectRatio: 'xMidYMid meet' })
+          : S.el('rect', { x: area.x, y, width: area.w, height: b.h, rx: 3, fill: '#f1f5f9' }) + textAt(area.x + area.w / 2, y + b.h / 2, 'AI sedang menggambar ilustrasi…', 4, theme, { fill: '#64748b', 'text-anchor': 'middle' });
+      } else if (b.kind === 'bacaan') {
+        out += S.el('rect', { x: area.x, y, width: area.w, height: b.h, rx: 2.5, fill: 'none', stroke: theme.ink, 'stroke-width': 0.3, 'stroke-opacity': 0.5 });
+        b.lines.forEach((ln, i) => { out += textAt(area.x + fs, y + fs * 0.8 + lh * (i + 0.8), ln, fs, theme); });
+      } else {
+        const s = b.s;
+        out += textAt(area.x, y + lh * 0.8, b.no + '.', fs, theme, { 'font-weight': 'bold' });
+        b.q.forEach((ln, i) => { out += textAt(area.x + pre, y + lh * (i + 0.8), ln, fs, theme); });
+        let yy = y + b.q.length * lh;
+        if (s.tipe === 'pg') {
+          const colW = (area.w - pre) / 2;
+          [[0, 1], [2, 3]].forEach(pair => {
+            pair.forEach((k, c) => b.opts[k].forEach((ln, i) => { out += textAt(area.x + pre + c * colW, yy + lh * (i + 0.8), ln, fs, theme); }));
+            yy += Math.max(b.opts[pair[0]].length, b.opts[pair[1]].length) * lh;
+          });
+        } else if (s.tipe === 'isian') {
+          out += line(area.x + pre, area.x + area.w, yy + lh * 1.1, theme);
+        } else if (s.tipe === 'bs') {
+          out += textAt(area.x + pre, yy + lh * 0.8, '( Benar )   ( Salah )', fs, theme);
+        } else {
+          out += line(area.x + pre, area.x + area.w, yy + lh * 1.2, theme) + line(area.x + pre, area.x + area.w, yy + lh * 2.5, theme);
+        }
+      }
+      y += b.h + gap;
+    });
+    return out;
+  }
+
+  function renderKunci(it, area, theme) {
+    const lines = it.kunci && it.kunci.length ? it.kunci : ['-'];
+    const cols = lines.length > 12 ? 2 : 1;
+    const per = Math.ceil(lines.length / cols);
+    const lh = Math.min(9, area.h / per);
+    const fs = Math.min(4.6, lh * 0.6);
+    const colW = area.w / cols;
+    let out = '';
+    lines.forEach((ln, i) => {
+      const c = Math.floor(i / per), r = i % per;
+      out += textAt(area.x + c * colW, area.y + lh * (r + 0.7), WS.text.wrap(ln, colW - 2, fs)[0], fs, theme, { fill: theme.answerColor });
+    });
+    return out;
+  }
+
+  WS.layouts['soal-ai'] = {
+    icons() {
+      return [];
+    },
+    render(page, area, theme, ctx) {
+      const it = page.items[0];
+      if (!it.data) {
+        return S.el('rect', { x: area.x, y: area.y, width: area.w, height: area.h, rx: 4, fill: '#f1f5f9', stroke: '#cbd5e1', 'stroke-width': 0.5, 'stroke-dasharray': '2 2' }) +
+          textAt(area.x + area.w / 2, area.y + area.h / 2, STATUS[it.status] || STATUS.baru, 5, theme, { fill: '#64748b', 'text-anchor': 'middle' });
+      }
+      return ctx.kunci ? renderKunci(it, area, theme) : renderSoal(it, area, theme);
+    }
+  };
+
+  WS.soalLayout = { plan, fit };
+})(globalThis.WS);
+
+/* render/page.js */
+(function (WS) {
+  'use strict';
+
+  const LEVEL = { mudah: 'Mudah', sedang: 'Sedang', sulit: 'Sulit' };
+
+  function ctxFor(params, recipe, extra) {
+    const size = WS.paper.size(params.kertas, params.orientasi);
+    const grup = WS.registry.group(recipe.grup);
+    const jenjang = WS.registry.JENJANG.find(j => j.id === recipe.jenjang);
+    return Object.assign({
+      w: size.w, h: size.h, judul: '', instruksi: '', profil: {}, pageNo: 1, pageCount: 1, kunci: false,
+      meta: { grup: grup ? grup.label : '', jenjang: jenjang ? jenjang.label : '', level: LEVEL[params.kesulitan] || '' }
+    }, extra || {});
+  }
+
+  function theme(params) {
+    return WS.themes[params.gaya] || WS.themes.ceria;
+  }
+
+  function contentArea(params, recipe) {
+    return theme(params).chrome(ctxFor(params, recipe, { judul: 'X', instruksi: 'X' })).area;
+  }
+
+  function render(doc, i, opts) {
+    const o = opts || {};
+    const recipe = WS.registry.get(doc.resepId);
+    const th = theme(doc.params);
+    const layout = WS.layouts[recipe.layout];
+    const ctx = ctxFor(doc.params, recipe, {
+      judul: doc.judul, instruksi: doc.instruksi, profil: o.profil || {},
+      pageNo: i + 1, pageCount: doc.pages.length, kunci: !!o.kunci, iconVariant: th.iconVariant
+    });
+    const chrome = th.chrome(ctx);
+    const body = layout.render(doc.pages[i], chrome.area, th, ctx);
+    return '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="' + ctx.w + 'mm" height="' + ctx.h + 'mm" viewBox="0 0 ' + ctx.w + ' ' + ctx.h + '">' +
+      chrome.svg + body + '</svg>';
+  }
+
+  function renderAll(doc, opts) {
+    const o = opts || {};
+    const recipe = WS.registry.get(doc.resepId);
+    const out = doc.pages.map((_, i) => render(doc, i, { profil: o.profil }));
+    if (doc.params.kunci && recipe.hasAnswers) {
+      doc.pages.forEach((_, i) => out.push(render(doc, i, { profil: o.profil, kunci: true })));
+    }
+    return out;
+  }
+
+  function iconNames(doc) {
+    const recipe = WS.registry.get(doc.resepId);
+    const layout = WS.layouts[recipe.layout];
+    const s = new Set(theme(doc.params).icons);
+    doc.pages.forEach(pg => layout.icons(pg).forEach(nm => s.add(nm)));
+    return Array.from(s);
+  }
+
+  WS.page = { LEVEL, ctxFor, theme, contentArea, render, renderAll, iconNames };
+})(globalThis.WS);
+
+/* recipes/hitung-tulis.js */
+(function (WS) {
+  'use strict';
+
+  const RANGE = { mudah: [1, 5], sedang: [1, 10], sulit: [5, 15] };
+  function pool(tema) {
+    if (tema !== 'acak') {
+      const p = WS.icons.byTema(tema);
+      if (p.length) return p;
+    }
+    return Object.keys(WS.icons.TEMA).reduce((acc, k) => acc.concat(WS.icons.byTema(k)), []);
+  }
+
+  WS.registry.define({
+    id: 'hitung-tulis',
+    grup: 'angka',
+    jenjang: 'paud',
+    nama: 'Hitung & Tulis',
+    judul: 'Ayo Berhitung!',
+    instruksi: 'Hitung bendanya, lalu tulis angkanya di kotak.',
+    layout: 'baris-penuh',
+    hasAnswers: true,
+    defaults: { tema: 'acak', soal: 6 },
+    opsi: [
+      { key: 'tema', label: 'Tema gambar', choices: () => WS.icons.temaChoices() },
+      { key: 'soal', label: 'Jumlah soal per halaman', choices: [4, 5, 6, 8].map(v => ({ v, label: String(v) })) }
+    ],
+    generatePage(params, rnd) {
+      const range = RANGE[params.kesulitan] || RANGE.mudah;
+      const nums = [];
+      for (let v = range[0]; v <= range[1]; v++) nums.push(v);
+      const nextNum = WS.rng.bag(rnd, nums);
+      const nextIcon = WS.rng.bag(rnd, pool(params.tema));
+      const items = [];
+      for (let i = 0; i < params.soal; i++) {
+        const k = nextNum();
+        items.push({ icons: Array(k).fill(nextIcon()), answer: String(k) });
+      }
+      return { items };
+    }
+  });
+})(globalThis.WS);
+
+/* recipes/tracing-garis.js */
+(function (WS) {
+  'use strict';
+
+  const BENTUK = [
+    { v: 'campur', label: 'Campur' },
+    { v: 'lurus', label: 'Lurus' },
+    { v: 'zigzag', label: 'Zigzag' },
+    { v: 'gelombang', label: 'Gelombang' },
+    { v: 'lengkung', label: 'Lengkung' },
+    { v: 'tangga', label: 'Tangga' }
+  ];
+  const AMP = { mudah: 0.6, sedang: 1, sulit: 1.3 };
+
+  WS.registry.define({
+    id: 'tracing-garis',
+    grup: 'motorik',
+    jenjang: 'paud',
+    nama: 'Menebalkan Garis',
+    judul: 'Ayo Menebalkan Garis!',
+    instruksi: 'Tebalkan garis putus-putus dari kiri ke kanan.',
+    layout: 'garis-tulis',
+    hasAnswers: false,
+    defaults: { bentuk: 'campur', soal: 5 },
+    opsi: [
+      { key: 'bentuk', label: 'Bentuk garis', choices: BENTUK },
+      { key: 'soal', label: 'Jumlah garis per halaman', choices: [3, 4, 5, 6].map(v => ({ v, label: String(v) })) }
+    ],
+    generatePage(params, rnd) {
+      const nextPair = WS.rng.bag(rnd, WS.icons.PAIRS);
+      const nextShape = WS.rng.bag(rnd, BENTUK.slice(1).map(b => b.v));
+      const amp = AMP[params.kesulitan] || 1;
+      const items = [];
+      for (let i = 0; i < params.soal; i++) {
+        const p = nextPair();
+        items.push({ from: p.from, to: p.to, shape: params.bentuk === 'campur' ? nextShape() : params.bentuk, amp });
+      }
+      return { items };
+    }
+  });
+})(globalThis.WS);
+
+/* recipes/labirin.js */
+(function (WS) {
+  'use strict';
+
+  const N = 1, E = 2, S = 4, W = 8;
+  const DIRS = [[0, -1, N, S], [1, 0, E, W], [0, 1, S, N], [-1, 0, W, E]];
+  const COLS = { mudah: 6, sedang: 9, sulit: 13 };
+
+  function build(cols, rows, rnd) {
+    const cells = Array.from({ length: rows }, () => Array(cols).fill(N | E | S | W));
+    const seen = Array.from({ length: rows }, () => Array(cols).fill(false));
+    const stack = [[0, 0]];
+    seen[0][0] = true;
+    while (stack.length) {
+      const [c, r] = stack[stack.length - 1];
+      const options = DIRS.filter(([dc, dr]) => {
+        const nc = c + dc, nr = r + dr;
+        return nc >= 0 && nr >= 0 && nc < cols && nr < rows && !seen[nr][nc];
+      });
+      if (!options.length) {
+        stack.pop();
+        continue;
+      }
+      const [dc, dr, b, ob] = options[Math.floor(rnd() * options.length)];
+      const nc = c + dc, nr = r + dr;
+      cells[r][c] &= ~b;
+      cells[nr][nc] &= ~ob;
+      seen[nr][nc] = true;
+      stack.push([nc, nr]);
+    }
+    return cells;
+  }
+
+  function solve(cells, cols, rows) {
+    const key = (c, r) => r * cols + c;
+    const prev = new Map([[0, null]]);
+    const q = [[0, 0]];
+    while (q.length) {
+      const [c, r] = q.shift();
+      if (c === cols - 1 && r === rows - 1) break;
+      for (const [dc, dr, b] of DIRS) {
+        if (cells[r][c] & b) continue;
+        const nc = c + dc, nr = r + dr;
+        if (nc < 0 || nr < 0 || nc >= cols || nr >= rows || prev.has(key(nc, nr))) continue;
+        prev.set(key(nc, nr), [c, r]);
+        q.push([nc, nr]);
+      }
+    }
+    const path = [];
+    let cur = [cols - 1, rows - 1];
+    while (cur) {
+      path.unshift(cur);
+      cur = prev.get(key(cur[0], cur[1]));
+    }
+    return path;
+  }
+
+  WS.maze = { N, E, S, W, DIRS, build, solve };
+
+  WS.registry.define({
+    id: 'labirin',
+    grup: 'puzzle-paud',
+    jenjang: 'paud',
+    nama: 'Labirin',
+    judul: 'Labirin Seru',
+    instruksi: 'Bantu temukan jalan dari awal sampai ke tujuan!',
+    layout: 'kanvas-penuh',
+    hasAnswers: true,
+    defaults: {},
+    opsi: [],
+    generatePage(params, rnd, env) {
+      const cols = COLS[params.kesulitan] || COLS.mudah;
+      const rows = Math.max(4, Math.round(cols * env.aspect));
+      const cells = build(cols, rows, rnd);
+      const pair = WS.rng.pick(rnd, WS.icons.PAIRS);
+      return {
+        items: [{ type: 'maze', cols, rows, cells, start: [0, 0], end: [cols - 1, rows - 1], solution: solve(cells, cols, rows), from: pair.from, to: pair.to }]
+      };
+    }
+  });
+})(globalThis.WS);
+
+/* recipes/gunting.js */
+(function (WS) {
+  'use strict';
+
+  // Latihan Menggunting digambar kode (bukan AI): garis potong harus presisi & bisa dipotong anak.
+  const TEMA = ['hewan', 'buah', 'kendaraan', 'alam'];
+  const LEVEL = {
+    mudah: { bentuk: ['lurus', 'lurus', 'lengkung', 'zigzag'], amp: 0.7 },
+    sedang: { bentuk: ['lurus', 'zigzag', 'gelombang', 'lengkung', 'tangga'], amp: 1 },
+    sulit: { bentuk: ['zigzag', 'gelombang', 'tangga', 'lengkung', 'zigzag', 'gelombang'], amp: 1.3 }
+  };
+
+  function pool(tema, rnd) {
+    const t = String(tema || '');
+    if (t.startsWith('ai:')) {
+      const th = WS.aiThemes.get(t.slice(3));
+      const names = WS.aiThemes.names(t.slice(3));
+      if (th && names.length) return { names, label: th.topik };
+    }
+    const key = TEMA.indexOf(t) >= 0 ? t : WS.rng.pick(rnd, TEMA);
+    return { names: WS.icons.byTema(key), label: WS.icons.TEMA[key] };
+  }
+
+  WS.registry.define({
+    id: 'ai-gunting',
+    grup: 'motorik',
+    jenjang: 'paud',
+    nama: 'Latihan Menggunting',
+    judul: 'Ayo Menggunting!',
+    instruksi: 'Gunting mengikuti garis putus-putus sampai ke gambar.',
+    layout: 'gunting',
+    hasAnswers: false,
+    ai: true,
+    lokal: true,
+    defaults: { tema: 'acak' },
+    opsi: [],
+    generatePage(params, rnd) {
+      const lv = LEVEL[params.kesulitan] || LEVEL.mudah;
+      const p = pool(params.tema, rnd);
+      const next = WS.rng.bag(rnd, p.names);
+      const bentuk = [lv.bentuk[0]].concat(WS.rng.shuffle(rnd, lv.bentuk.slice(1)));
+      return { items: [{ mode: 'lokal', status: 'ok', tema: p.label, baris: bentuk.map(shape => ({ shape, amp: lv.amp, icon: next() })), image: null, kunci: [], masalah: [] }] };
+    }
+  });
+
+  WS.gunting = { LEVEL, TEMA };
+})(globalThis.WS);
+
+/* ai/prompts.js */
+(function (WS) {
+  'use strict';
+
+  const BAD = /[\r\n\t"'`<>{}\\]/g;
+
+  function cleanTopic(s) {
+    return String(s == null ? '' : s).replace(BAD, ' ').replace(/\s+/g, ' ').trim().slice(0, 40);
+  }
+
+  function cleanEn(s) {
+    return String(s == null ? '' : s).replace(BAD, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+  }
+
+  function slug(s) {
+    return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 24) || 'x';
+  }
+
+  function theme(topik, n) {
+    return [
+      'Kamu membantu membuat worksheet anak PAUD dan SD di Indonesia.',
+      'Topik: "' + cleanTopic(topik) + '".',
+      'Pilih ' + n + ' benda, hewan, atau tokoh BERBEDA yang sesuai topik, mudah dikenali anak, dan bisa digambar sebagai satu objek tunggal.',
+      'Jangan memakai merek, tokoh berhak cipta, kekerasan, atau benda berbahaya.',
+      'Balas HANYA JSON tanpa penjelasan dengan format:',
+      '{"items":[{"nama":"nama Indonesia singkat 1-2 kata","en":"short English description for an illustrator"}]}'
+    ].join('\n');
+  }
+
+  function sticker(item, gaya) {
+    const what = cleanEn(item.en || item.nama);
+    if (gaya === 'garis') {
+      return 'Black and white line art of a single ' + what + ' for a children\'s coloring book. Thick clean black outlines only, no shading, no gray, no color fill, centered, the whole object visible, pure white background, no text, no letters.';
+    }
+    return 'A single cute ' + what + ', children\'s picture book sticker illustration, thick dark outline, simple flat bright colors, centered, the whole object visible, isolated on a pure white background, no text, no letters, no shadow, no other objects.';
+  }
+
+  function parseTheme(text, n) {
+    const raw = String(text).replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch (e) {
+      throw new Error('JSON tema tidak valid');
+    }
+    const list = Array.isArray(data) ? data : (data && Array.isArray(data.items) ? data.items : []);
+    const seen = new Set();
+    const slugs = new Set();
+    const out = [];
+    for (const it of list) {
+      if (!it || typeof it.nama !== 'string' || typeof it.en !== 'string') continue;
+      const nama = it.nama.replace(BAD, ' ').replace(/\s+/g, ' ').trim();
+      const en = cleanEn(it.en);
+      if (nama.length < 2 || nama.length > 24 || en.length < 1) continue;
+      const key = nama.toLowerCase();
+      if (seen.has(key)) continue;
+      let s = slug(nama);
+      for (let k = 2; slugs.has(s); k++) s = slug(nama) + '-' + k;
+      seen.add(key);
+      slugs.add(s);
+      out.push({ slug: s, nama, en });
+      if (out.length >= n) break;
+    }
+    if (out.length < 4) throw new Error('Item tema kurang dari 4');
+    return out;
+  }
+
+  WS.aiPrompt = { cleanTopic, slug, theme, sticker, parseTheme };
+})(globalThis.WS);
+
+/* ai/alpha.js */
+(function (WS) {
+  'use strict';
+
+  function floodMask(data, w, h, thr) {
+    const seen = new Uint8Array(w * h);
+    const stack = [];
+    const near = p => data[p * 4] >= thr && data[p * 4 + 1] >= thr && data[p * 4 + 2] >= thr;
+    const push = (x, y) => {
+      const p = y * w + x;
+      if (!seen[p] && near(p)) {
+        seen[p] = 1;
+        stack.push(p);
+      }
+    };
+    for (let x = 0; x < w; x++) { push(x, 0); push(x, h - 1); }
+    for (let y = 0; y < h; y++) { push(0, y); push(w - 1, y); }
+    let cleared = 0;
+    while (stack.length) {
+      const p = stack.pop();
+      data[p * 4 + 3] = 0;
+      cleared++;
+      const x = p % w, y = (p - x) / w;
+      if (x > 0) push(x - 1, y);
+      if (x < w - 1) push(x + 1, y);
+      if (y > 0) push(x, y - 1);
+      if (y < h - 1) push(x, y + 1);
+    }
+    return cleared;
+  }
+
+  WS.alpha = { floodMask };
+})(globalThis.WS);
+
+/* ai/catalog.js */
+(function (WS) {
+  'use strict';
+
+  const R = WS.rng;
+  const LEVEL = { mudah: [1, 5], sedang: [1, 10], sulit: [5, 15] };
+  const TEMA_EN = { buah: 'fruits', hewan: 'cute animals', kendaraan: 'vehicles', alam: 'nature such as flowers, trees, sun and stars' };
+  const ACAK = ['dinosaurs', 'ocean animals', 'farm animals', 'outer space', 'insects', 'vegetables', 'toys', 'jungle animals', 'transportation', 'weather', 'birds', 'cakes and sweets', 'musical instruments', 'Indonesian traditional food', 'pets', 'fruits', 'garden flowers', 'school supplies', 'camping', 'kitchen tools'];
+  const HURUF = [
+    ['A', 'Apel', 'red apple'], ['B', 'Bola', 'ball'], ['C', 'Cabai', 'red chili'], ['D', 'Domba', 'sheep'],
+    ['E', 'Es krim', 'ice cream cone'], ['F', 'Flamingo', 'flamingo'], ['G', 'Gajah', 'elephant'], ['H', 'Harimau', 'tiger'],
+    ['I', 'Ikan', 'fish'], ['J', 'Jeruk', 'orange fruit'], ['K', 'Kucing', 'cat'], ['L', 'Lebah', 'bee'],
+    ['M', 'Mobil', 'car'], ['N', 'Nanas', 'pineapple'], ['O', 'Obeng', 'screwdriver'], ['P', 'Pisang', 'banana'],
+    ['R', 'Rumah', 'house'], ['S', 'Sepeda', 'bicycle'], ['T', 'Tikus', 'mouse'], ['U', 'Ular', 'snake'],
+    ['W', 'Wortel', 'carrot'], ['Y', 'Yoyo', 'yo-yo'], ['Z', 'Zebra', 'zebra']
+  ];
+  const RULES = 'Printable worksheet for Indonesian kindergarten children aged 4 to 6. Draw ONLY the activity area and let it fill the whole image. Do NOT draw any title, header, name field, date field, page border, logo or watermark. Use text only for single letters or numbers that the activity needs; every word must be correct Indonesian spelling. Leave clear white space for children to write or draw.';
+
+  function style(gaya, lineArt) {
+    if (lineArt || gaya === 'lkpd') return 'Black and white line art only, thick clean black outlines, no gray, no shading, no color fill, pure white background, easy to photocopy.';
+    if (gaya === 'minimalis') return 'Soft pastel colors, minimal clean flat illustration, thin dark outlines, lots of white space, calm Montessori style, pure white background.';
+    return 'Bright cheerful colors, cute flat cartoon illustration, thick dark outlines, playful, pure white background.';
+  }
+
+  function temaText(tema, rnd) {
+    if (!tema || tema === 'acak') return R.pick(rnd, ACAK);
+    if (TEMA_EN[tema]) return TEMA_EN[tema];
+    if (String(tema).startsWith('ai:')) {
+      const th = WS.aiThemes.get(String(tema).slice(3));
+      return th ? th.topik : R.pick(rnd, ACAK);
+    }
+    return WS.aiPrompt.cleanTopic(tema) || R.pick(rnd, ACAK);
+  }
+
+  function counts(rnd, level, n) {
+    const r = LEVEL[level] || LEVEL.mudah;
+    const nums = [];
+    for (let v = r[0]; v <= r[1]; v++) nums.push(v);
+    const next = R.bag(rnd, nums);
+    return Array.from({ length: n }, () => next());
+  }
+
+  const JENIS = [
+    {
+      id: 'ai-jejak-garis', grup: 'motorik', nama: 'Jejak Garis', judul: 'Ayo Menebalkan Garis!', instruksi: 'Tebalkan garis putus-putus dari gambar kiri ke kanan.',
+      plan: o => ({ activity: 'Pre-writing tracing activity: 5 horizontal rows of thick dotted guide lines (straight, zigzag, wavy, curved and loops); each line leads from a cute ' + o.tema + ' picture on the left to another ' + o.tema + ' picture on the right.' })
+    },
+    {
+      id: 'ai-huruf-awal', grup: 'huruf', nama: 'Huruf Awal', judul: 'Huruf Awal Gambar', instruksi: 'Lingkari huruf awal dari nama setiap gambar.', kunci: true,
+      plan: (o, rnd) => {
+        const picks = R.shuffle(rnd, HURUF).slice(0, 6);
+        const lines = picks.map((p, i) => {
+          const others = R.shuffle(rnd, HURUF.filter(h => h[0] !== p[0])).slice(0, 2).map(h => h[0]);
+          return 'Box ' + (i + 1) + ': a picture of ' + p[2] + ' (Indonesian word "' + p[1] + '"), letters under it: ' + R.shuffle(rnd, [p[0]].concat(others)).join(', ') + '.';
+        });
+        return {
+          activity: 'Beginning letter worksheet: 6 boxes in a 2 by 3 grid. Each box shows one picture and below it three capital letters inside circles so the child can circle the correct first letter.\n' + lines.join('\n'),
+          expect: picks.map((p, i) => (i + 1) + '. ' + p[0] + ' (' + p[1] + ')')
+        };
+      }
+    },
+    {
+      id: 'ai-tebal-huruf', grup: 'huruf', nama: 'Menebalkan Huruf', judul: 'Ayo Menebalkan Huruf!', instruksi: 'Tebalkan huruf mengikuti titik-titik, lalu tulis sendiri.',
+      plan: (o, rnd) => {
+        const p = R.pick(rnd, HURUF);
+        const l = p[0].toLowerCase();
+        return { activity: 'Letter tracing worksheet for the letter "' + p[0] + l + '": a big example of capital ' + p[0] + ' and small ' + l + ' with numbered stroke arrows, then 4 rows of dotted letters ' + p[0] + ' and ' + l + ' to trace on handwriting guide lines, and a cute picture of ' + p[2] + ' (Indonesian word "' + p[1] + '").' };
+      }
+    },
+    {
+      id: 'ai-hitung', grup: 'angka', nama: 'Hitung Gambar', judul: 'Ayo Berhitung!', instruksi: 'Hitung bendanya, lalu tulis angkanya di kotak.', kunci: true,
+      plan: (o, rnd) => {
+        const c = counts(rnd, o.level, 6);
+        return {
+          activity: 'Counting worksheet: 6 numbered rows (1 to 6). Each row shows a line of identical ' + o.tema + ' pictures, clearly separated and easy to count, with an empty square answer box at the right end of the row. Exact number of pictures per row: ' + c.map((n, i) => 'row ' + (i + 1) + ' = ' + n).join(', ') + '.',
+          expect: c.map((n, i) => (i + 1) + '. ' + n)
+        };
+      }
+    },
+    {
+      id: 'ai-warnai-sejumlah', grup: 'angka', nama: 'Warnai Sejumlah', judul: 'Warnai Sesuai Angka', instruksi: 'Warnai gambar sebanyak angka di setiap kotak.', kunci: true,
+      plan: (o, rnd) => {
+        const c = counts(rnd, o.level === 'sulit' ? 'sedang' : 'mudah', 4).map(n => Math.min(n, 8));
+        return {
+          activity: 'Color-the-amount worksheet: 4 large boxes in a 2 by 2 grid. Each box shows one big number at the top-left and exactly 8 small uncolored ' + o.tema + ' outline pictures. Numbers per box: ' + c.map((n, i) => 'box ' + (i + 1) + ' = ' + n).join(', ') + '.',
+          expect: c.map((n, i) => (i + 1) + '. warnai ' + n),
+          lineArt: true
+        };
+      }
+    },
+    {
+      id: 'ai-banyak-sedikit', grup: 'angka', nama: 'Lebih Banyak', judul: 'Mana yang Lebih Banyak?', instruksi: 'Lingkari kelompok yang jumlahnya lebih banyak.', kunci: true,
+      plan: (o, rnd) => {
+        const rows = Array.from({ length: 5 }, () => {
+          const a = R.int(rnd, 1, 8);
+          let b = R.int(rnd, 1, 8);
+          if (b === a) b = a === 8 ? 7 : a + 1;
+          return [a, b];
+        });
+        return {
+          activity: 'More-or-less worksheet: 5 numbered rows, each row split into a left box and a right box with groups of ' + o.tema + ' pictures to compare. Exact counts: ' + rows.map((r, i) => 'row ' + (i + 1) + ' left = ' + r[0] + ', right = ' + r[1]).join('; ') + '.',
+          expect: rows.map((r, i) => (i + 1) + '. ' + (r[0] > r[1] ? 'kiri' : 'kanan'))
+        };
+      }
+    },
+    {
+      id: 'ai-mewarnai', grup: 'mewarnai', nama: 'Halaman Mewarnai', judul: 'Ayo Mewarnai!', instruksi: 'Warnai gambar dengan warna kesukaanmu.',
+      plan: o => ({ activity: 'Coloring page: one big simple scene about ' + o.tema + ' with large closed shapes, thick outlines and only a few small details, suitable for young children.', lineArt: true })
+    },
+    {
+      id: 'ai-warna-angka', grup: 'mewarnai', nama: 'Mewarnai Sesuai Angka', judul: 'Mewarnai Sesuai Angka', instruksi: 'Warnai setiap bagian sesuai angka dan kunci warna.',
+      plan: o => ({ activity: 'Color by number page: a simple picture about ' + o.tema + ' divided into large regions, each region labeled with a number 1 to 4, and a legend at the bottom written in Indonesian: 1 = merah, 2 = biru, 3 = kuning, 4 = hijau.', lineArt: true })
+    },
+    {
+      id: 'ai-cocok-garis', grup: 'mencocokkan', nama: 'Pasangkan Gambar', judul: 'Pasangkan Gambar', instruksi: 'Tarik garis dari gambar kiri ke pasangannya di kanan.', kunci: true,
+      plan: o => ({ activity: 'Matching worksheet: two columns with 5 pictures each about ' + o.tema + '. Every picture on the left has the same picture on the right but in a shuffled order, with a dot next to each picture for drawing lines between them.' })
+    },
+    {
+      id: 'ai-bayangan', grup: 'mencocokkan', nama: 'Cocokkan Bayangan', judul: 'Cari Bayangannya', instruksi: 'Tarik garis dari gambar ke bayangan yang cocok.', kunci: true,
+      plan: o => ({ activity: 'Shadow matching worksheet: left column with 5 pictures about ' + o.tema + ', right column with their solid black silhouettes in a shuffled order, a dot next to each picture for drawing lines.' })
+    },
+    {
+      id: 'ai-pola', grup: 'logika', nama: 'Lanjutkan Pola', judul: 'Lanjutkan Polanya', instruksi: 'Gambar benda berikutnya di kotak kosong.', kunci: true,
+      plan: (o, rnd) => {
+        const rows = Array.from({ length: 5 }, () => R.pick(rnd, ['AB', 'AAB', 'ABB', 'ABC']));
+        return { activity: 'Pattern worksheet: 5 numbered rows. Each row shows a repeating pattern of ' + o.tema + ' pictures followed by one empty box at the end for the next item. Pattern per row: ' + rows.map((p, i) => 'row ' + (i + 1) + ' = ' + p.split('').join('-') + ' repeated twice').join(', ') + '.' };
+      }
+    },
+    {
+      id: 'ai-beda', grup: 'logika', nama: 'Cari Perbedaan', judul: 'Cari Perbedaannya', instruksi: 'Lingkari bagian yang berbeda pada gambar kedua.', kunci: true,
+      plan: o => {
+        const n = { mudah: 3, sedang: 5, sulit: 7 }[o.level] || 3;
+        return { activity: 'Spot the difference worksheet: two nearly identical pictures about ' + o.tema + ', one above the other, with exactly ' + n + ' clear differences in the bottom picture.', expect: [n + ' perbedaan'] };
+      }
+    },
+    {
+      id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', kunci: true,
+      plan: o => ({ activity: 'Size ordering worksheet: 4 numbered rows, each row shows 4 copies of the same ' + o.tema + ' picture in different sizes in a shuffled order, with a small empty box under each picture to write numbers 1 to 4 from smallest to biggest.' })
+    },
+    {
+      id: 'ai-labirin', grup: 'puzzle-paud', nama: 'Labirin', judul: 'Labirin Seru', instruksi: 'Bantu temukan jalan dari awal sampai tujuan.',
+      plan: o => {
+        const size = { sedang: 'medium maze', sulit: 'harder maze with more turns' }[o.level] || 'simple maze with wide corridors';
+        return { activity: 'Maze puzzle: a ' + size + ' with exactly one solvable path, a cute ' + o.tema + ' character at the start and its goal object at the end, start and finish marked with arrows (no words).' };
+      }
+    },
+    {
+      id: 'ai-titik', grup: 'puzzle-paud', nama: 'Hubungkan Titik', judul: 'Hubungkan Titik-titik', instruksi: 'Hubungkan titik sesuai urutan angka, lalu warnai.',
+      plan: o => {
+        const n = { sedang: 20, sulit: 30 }[o.level] || 10;
+        return { activity: 'Connect the dots worksheet: numbered dots from 1 to ' + n + ' forming the outline of one ' + o.tema + ' object, numbers large and clearly readable, plus a small finished preview picture in a corner.', lineArt: true };
+      }
+    }
+  ];
+
+  function compose(plan, gaya) {
+    return [plan.activity, style(gaya, plan.lineArt), RULES].join('\n');
+  }
+
+  JENIS.forEach(j => WS.registry.define({
+    id: j.id, grup: j.grup, jenjang: 'paud', nama: j.nama, judul: j.judul, instruksi: j.instruksi,
+    layout: 'gambar-ai', hasAnswers: !!j.kunci, ai: true, defaults: { tema: 'acak' }, opsi: [],
+    generatePage(params, rnd, env) {
+      const tema = temaText(params.tema, rnd);
+      const plan = j.plan({ tema, level: params.kesulitan, gaya: params.gaya }, rnd);
+      return { items: [{ prompt: compose(plan, params.gaya), expect: plan.expect || [], aspect: env.aspect < 1 ? '4:3' : '3:4', tema, image: null, kunci: [], masalah: [], status: 'baru' }] };
+    }
+  }));
+
+  function ids() {
+    return JENIS.map(j => j.id);
+  }
+
+  WS.aiCatalog = { LEVEL, ACAK, HURUF, RULES, style, temaText, ids };
+})(globalThis.WS);
+
+/* ai/checker.js */
+(function (WS) {
+  'use strict';
+
+  function clip(arr, max, len) {
+    return (Array.isArray(arr) ? arr : [])
+      .filter(s => typeof s === 'string')
+      .map(s => s.replace(/\s+/g, ' ').trim().slice(0, len))
+      .filter(Boolean)
+      .slice(0, max);
+  }
+
+  function promptFor(item) {
+    return [
+      'Kamu pemeriksa kualitas worksheet anak TK di Indonesia.',
+      'Instruksi yang dipakai untuk menggambar worksheet ini:',
+      item.prompt,
+      item.expect && item.expect.length ? 'Jawaban yang diharapkan: ' + item.expect.join('; ') : 'Tidak ada jawaban yang ditentukan sebelumnya.',
+      'Periksa gambar: (1) apakah aktivitas sesuai instruksi dan bisa dikerjakan anak, (2) apakah ada teks salah eja, huruf acak, atau tulisan yang tidak diminta, (3) tuliskan kunci jawaban setiap soal secara singkat dalam bahasa Indonesia.',
+      'Jika jawaban yang diharapkan diberikan tetapi gambar tidak sesuai, isi ok dengan false.',
+      'Balas HANYA JSON: {"ok":true,"masalah":["..."],"kunci":["1. ...","2. ..."]}'
+    ].join('\n');
+  }
+
+  function parse(text) {
+    const raw = String(text).replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    const data = JSON.parse(raw);
+    if (!data || typeof data.ok !== 'boolean') throw new Error('Format cek tidak valid');
+    return { ok: data.ok, masalah: clip(data.masalah, 5, 120), kunci: clip(data.kunci, 20, 80) };
+  }
+
+  WS.aiCheck = { prompt: promptFor, parse };
+})(globalThis.WS);
+
+/* ai/soal.js */
+(function (WS) {
+  'use strict';
+
+  const TIPE = ['pg', 'isian', 'bs', 'uraian'];
+  const CTRL = /[\u0000-\u0008\u000B\u000C\u000E-\u001F<>{}\\`]/g;
+  const FORMAT = 'Balas HANYA JSON dengan format: {"bacaan":"","soal":[{"tipe":"pg","tanya":"","pilihan":["","","",""],"jawaban":""}],"ilustrasi":""}. Aturan: ejaan benar; tanpa nomor di awal teks soal; tipe hanya pg, isian, bs, atau uraian; tipe pg wajib tepat 4 pilihan berbeda tanpa huruf a/b/c/d dan jawaban sama persis dengan salah satu pilihan; jawaban bs hanya "Benar" atau "Salah"; isi bacaan kosong bila tidak diminta; ilustrasi = deskripsi singkat bahasa Inggris untuk satu gambar pendukung tanpa tulisan.';
+
+  function clean(s, max) {
+    return String(s == null ? '' : s).replace(CTRL, ' ').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, max);
+  }
+
+  function stripNo(s) {
+    return s.replace(/^\s*(\d+[.)]|[a-dA-D][.)])\s*/, '');
+  }
+
+  function unfence(text) {
+    return String(text).replace(/^\s*```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+  }
+
+  function parse(text, spec) {
+    const d = JSON.parse(unfence(text));
+    const allowed = spec.tipe || TIPE;
+    const soal = [];
+    (Array.isArray(d.soal) ? d.soal : []).forEach(s => {
+      if (!s || !allowed.includes(s.tipe)) return;
+      const tanya = stripNo(clean(s.tanya, 300));
+      if (tanya.length < 3) return;
+      if (s.tipe === 'pg') {
+        const pilihan = (Array.isArray(s.pilihan) ? s.pilihan : []).map(p => stripNo(clean(p, 80)));
+        const jawaban = stripNo(clean(s.jawaban, 80));
+        if (pilihan.length !== 4 || pilihan.some(p => !p) || new Set(pilihan).size !== 4 || !pilihan.includes(jawaban)) return;
+        soal.push({ tipe: 'pg', tanya, pilihan, jawaban });
+      } else if (s.tipe === 'bs') {
+        const j = clean(s.jawaban, 10).toLowerCase();
+        if (j !== 'benar' && j !== 'salah') return;
+        soal.push({ tipe: 'bs', tanya, jawaban: j === 'benar' ? 'Benar' : 'Salah' });
+      } else {
+        const jawaban = clean(s.jawaban, 200);
+        if (!jawaban) return;
+        soal.push({ tipe: s.tipe, tanya, jawaban });
+      }
+    });
+    if (soal.length < spec.min) throw new Error('Soal valid kurang dari ' + spec.min);
+    const bacaan = spec.bacaan ? clean(d.bacaan, 1500) : '';
+    if (spec.bacaan && bacaan.length < 40) throw new Error('Bacaan terlalu pendek');
+    return { bacaan, soal: soal.slice(0, spec.max), ilustrasi: clean(d.ilustrasi, 160) };
+  }
+
+  function kunci(soal) {
+    return soal.map((s, i) => (i + 1) + '. ' + (s.tipe === 'pg' ? 'abcd'[s.pilihan.indexOf(s.jawaban)] + '. ' + s.jawaban : s.jawaban));
+  }
+
+  function cekPrompt(data, konteks) {
+    return [
+      'Kamu editor lembar kerja SD di Indonesia. Periksa lembar kerja berikut untuk ' + konteks + '.',
+      'Perbaiki salah eja, kalimat janggal, soal yang membingungkan, dan kunci jawaban yang salah. Pertahankan jumlah dan tipe soal.',
+      'Isi "ok" dengan true bila tidak ada yang perlu diperbaiki, false bila ada perbaikan.',
+      FORMAT.replace('{"bacaan"', '{"ok":true,"bacaan"'),
+      'DATA:',
+      JSON.stringify(data)
+    ].join('\n');
+  }
+
+  function parseCek(text, spec) {
+    const raw = unfence(text);
+    return { ok: JSON.parse(raw).ok === true, data: parse(raw, spec) };
+  }
+
+  function ilustrasiPrompt(desc, gaya) {
+    return 'A single illustration for a children\'s school worksheet: ' + clean(desc, 160) + '. ' + WS.aiCatalog.style(gaya) + ' No text, no letters, no numbers.';
+  }
+
+  WS.aiSoal = { FORMAT, parse, kunci, cekPrompt, parseCek, ilustrasiPrompt };
+})(globalThis.WS);
+
+/* ai/catalog-sd.js */
+(function (WS) {
+  'use strict';
+
+  const R = WS.rng;
+  const KELAS = {
+    sd13: { mudah: 'kelas 1 SD', sedang: 'kelas 2 SD', sulit: 'kelas 3 SD' },
+    sd46: { mudah: 'kelas 4 SD', sedang: 'kelas 5 SD', sulit: 'kelas 6 SD' },
+    lintas: { mudah: 'kelas 1-2 SD', sedang: 'kelas 3-4 SD', sulit: 'kelas 5-6 SD' }
+  };
+  const TEMA_ID = { buah: 'buah-buahan', hewan: 'hewan', kendaraan: 'kendaraan', alam: 'alam sekitar' };
+  const TOPIK = {
+    umum: ['keluarga', 'sekolahku', 'binatang peliharaan', 'kebun sayur', 'pasar tradisional', 'hari Minggu', 'menjaga kebersihan', 'musim hujan', 'liburan ke desa', 'makanan sehat'],
+    ipas: ['bagian-bagian tumbuhan', 'organ tubuh manusia', 'wujud benda', 'sumber energi', 'rantai makanan', 'cuaca dan iklim', 'tata surya', 'gaya dan gerak', 'daur air', 'ekosistem'],
+    pancasila: ['sila-sila Pancasila', 'hak dan kewajiban', 'keberagaman budaya Indonesia', 'gotong royong', 'aturan di rumah dan sekolah', 'simbol-simbol negara'],
+    mtk: ['pecahan', 'KPK dan FPB', 'luas dan keliling bangun datar', 'volume kubus dan balok', 'persen', 'kecepatan dan debit'],
+    english: ['my family', 'animals', 'food and drinks', 'my school', 'daily activities', 'colors and shapes']
+  };
+
+  const JENIS = [
+    { id: 'ai-bacaan-pendek', grup: 'bindo-dasar', jenjang: 'sd13', nama: 'Bacaan Pendek', judul: 'Ayo Membaca!', instruksi: 'Bacalah teks berikut, lalu jawab pertanyaannya.', topik: 'umum',
+      spec: { min: 4, max: 6, bacaan: true, tipe: ['pg', 'isian'] }, tugas: 'sebuah bacaan pendek 1 paragraf (5-7 kalimat sederhana) lalu 6 soal pemahaman: 4 soal pg dan 2 soal isian' },
+    { id: 'ai-lengkapi-kata', grup: 'bindo-dasar', jenjang: 'sd13', nama: 'Lengkapi Kalimat', judul: 'Lengkapi Kalimatnya', instruksi: 'Isilah titik-titik dengan kata yang tepat.', topik: 'umum',
+      spec: { min: 6, max: 10, tipe: ['isian'] }, tugas: '10 soal isian berupa kalimat rumpang; bagian kosong ditulis "........" di dalam kalimat dan jawabannya satu kata' },
+    { id: 'ai-salin-kalimat', grup: 'menulis', jenjang: 'sd13', nama: 'Menyalin Kalimat', judul: 'Ayo Menulis Rapi', instruksi: 'Salin kalimat di bawah ini dengan tulisan yang rapi.', topik: 'umum', noKunci: true,
+      spec: { min: 4, max: 6, tipe: ['uraian'] }, tugas: '6 soal uraian; teks soal adalah satu kalimat pendek yang baik untuk disalin anak (6-10 kata) dan jawabannya sama dengan kalimat itu' },
+    { id: 'ai-cerita-hitung', grup: 'mtk-dasar', jenjang: 'sd13', nama: 'Soal Cerita Hitung', judul: 'Soal Cerita Berhitung', instruksi: 'Bacalah soal cerita, lalu tulis jawabannya.', topik: 'umum',
+      spec: { min: 5, max: 8, tipe: ['isian', 'pg'] }, tugas: '8 soal cerita penjumlahan dan pengurangan (kelas 1: sampai 20, kelas 2: sampai 100, kelas 3: sampai 1000) dengan tokoh dan benda sesuai topik; campuran isian dan pg; jawaban berupa angka yang benar' },
+    { id: 'ai-cerita-terapan', grup: 'mtk-terapan', jenjang: 'sd13', nama: 'Jam, Uang & Ukuran', judul: 'Matematika Sehari-hari', instruksi: 'Kerjakan soal tentang jam, uang, dan ukuran.', topik: 'umum',
+      spec: { min: 5, max: 8, tipe: ['isian', 'pg'] }, tugas: '8 soal cerita tentang membaca jam, uang Rupiah, panjang, dan berat dalam kehidupan sehari-hari; campuran isian dan pg; jawaban harus benar' },
+    { id: 'ai-tebakan', grup: 'puzzle-sd', jenjang: 'sd13', nama: 'Tebak-tebakan', judul: 'Ayo Menebak!', instruksi: 'Baca petunjuknya, lalu pilih jawaban yang tepat.', topik: 'umum',
+      spec: { min: 5, max: 8, tipe: ['pg'] }, tugas: '8 teka-teki deskripsi benda atau hewan (contoh: "Aku berkaki empat dan suka makan wortel. Siapakah aku?") dalam bentuk pg' },
+    { id: 'ai-bacaan-pemahaman', grup: 'bindo-lanjut', jenjang: 'sd46', nama: 'Bacaan Pemahaman', judul: 'Memahami Bacaan', instruksi: 'Bacalah teks dengan cermat, lalu jawab pertanyaannya.', topik: 'umum',
+      spec: { min: 5, max: 7, bacaan: true, tipe: ['pg', 'uraian'] }, tugas: 'sebuah teks bacaan 2-3 paragraf lalu 7 soal: 5 pg (ide pokok, informasi rinci, makna kata, kesimpulan) dan 2 uraian' },
+    { id: 'ai-cerita-lanjut', grup: 'mtk-lanjut', jenjang: 'sd46', nama: 'Soal Cerita Lanjut', judul: 'Soal Cerita Matematika', instruksi: 'Kerjakan dengan langkah yang benar.', topik: 'mtk',
+      spec: { min: 5, max: 8, tipe: ['pg', 'isian'] }, tugas: '8 soal cerita matematika tentang topik tersebut dalam konteks kehidupan sehari-hari; campuran pg dan isian; jawaban harus dihitung dengan benar' },
+    { id: 'ai-ipas', grup: 'ipas', jenjang: 'sd46', nama: 'IPAS', judul: 'Lembar Kerja IPAS', instruksi: 'Jawablah pertanyaan berikut dengan tepat.', topik: 'ipas',
+      spec: { min: 6, max: 10, tipe: ['pg', 'bs', 'uraian'] }, tugas: '10 soal IPAS Kurikulum Merdeka: 6 pg, 3 bs, dan 1 uraian' },
+    { id: 'ai-pancasila', grup: 'pancasila', jenjang: 'sd46', nama: 'Pendidikan Pancasila', judul: 'Pendidikan Pancasila', instruksi: 'Jawablah pertanyaan berikut dengan tepat.', topik: 'pancasila',
+      spec: { min: 6, max: 10, tipe: ['pg', 'bs', 'uraian'] }, tugas: '10 soal Pendidikan Pancasila: 6 pg, 3 bs, dan 1 uraian' },
+    { id: 'ai-english', grup: 'english', jenjang: 'lintas', nama: 'English Reading', judul: 'English Worksheet', instruksi: 'Read the text and answer the questions.', topik: 'english',
+      spec: { min: 4, max: 7, bacaan: true, tipe: ['pg', 'isian'] }, tugas: 'a short English reading text (4-6 simple sentences) and 7 questions (5 pg and 2 isian); semua teks bacaan, soal, pilihan, dan jawaban ditulis dalam bahasa Inggris sederhana' },
+    { id: 'ai-ulangan', grup: 'kuis', jenjang: 'lintas', nama: 'Ulangan Custom', judul: 'Ulangan Harian', instruksi: 'Kerjakan soal-soal berikut dengan teliti.', topik: 'umum',
+      spec: { min: 8, max: 12, tipe: ['pg', 'bs', 'isian', 'uraian'] }, tugas: '12 soal ulangan tentang materi tersebut: 6 pg, 2 bs, 2 isian, dan 2 uraian' }
+  ];
+
+  function topik(tema, list, rnd) {
+    if (!tema || tema === 'acak') return R.pick(rnd, list);
+    if (TEMA_ID[tema]) return TEMA_ID[tema];
+    if (String(tema).startsWith('ai:')) {
+      const th = WS.aiThemes.get(String(tema).slice(3));
+      return th ? th.topik : R.pick(rnd, list);
+    }
+    return WS.aiPrompt.cleanTopic(tema) || R.pick(rnd, list);
+  }
+
+  JENIS.forEach(j => WS.registry.define({
+    id: j.id, grup: j.grup, jenjang: j.jenjang, nama: j.nama, judul: j.judul, instruksi: j.instruksi,
+    layout: 'soal-ai', hasAnswers: !j.noKunci, ai: true, defaults: { tema: 'acak' }, opsi: [],
+    generatePage(params, rnd) {
+      const kelas = KELAS[j.jenjang][params.kesulitan] || KELAS[j.jenjang].mudah;
+      const t = topik(params.tema, TOPIK[j.topik], rnd);
+      const prompt = [
+        'Kamu guru SD di Indonesia yang membuat lembar kerja siswa.',
+        'Buat ' + j.tugas + ' untuk siswa ' + kelas + ' dengan topik "' + t + '".',
+        WS.aiSoal.FORMAT
+      ].join('\n');
+      return { items: [{ mode: 'teks', prompt, spec: j.spec, konteks: 'siswa ' + kelas + ', topik ' + t, gaya: params.gaya, tema: t, data: null, image: null, kunci: [], masalah: [], status: 'baru' }] };
+    }
+  }));
+
+  WS.aiCatalogSd = { KELAS, TOPIK, ids: () => JENIS.map(j => j.id) };
+})(globalThis.WS);
+
+/* ui/i18n.js */
+(function (WS) {
+  'use strict';
+
+  WS.T = {
+    id: {
+      'app.title': 'Worksheet Studio',
+      'aria.buka': 'Buka/tutup menu',
+      'aria.tutup': 'Tutup menu',
+      'step.jenis': 'Jenis worksheet',
+      'step.opsi': 'Atur isi',
+      'step.level': 'Kesulitan & jumlah',
+      'step.gaya': 'Gaya & kertas',
+      'opt.kesulitan': 'Kesulitan',
+      'opt.halaman': 'Jumlah halaman',
+      'opt.gaya': 'Gaya',
+      'opt.kertas': 'Kertas',
+      'opt.orientasi': 'Orientasi',
+      'opt.kunci': 'Sertakan kunci jawaban',
+      'opt.ya': 'Ya',
+      'opt.tidak': 'Tidak',
+      'or.potret': 'Potret',
+      'or.lanskap': 'Lanskap',
+      'lvl.mudah': 'Mudah',
+      'lvl.sedang': 'Sedang',
+      'lvl.sulit': 'Sulit',
+      'btn.buat': 'Buat Worksheet',
+      'btn.acak': 'Acak Ulang',
+      'btn.pdf': 'Unduh PDF',
+      'btn.bundle': '+ Bundle',
+      'btn.ok': 'OK',
+      'btn.batal': 'Batal',
+      'btn.hapus': 'Hapus',
+      'btn.buka': 'Buka PDF',
+      'bundle.title': 'Bundle',
+      'bundle.unduh': 'Unduh Bundle PDF',
+      'bundle.kosong': 'Belum ada worksheet di bundle.',
+      'thumb.kunci': 'Kunci',
+      'msg.pdfGagal': 'PDF gagal dibuat. Coba lagi ya.',
+      'msg.pdfProses': 'Menyiapkan PDF…',
+      'msg.ditambah': 'Ditambahkan ke bundle.',
+      'msg.fontCadangan': 'Sebagian font gagal dimuat, PDF memakai font cadangan.',
+      'ai.chip': '+ Tema AI',
+      'ai.judul': 'Buat Tema Gambar dengan AI',
+      'ai.topik': 'Topik tema',
+      'ai.contoh': 'contoh: dinosaurus, luar angkasa, buah tropis',
+      'ai.gaya': 'Gaya gambar',
+      'ai.warna': 'Berwarna',
+      'ai.garis': 'Garis (hitam-putih)',
+      'ai.buat': 'Buat Tema',
+      'ai.proses': 'AI sedang menggambar 8 stiker…',
+      'ai.berhasil': 'Tema siap dipakai!',
+      'ai.gagal': 'Gagal membuat tema. Coba lagi, atau akun Google ini sudah mencapai batas.',
+      'ai.topikKosong': 'Tulis topik temanya dulu ya.',
+      'ai.hapus': 'Hapus',
+      'ai.konfirmHapus': 'Hapus tema ini? Worksheet lama yang memakainya akan menampilkan gambar kosong.',
+      'ai.tutup': 'Tutup',
+      'ai.garisProses': 'Membuat versi garis hitam-putih…',
+      'mode.ai': 'Worksheet AI',
+      'mode.presisi': 'Presisi',
+      'aim.judul': 'Worksheet AI',
+      'aim.sub': 'Satu klik, langsung dapat worksheet yang berbeda-beda.',
+      'aim.acak': 'Acak Sekali Klik',
+      'aim.custom': 'Mode Custom',
+      'aim.kategori': 'Kategori',
+      'aim.jenis': 'Jenis aktivitas',
+      'aim.tema': 'Tema',
+      'aim.temaBebas': 'atau ketik tema sendiri, mis. kapal laut',
+      'aim.gaya': 'Gaya',
+      'aim.jumlah': 'Jumlah lembar',
+      'aim.semuaJenjang': 'Semua jenjang',
+      'aim.semuaTab': 'Semua',
+      'aim.dari': 'Diacak dari',
+      'aim.langkahJenjang': 'Pilih jenjang',
+      'aim.langkahJenis': 'Pilih aktivitas',
+      'aim.jenisHint': 'Dikelompokkan per kategori.',
+      'aim.temaHint': 'Untuk SD, tema dipakai sebagai topik soal.',
+      'aim.langkahAtur': 'Atur hasil',
+      'aim.lanjut': 'Pengaturan lanjutan',
+      'aim.kelas': 'Kelas',
+      'aim.hapusFilter': 'Lihat semua',
+      'aim.cek': 'Cek kualitas & kunci jawaban',
+      'aim.buat': 'Buat',
+      'aim.lembar': 'lembar',
+      'aim.campur': 'aktivitas campur',
+      'aim.batal': 'Batal',
+      'aim.pdf': 'Unduh PDF',
+      'aim.bundle': '+ Bundle',
+      'aim.ulang': 'Buat ulang',
+      'aim.hapus': 'Hapus',
+      'aim.pilih': 'Pilih',
+      'aim.dipilih': 'Dipilih',
+      'aim.kosong': 'Belum ada worksheet. Tekan "Acak Sekali Klik" untuk mulai.',
+      'aim.proses': 'AI sedang bekerja…',
+      'aim.selesai': 'Selesai.',
+      'aim.kuota': 'Semua halaman gagal. Coba lagi nanti, atau akun Google ini sudah mencapai batas.',
+      'aim.perluCek': 'Perlu dicek',
+      'aim.gagal': 'Gagal',
+      'aim.tidakAda': 'Belum ada worksheet yang siap diunduh.',
+      'aim.ditambah': 'Ditambahkan ke bundle.',
+      'aim.tunggu': 'Tunggu proses AI selesai dulu ya.',
+      'view.lihat': 'Lihat besar',
+      'view.tutup': 'Tutup',
+      'view.sebelum': 'Halaman sebelumnya',
+      'view.berikut': 'Halaman berikutnya',
+      'view.perbesar': 'Perbesar',
+      'view.perkecil': 'Perkecil',
+      'view.pas': 'Pas layar',
+      'view.hal': 'Halaman',
+      'view.kunci': 'Kunci jawaban',
+      'msg.iosBuka': 'Ketuk "Buka PDF", lalu pilih Bagikan → Simpan ke File.'
+    }
+  };
+
+  WS.t = function (key) {
+    const d = WS.T.id;
+    return d[key] != null ? d[key] : key;
+  };
+})(globalThis.WS);
+
+/* ui/notify.js */
+(function (WS) {
+  'use strict';
+
+  function modal(message, buttons, extra) {
+    return new Promise(resolve => {
+      const wrap = document.createElement('div');
+      wrap.className = 'ui-modal';
+      const box = document.createElement('div');
+      box.className = 'ui-modal-box';
+      const p = document.createElement('p');
+      p.textContent = message;
+      box.appendChild(p);
+      const row = document.createElement('div');
+      row.className = 'ui-modal-actions';
+      const close = value => { wrap.remove(); resolve(value); };
+      buttons.forEach(b => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn ' + (b.cls || '');
+        btn.textContent = b.label;
+        btn.addEventListener('click', () => close(b.value));
+        row.appendChild(btn);
+      });
+      if (extra) {
+        extra.addEventListener('click', () => setTimeout(() => close(true), 300));
+        row.appendChild(extra);
+      }
+      box.appendChild(row);
+      wrap.appendChild(box);
+      wrap.addEventListener('click', e => { if (e.target === wrap) close(buttons[0].value); });
+      document.body.appendChild(wrap);
+      setTimeout(() => wrap.classList.add('show'), 10);
+    });
+  }
+
+  WS.uiNotify = function (msg) {
+    return modal(msg, [{ label: WS.t('btn.ok'), value: undefined, cls: 'btn-primary' }]);
+  };
+
+  WS.uiConfirm = function (msg, yesLabel) {
+    return modal(msg, [{ label: WS.t('btn.batal'), value: false }, { label: yesLabel || WS.t('btn.ok'), value: true, cls: 'btn-danger' }]);
+  };
+
+  WS.uiLink = function (msg, href, label) {
+    const a = document.createElement('a');
+    a.className = 'btn btn-primary';
+    a.href = href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.textContent = label;
+    return modal(msg, [{ label: WS.t('btn.batal'), value: false }], a);
+  };
+
+  WS.toast = function (msg) {
+    const el = document.createElement('div');
+    el.className = 'ui-toast';
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2200);
+  };
+})(globalThis.WS);
+
+/* ui/download.js */
+(function (WS) {
+  'use strict';
+
+  function isIOS() {
+    const ua = navigator.userAgent || '';
+    if (/iPad|iPhone|iPod/.test(ua)) return true;
+    return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+  }
+
+  async function iosShare(blob, filename) {
+    let file = null;
+    try {
+      file = new File([blob], filename, { type: blob.type || 'application/pdf' });
+    } catch (e) {
+      file = null;
+    }
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], title: filename });
+        return;
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+      }
+    }
+    const url = URL.createObjectURL(blob);
+    await WS.uiLink(WS.t('msg.iosBuka'), url, WS.t('btn.buka'));
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+
+  async function download(blob, filename) {
+    if (isIOS()) return iosShare(blob, filename);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  }
+
+  WS.isIOS = isIOS;
+  WS.download = download;
+})(globalThis.WS);
+
+/* ui/viewer.js */
+(function (WS) {
+  'use strict';
+
+  const t = WS.t;
+  const EYE = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+  const ZOOM = [1, 1.5, 2, 3];
+
+  function eyeButton(data) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'eye-btn';
+    b.innerHTML = EYE;
+    b.setAttribute('aria-label', t('view.lihat'));
+    b.title = t('view.lihat');
+    Object.keys(data || {}).forEach(k => { b.dataset[k] = data[k]; });
+    return b;
+  }
+
+  function open(pages, start) {
+    if (!pages.length) return;
+    let idx = Math.max(0, Math.min(start || 0, pages.length - 1));
+    let z = 0;
+    const wrap = document.createElement('div');
+    wrap.className = 'viewer';
+    wrap.setAttribute('role', 'dialog');
+    wrap.setAttribute('aria-modal', 'true');
+    const bar = document.createElement('div');
+    bar.className = 'viewer-bar';
+    const label = document.createElement('span');
+    label.className = 'viewer-label';
+    const stage = document.createElement('div');
+    stage.className = 'viewer-stage';
+    const page = document.createElement('div');
+    page.className = 'viewer-page';
+    stage.appendChild(page);
+
+    function btn(txt, aria, fn) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'viewer-btn';
+      b.textContent = txt;
+      b.setAttribute('aria-label', aria);
+      b.title = aria;
+      b.addEventListener('click', fn);
+      return b;
+    }
+
+    function size() {
+      const m = pages[idx].svg.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+      const pw = m ? +m[1] : 210, ph = m ? +m[2] : 297;
+      const bw = stage.clientWidth - 24, bh = stage.clientHeight - 24;
+      return Math.max(120, Math.min(bw, bh * pw / ph)) * ZOOM[z];
+    }
+
+    const prev = btn('‹', t('view.sebelum'), () => go(-1));
+    const next = btn('›', t('view.berikut'), () => go(1));
+    const minus = btn('−', t('view.perkecil'), () => zoom(-1));
+    const fitB = btn(t('view.pas'), t('view.pas'), () => { z = 0; zoom(0); });
+    const plus = btn('+', t('view.perbesar'), () => zoom(1));
+    const close = btn('×', t('view.tutup'), done);
+    [label, prev, next, minus, fitB, plus, close].forEach(n => bar.appendChild(n));
+    wrap.appendChild(bar);
+    wrap.appendChild(stage);
+
+    function zoom(d) {
+      z = Math.max(0, Math.min(ZOOM.length - 1, z + d));
+      page.style.width = size() + 'px';
+      minus.disabled = z === 0;
+      plus.disabled = z === ZOOM.length - 1;
+    }
+
+    function draw() {
+      page.innerHTML = pages[idx].svg;
+      label.textContent = pages[idx].label + '  (' + (idx + 1) + '/' + pages.length + ')';
+      prev.disabled = idx === 0;
+      next.disabled = idx === pages.length - 1;
+      zoom(0);
+      stage.scrollTop = 0;
+      stage.scrollLeft = 0;
+    }
+
+    function go(d) {
+      const n = idx + d;
+      if (n < 0 || n >= pages.length) return;
+      idx = n;
+      draw();
+    }
+
+    function onKey(e) {
+      if (e.key === 'Escape') done();
+      else if (e.key === 'ArrowRight') go(1);
+      else if (e.key === 'ArrowLeft') go(-1);
+      else if (e.key === '+' || e.key === '=') zoom(1);
+      else if (e.key === '-') zoom(-1);
+    }
+
+    function onResize() {
+      zoom(0);
+    }
+
+    function done() {
+      document.removeEventListener('keydown', onKey);
+      window.removeEventListener('resize', onResize);
+      wrap.remove();
+    }
+
+    stage.addEventListener('click', e => { if (e.target === stage) done(); });
+    document.addEventListener('keydown', onKey);
+    window.addEventListener('resize', onResize);
+    document.body.appendChild(wrap);
+    draw();
+    close.focus();
+  }
+
+  WS.viewer = { EYE, eyeButton, open };
+})(globalThis.WS);
+
+/* ai/gemini.js */
+(function (WS) {
+  'use strict';
+
+  const apiKey = "";
+  const BASE = 'https://generativelanguage.googleapis.com/v1beta/models/';
+  const TEXT_MODEL = 'gemini-2.0-flash';
+  const IMAGE_MODEL = 'gemini-2.5-flash-image-preview';
+  const MOCK_ITEMS = [['Apel', 'red apple'], ['Bola', 'soccer ball'], ['Cabai', 'red chili'], ['Domba', 'sheep'], ['Es Krim', 'ice cream cone'], ['Flamingo', 'flamingo'], ['Gajah', 'elephant'], ['Harimau', 'tiger']];
+
+  function mock() {
+    return /[?&]mockai=1\b/.test(location.search);
+  }
+
+  function wait(ms) {
+    return new Promise(r => setTimeout(r, ms));
+  }
+
+  async function post(model, body, signal) {
+    // Mode CDN: kunci dari shell Canvas (window.__wsApiKey); mode index.html: apiKey di atas.
+    const key = apiKey || globalThis.__wsApiKey || '';
+    const res = await fetch(BASE + model + ':generateContent?key=' + key, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal
+    });
+    return res.json();
+  }
+
+  function mockSoal() {
+    const soal = [];
+    for (let i = 1; i <= 8; i++) {
+      soal.push({ tipe: 'pg', tanya: 'Soal pilihan ganda tiruan nomor ' + i + ' tentang topik ini?', pilihan: ['Jawaban A' + i, 'Jawaban B' + i, 'Jawaban C' + i, 'Jawaban D' + i], jawaban: 'Jawaban B' + i });
+      soal.push({ tipe: 'isian', tanya: 'Lengkapi kalimat tiruan nomor ' + i + ' ini dengan ........ yang tepat.', jawaban: 'kata' + i });
+      soal.push({ tipe: 'bs', tanya: 'Pernyataan tiruan nomor ' + i + ' ini benar.', jawaban: i % 2 ? 'Benar' : 'Salah' });
+      soal.push({ tipe: 'uraian', tanya: 'Jelaskan secara singkat contoh tiruan nomor ' + i + '.', jawaban: 'Jawaban uraian tiruan ' + i });
+    }
+    return JSON.stringify({ bacaan: 'Ini adalah bacaan tiruan untuk menguji tampilan lembar kerja. Kalimatnya dibuat cukup panjang supaya pemenggalan baris terlihat jelas di halaman. Budi pergi ke sekolah bersama teman-temannya setiap pagi.', soal, ilustrasi: 'a happy child reading a book' });
+  }
+
+  async function text(prompt, opts) {
+    const o = opts || {};
+    if (mock()) {
+      await wait(300);
+      if (prompt.includes('\nDATA:\n')) return JSON.stringify(Object.assign({ ok: true }, JSON.parse(prompt.split('\nDATA:\n')[1])));
+      if (prompt.includes('"soal"')) return mockSoal();
+      return JSON.stringify({ items: MOCK_ITEMS.map(([nama, en]) => ({ nama, en })) });
+    }
+    const result = await post(TEXT_MODEL, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.9 }
+    }, o.signal);
+    const parts = result?.candidates?.[0]?.content?.parts || [];
+    const out = parts.map(p => p.text || '').join('');
+    if (!out) throw new Error('Respons teks kosong');
+    return out;
+  }
+
+  function mockImage(prompt) {
+    const c = document.createElement('canvas');
+    c.width = 512;
+    c.height = 512;
+    const g = c.getContext('2d');
+    g.fillStyle = '#ffffff';
+    g.fillRect(0, 0, 512, 512);
+    let hue = 0;
+    for (const ch of prompt) hue = (hue * 31 + ch.charCodeAt(0)) % 360;
+    g.lineWidth = 14;
+    g.strokeStyle = '#1f2937';
+    g.fillStyle = /line art/.test(prompt) ? '#ffffff' : 'hsl(' + hue + ',75%,60%)';
+    g.beginPath();
+    g.arc(256, 256, 170, 0, Math.PI * 2);
+    g.fill();
+    g.stroke();
+    g.fillStyle = '#1f2937';
+    g.beginPath();
+    g.arc(200, 220, 22, 0, Math.PI * 2);
+    g.arc(312, 220, 22, 0, Math.PI * 2);
+    g.fill();
+    return c.toDataURL('image/png');
+  }
+
+  function mockWorksheet(prompt, aspect) {
+    const land = aspect === '4:3';
+    const c = document.createElement('canvas');
+    c.width = land ? 1024 : 768;
+    c.height = land ? 768 : 1024;
+    const g = c.getContext('2d');
+    g.fillStyle = '#ffffff';
+    g.fillRect(0, 0, c.width, c.height);
+    let hue = 0;
+    for (const ch of prompt) hue = (hue * 31 + ch.charCodeAt(0)) % 360;
+    const line = /Black and white/.test(prompt);
+    const rows = 5, pad = 30, rh = (c.height - pad * 2) / rows;
+    g.lineWidth = 6;
+    g.strokeStyle = '#1f2937';
+    for (let r = 0; r < rows; r++) {
+      const y = pad + r * rh;
+      g.strokeRect(pad, y + 8, c.width - pad * 2, rh - 16);
+      const n = 1 + ((hue + r * 7) % 5);
+      for (let k = 0; k < n; k++) {
+        g.fillStyle = line ? '#ffffff' : 'hsl(' + ((hue + r * 50) % 360) + ',75%,60%)';
+        g.beginPath();
+        g.arc(pad + 70 + k * 95, y + rh / 2, rh * 0.28, 0, Math.PI * 2);
+        g.fill();
+        g.stroke();
+      }
+    }
+    return c.toDataURL('image/png');
+  }
+
+  async function image(prompt, opts) {
+    const o = opts || {};
+    const aspect = o.aspect || '1:1';
+    if (mock()) {
+      await wait(400 + Math.random() * 600);
+      return /Printable worksheet/.test(prompt) ? mockWorksheet(prompt, aspect) : mockImage(prompt);
+    }
+    const result = await post(IMAGE_MODEL, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { responseModalities: ['TEXT', 'IMAGE'], imageConfig: { aspectRatio: aspect } }
+    }, o.signal);
+    const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+    if (!part) throw new Error('Gambar tidak diterima');
+    return 'data:' + (part.inlineData.mimeType || 'image/png') + ';base64,' + part.inlineData.data;
+  }
+
+  async function vision(prompt, dataUrl, opts) {
+    const o = opts || {};
+    if (mock()) {
+      await wait(300);
+      return JSON.stringify({ ok: true, masalah: [], kunci: ['1. (kunci tiruan)'] });
+    }
+    const m = /^data:([^;]+);base64,(.*)$/.exec(dataUrl);
+    const result = await post(TEXT_MODEL, {
+      contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: m[1], data: m[2] } }] }],
+      generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
+    }, o.signal);
+    const out = (result?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
+    if (!out) throw new Error('Respons cek kosong');
+    return out;
+  }
+
+  WS.gemini = { text, image, vision, mock };
+})(globalThis.WS);
+
+/* ai/store.js */
+(function (WS) {
+  'use strict';
+
+  const DB = 'worksheet-studio';
+  const STORE = 'aiThemes';
+  let dbp = null;
+
+  function open() {
+    if (!dbp) {
+      dbp = new Promise((resolve, reject) => {
+        const req = indexedDB.open(DB, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore(STORE, { keyPath: 'id' });
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    return dbp;
+  }
+
+  function tx(mode, fn) {
+    return open().then(db => new Promise((resolve, reject) => {
+      const t = db.transaction(STORE, mode);
+      const req = fn(t.objectStore(STORE));
+      t.oncomplete = () => resolve(req ? req.result : undefined);
+      t.onerror = () => reject(t.error);
+    }));
+  }
+
+  WS.store = {
+    getAll() {
+      return tx('readonly', s => s.getAll()).catch(() => []);
+    },
+    put(theme) {
+      return tx('readwrite', s => s.put(theme)).catch(e => console.warn('Tema gagal disimpan', e));
+    },
+    del(id) {
+      return tx('readwrite', s => s.delete(id)).catch(() => undefined);
+    }
+  };
+})(globalThis.WS);
+
+/* ai/stickers.js */
+(function (WS) {
+  'use strict';
+
+  const N = 8;
+  const MIN_OK = 4;
+
+  function userError(msg) {
+    const e = new Error(msg);
+    e.userMessage = msg;
+    return e;
+  }
+
+  async function withRetry(fn, tries) {
+    let err;
+    for (let i = 0; i < tries; i++) {
+      try {
+        return await fn();
+      } catch (e) {
+        err = e;
+      }
+    }
+    throw err;
+  }
+
+  function toTransparent(dataUrl, size) {
+    const s = size || 512;
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const c = document.createElement('canvas');
+        c.width = s;
+        c.height = s;
+        const g = c.getContext('2d');
+        g.fillStyle = '#ffffff';
+        g.fillRect(0, 0, s, s);
+        const k = Math.min(s / img.width, s / img.height);
+        const w = img.width * k, h = img.height * k;
+        g.drawImage(img, (s - w) / 2, (s - h) / 2, w, h);
+        const d = g.getImageData(0, 0, s, s);
+        WS.alpha.floodMask(d.data, s, s, 238);
+        g.putImageData(d, 0, 0);
+        resolve(c.toDataURL('image/png'));
+      };
+      img.onerror = () => reject(new Error('Gambar rusak'));
+      img.src = dataUrl;
+    });
+  }
+
+  async function makeImage(item, gaya) {
+    const raw = await withRetry(() => WS.gemini.image(WS.aiPrompt.sticker(item, gaya)), 3);
+    return toTransparent(raw, 512);
+  }
+
+  async function createTheme(topik, gaya, onProgress) {
+    const clean = WS.aiPrompt.cleanTopic(topik);
+    if (!clean) throw userError(WS.t('ai.topikKosong'));
+    let items;
+    try {
+      items = WS.aiPrompt.parseTheme(await withRetry(() => WS.gemini.text(WS.aiPrompt.theme(clean, N)), 2), N);
+    } catch (e) {
+      console.error(e);
+      throw userError(WS.t('ai.gagal'));
+    }
+    const variant = gaya === 'garis' ? 'black' : 'color';
+    const images = { color: {}, black: {} };
+    if (onProgress) onProgress({ items });
+    await Promise.allSettled(items.map(async it => {
+      const url = await makeImage(it, gaya);
+      images[variant][it.slug] = url;
+      if (onProgress) onProgress({ items, slug: it.slug, url });
+    }));
+    const ok = items.filter(it => images[variant][it.slug]);
+    if (ok.length < MIN_OK) throw userError(WS.t('ai.gagal'));
+    const theme = { id: WS.aiPrompt.slug(clean) + '-' + Date.now().toString(36), topik: clean, gaya, created: Date.now(), items: ok, images };
+    WS.aiThemes.add(theme);
+    await WS.store.put(theme);
+    return theme;
+  }
+
+  async function ensure(names, variant) {
+    if (variant !== 'black') return;
+    const todo = {};
+    names.forEach(nm => {
+      const p = WS.aiThemes.parse(nm);
+      const th = p && WS.aiThemes.get(p.themeId);
+      if (!th || th.gaya === 'garis' || th.images.black[p.slug]) return;
+      (todo[th.id] = todo[th.id] || new Set()).add(p.slug);
+    });
+    const ids = Object.keys(todo);
+    if (!ids.length) return;
+    WS.toast(WS.t('ai.garisProses'));
+    for (const id of ids) {
+      const th = WS.aiThemes.get(id);
+      await Promise.allSettled(Array.from(todo[id]).map(async slug => {
+        th.images.black[slug] = await makeImage(th.items.find(x => x.slug === slug), 'garis');
+      }));
+      await WS.store.put(th);
+    }
+  }
+
+  WS.stickers = { createTheme, ensure, toTransparent };
+})(globalThis.WS);
+
+/* ai/pages.js */
+(function (WS) {
+  'use strict';
+
+  const LIMIT = 3;
+
+  function abortError() {
+    const e = new Error('Dibatalkan');
+    e.name = 'AbortError';
+    return e;
+  }
+
+  async function retry(fn, tries, signal) {
+    let err;
+    for (let i = 0; i < tries; i++) {
+      if (signal.aborted) throw abortError();
+      try {
+        return await fn();
+      } catch (e) {
+        if (signal.aborted || e.name === 'AbortError') throw abortError();
+        err = e;
+      }
+    }
+    throw err;
+  }
+
+  function toJpeg(dataUrl, maxSide, q) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const k = Math.min(1, maxSide / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * k);
+        c.height = Math.round(img.height * k);
+        const g = c.getContext('2d');
+        g.fillStyle = '#ffffff';
+        g.fillRect(0, 0, c.width, c.height);
+        g.drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL('image/jpeg', q));
+      };
+      img.onerror = () => reject(new Error('Gambar rusak'));
+      img.src = dataUrl;
+    });
+  }
+
+  async function fill(doc, opts) {
+    const it = doc.pages[0].items[0];
+    const tries = opts.cek ? 3 : 1;
+    for (let attempt = 1; attempt <= tries; attempt++) {
+      it.status = 'gambar';
+      it.masalah = [];
+      opts.onUpdate(doc);
+      const raw = await retry(() => WS.gemini.image(it.prompt, { aspect: it.aspect, signal: opts.signal }), 2, opts.signal);
+      it.image = await toJpeg(raw, 1600, 0.9);
+      it.kunci = it.expect.slice();
+      if (!opts.cek) {
+        it.status = 'ok';
+        return;
+      }
+      it.status = 'cek';
+      opts.onUpdate(doc);
+      let res;
+      try {
+        res = WS.aiCheck.parse(await WS.gemini.vision(WS.aiCheck.prompt(it), it.image, { signal: opts.signal }));
+      } catch (e) {
+        if (opts.signal.aborted) throw abortError();
+        it.status = 'perlu-cek';
+        it.masalah = ['Pemeriksaan otomatis gagal'];
+        return;
+      }
+      if (!it.expect.length) it.kunci = res.kunci;
+      it.masalah = res.masalah;
+      if (res.ok) {
+        it.status = 'ok';
+        return;
+      }
+    }
+    it.status = 'perlu-cek';
+  }
+
+  async function fillTeks(doc, opts) {
+    const it = doc.pages[0].items[0];
+    it.status = 'tulis';
+    it.masalah = [];
+    it.data = null;
+    it.image = null;
+    opts.onUpdate(doc);
+    let data = null;
+    let err = null;
+    for (let i = 0; i < 3 && !data; i++) {
+      if (opts.signal.aborted) throw abortError();
+      try {
+        data = WS.aiSoal.parse(await WS.gemini.text(it.prompt, { signal: opts.signal }), it.spec);
+      } catch (e) {
+        if (opts.signal.aborted || e.name === 'AbortError') throw abortError();
+        err = e;
+      }
+    }
+    if (!data) throw err;
+    let checkFailed = false;
+    if (opts.cek) {
+      it.status = 'cek';
+      opts.onUpdate(doc);
+      try {
+        const c = WS.aiSoal.parseCek(await WS.gemini.text(WS.aiSoal.cekPrompt(data, it.konteks), { signal: opts.signal }), it.spec);
+        data = c.data;
+        if (!c.ok) it.masalah = ['Diperbaiki otomatis oleh AI'];
+      } catch (e) {
+        if (opts.signal.aborted) throw abortError();
+        checkFailed = true;
+        it.masalah = ['Pemeriksaan otomatis gagal'];
+      }
+    }
+    it.data = data;
+    it.kunci = WS.aiSoal.kunci(data.soal);
+    if (data.ilustrasi) {
+      it.status = 'gambar';
+      opts.onUpdate(doc);
+      try {
+        it.image = await toJpeg(await WS.gemini.image(WS.aiSoal.ilustrasiPrompt(data.ilustrasi, it.gaya), { aspect: '4:3', signal: opts.signal }), 1200, 0.88);
+      } catch (e) {
+        if (opts.signal.aborted) throw abortError();
+        it.image = null;
+      }
+    }
+    it.status = checkFailed ? 'perlu-cek' : 'ok';
+  }
+
+  async function run(docs, opts) {
+    let next = 0;
+    async function worker() {
+      while (next < docs.length) {
+        const doc = docs[next++];
+        try {
+          await WS.icons.load(WS.page.iconNames(doc), WS.page.theme(doc.params).iconVariant);
+          const mode = doc.pages[0].items[0].mode;
+          if (mode !== 'lokal') await (mode === 'teks' ? fillTeks : fill)(doc, opts);
+        } catch (e) {
+          const it = doc.pages[0].items[0];
+          it.status = opts.signal.aborted || e.name === 'AbortError' ? 'batal' : 'gagal';
+          if (it.status === 'gagal') console.error(e);
+        }
+        opts.onUpdate(doc);
+      }
+    }
+    await Promise.all(Array.from({ length: Math.min(LIMIT, docs.length) }, worker));
+  }
+
+  WS.aiPages = { run, fill, toJpeg };
+})(globalThis.WS);
+
+/* pdf/export.js */
+(function (WS) {
+  'use strict';
+
+  const GF = 'https://cdn.jsdelivr.net/gh/google/fonts@main/';
+  const FONTS = [
+    { family: 'Andika', style: 'normal', file: 'ofl/andika/Andika-Regular.ttf' },
+    { family: 'Andika', style: 'bold', file: 'ofl/andika/Andika-Bold.ttf' },
+    { family: 'ComicNeue', style: 'normal', file: 'ofl/comicneue/ComicNeue-Bold.ttf' },
+    { family: 'ComicNeue', style: 'bold', file: 'ofl/comicneue/ComicNeue-Bold.ttf' },
+    { family: 'Poppins', style: 'normal', file: 'ofl/poppins/Poppins-Regular.ttf' },
+    { family: 'Poppins', style: 'bold', file: 'ofl/poppins/Poppins-Bold.ttf' },
+    { family: 'Tinos', style: 'normal', file: 'ofl/tinos/Tinos-Regular.ttf' },
+    { family: 'Tinos', style: 'bold', file: 'ofl/tinos/Tinos-Bold.ttf' }
+  ];
+  const b64 = {};
+
+  function toBase64(buf) {
+    const bytes = new Uint8Array(buf);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+    return btoa(bin);
+  }
+
+  async function fontData(file) {
+    if (!b64[file]) {
+      const res = await fetch(GF + file);
+      if (!res.ok) throw new Error('font ' + file);
+      b64[file] = toBase64(await res.arrayBuffer());
+    }
+    return b64[file];
+  }
+
+  async function registerFonts(pdf, svgs) {
+    const failed = [];
+    const used = FONTS.filter(f => svgs.some(s => s.includes('font-family="' + f.family + '"')));
+    for (const f of used) {
+      try {
+        const vfs = f.family + '-' + f.style + '.ttf';
+        pdf.addFileToVFS(vfs, await fontData(f.file));
+        pdf.addFont(vfs, f.family, f.style);
+      } catch (e) {
+        failed.push(f.family);
+      }
+    }
+    return failed;
+  }
+
+  function sizeOf(svgText) {
+    const m = svgText.match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+    return { w: parseFloat(m[1]), h: parseFloat(m[2]) };
+  }
+
+  async function build(svgs) {
+    const JsPDF = window.jspdf.jsPDF;
+    const first = sizeOf(svgs[0]);
+    const pdf = new JsPDF({ unit: 'mm', format: [first.w, first.h], orientation: first.w > first.h ? 'l' : 'p', compress: true });
+    const failed = await registerFonts(pdf, svgs);
+    if (failed.length) WS.toast(WS.t('msg.fontCadangan'));
+    const host = document.createElement('div');
+    host.style.cssText = 'position:fixed;left:-10000px;top:0;width:10px;height:10px;overflow:hidden';
+    document.body.appendChild(host);
+    try {
+      for (let i = 0; i < svgs.length; i++) {
+        const sz = sizeOf(svgs[i]);
+        if (i > 0) pdf.addPage([sz.w, sz.h], sz.w > sz.h ? 'l' : 'p');
+        host.innerHTML = svgs[i];
+        await window.svg2pdf.svg2pdf(host.firstElementChild, pdf, { x: 0, y: 0, width: sz.w, height: sz.h });
+      }
+    } finally {
+      host.remove();
+    }
+    return pdf.output('blob');
+  }
+
+  WS.pdf = { GF, FONTS, sizeOf, build };
+})(globalThis.WS);
+
+/* ui/ai-panel.js */
+(function (WS) {
+  'use strict';
+
+  const t = WS.t;
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function button(cls, text) {
+    const b = el('button', cls, text);
+    b.type = 'button';
+    return b;
+  }
+
+  function open(onChange) {
+    const wrap = el('div', 'ui-modal');
+    const box = el('div', 'ui-modal-box ai-box');
+    box.appendChild(el('h3', 'ai-title', t('ai.judul')));
+    const label = el('label', 'opt-label', t('ai.topik'));
+    const input = el('input', 'ai-input');
+    input.type = 'text';
+    input.maxLength = 40;
+    input.placeholder = t('ai.contoh');
+    label.appendChild(input);
+    box.appendChild(label);
+    box.appendChild(el('p', 'opt-label', t('ai.gaya')));
+    let gaya = 'warna';
+    const gayaRow = el('div', 'chips');
+    [['warna', t('ai.warna')], ['garis', t('ai.garis')]].forEach(([v, lb]) => {
+      const b = button('chip' + (v === gaya ? ' on' : ''), lb);
+      b.addEventListener('click', () => {
+        gaya = v;
+        gayaRow.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c === b));
+      });
+      gayaRow.appendChild(b);
+    });
+    box.appendChild(gayaRow);
+    const go = button('btn btn-primary btn-block', t('ai.buat'));
+    const status = el('p', 'ai-status');
+    const grid = el('div', 'ai-grid');
+    const saved = el('div', 'ai-saved');
+    const close = button('btn btn-block', t('ai.tutup'));
+    [go, status, grid, saved, close].forEach(n => box.appendChild(n));
+
+    function renderSaved() {
+      saved.textContent = '';
+      WS.aiThemes.list().forEach(th => {
+        const row = el('div', 'ai-saved-row');
+        row.appendChild(el('span', null, th.topik + ' (AI)'));
+        const del = button('btn btn-danger', t('ai.hapus'));
+        del.addEventListener('click', async () => {
+          if (!(await WS.uiConfirm(t('ai.konfirmHapus'), t('ai.hapus')))) return;
+          WS.aiThemes.remove(th.id);
+          await WS.store.del(th.id);
+          renderSaved();
+          if (onChange) onChange(null);
+        });
+        row.appendChild(del);
+        saved.appendChild(row);
+      });
+    }
+
+    close.addEventListener('click', () => wrap.remove());
+    go.addEventListener('click', async () => {
+      go.disabled = true;
+      status.textContent = t('ai.proses');
+      grid.textContent = '';
+      const cells = {};
+      try {
+        const theme = await WS.stickers.createTheme(input.value, gaya, p => {
+          if (!Object.keys(cells).length) {
+            p.items.forEach(it => {
+              const c = el('div', 'ai-cell');
+              c.appendChild(el('span', 'ai-spin'));
+              c.appendChild(el('small', null, it.nama));
+              grid.appendChild(c);
+              cells[it.slug] = c;
+            });
+          }
+          if (p.url && cells[p.slug]) {
+            const img = el('img');
+            img.src = p.url;
+            img.alt = '';
+            cells[p.slug].replaceChild(img, cells[p.slug].firstChild);
+          }
+        });
+        status.textContent = t('ai.berhasil');
+        renderSaved();
+        if (onChange) onChange(theme);
+      } catch (e) {
+        status.textContent = (e && e.userMessage) || t('ai.gagal');
+      } finally {
+        go.disabled = false;
+      }
+    });
+
+    renderSaved();
+    wrap.appendChild(box);
+    document.body.appendChild(wrap);
+    setTimeout(() => wrap.classList.add('show'), 10);
+    input.focus();
+  }
+
+  WS.aiPanel = { open };
+})(globalThis.WS);
+
+/* ui/ai-mode.js */
+(function (WS) {
+  'use strict';
+
+  const t = WS.t;
+  const TEMA = [['acak', 'Acak'], ['hewan', 'Hewan'], ['buah', 'Buah'], ['kendaraan', 'Kendaraan'], ['alam', 'Alam']];
+  const BADGE = { 'perlu-cek': 'aim.perluCek', gagal: 'aim.gagal' };
+  const st = { grup: null, jenjang: 'paud', jenis: null, tema: 'acak', bebas: '', gaya: 'ceria', kesulitan: 'mudah', jumlah: 4, kertas: 'A4', orientasi: 'potret', cek: true, lanjut: false, docs: [], pilih: new Set(), ctrl: null };
+  const bags = {};
+  let root = null;
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function button(cls, text, data) {
+    const b = el('button', cls, text);
+    b.type = 'button';
+    Object.keys(data || {}).forEach(k => { b.dataset[k] = data[k]; });
+    return b;
+  }
+
+  function chipRow(key, choices, current) {
+    const row = el('div', 'chips');
+    choices.forEach(c => row.appendChild(button('chip' + (c.v === current ? ' on' : ''), c.label, { aikey: key, aival: JSON.stringify(c.v) })));
+    return row;
+  }
+
+  function field(label, child) {
+    const f = el('div', 'aim-field');
+    f.appendChild(el('p', 'aim-label', label));
+    f.appendChild(child);
+    return f;
+  }
+
+  function stepCard(nr, title, hint) {
+    const sec = el('section', 'aim-step');
+    const h = el('h3', 'aim-step-h');
+    h.appendChild(el('i', null, String(nr)));
+    h.appendChild(document.createTextNode(title));
+    sec.appendChild(h);
+    if (hint) sec.appendChild(el('p', 'aim-hint', hint));
+    return sec;
+  }
+
+  function jenjangOf(id) {
+    return WS.registry.JENJANG.find(j => j.id === id);
+  }
+
+  function jenisList() {
+    return WS.registry.all().filter(r => r.ai && (st.grup ? r.grup === st.grup : (!st.jenjang || r.jenjang === st.jenjang)));
+  }
+
+  function scopeLabel() {
+    if (st.grup) return WS.registry.group(st.grup).label;
+    return st.jenjang ? jenjangOf(st.jenjang).label : t('aim.semuaJenjang');
+  }
+
+  function params(temaOverride) {
+    return { tema: temaOverride || st.bebas.trim() || st.tema, gaya: st.gaya, kesulitan: st.kesulitan, kertas: st.kertas, orientasi: st.orientasi, kunci: true, halaman: 1 };
+  }
+
+  function cap(s) {
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  }
+
+  function levelField() {
+    const r = st.jenis ? WS.registry.get(st.jenis) : null;
+    const kelas = r && WS.aiCatalogSd && WS.aiCatalogSd.KELAS[r.jenjang];
+    const choices = ['mudah', 'sedang', 'sulit'].map(v => ({ v, label: kelas ? cap(kelas[v]) : t('lvl.' + v) }));
+    return field(kelas ? t('aim.kelas') : t('opt.kesulitan'), chipRow('kesulitan', choices, st.kesulitan));
+  }
+
+  function jenisBlock(list) {
+    const wrap = el('div', 'aim-jenis');
+    WS.registry.JENJANG.forEach(j => {
+      const groups = WS.registry.GROUPS.filter(g => g.jenjang === j.id)
+        .map(g => ({ g, items: list.filter(r => r.grup === g.id) }))
+        .filter(x => x.items.length);
+      if (!groups.length) return;
+      const blk = el('div', 'aim-jblk j-' + j.id);
+      if (!st.jenjang && !st.grup) blk.appendChild(el('p', 'aim-jj', j.label));
+      groups.forEach(x => {
+        blk.appendChild(el('p', 'aim-grp', x.g.label));
+        blk.appendChild(chipRow('jenis', x.items.map(r => ({ v: r.id, label: r.nama })), st.jenis));
+      });
+      wrap.appendChild(blk);
+    });
+    return wrap;
+  }
+
+  function renderControls() {
+    const box = root.querySelector('.aim-controls');
+    box.textContent = '';
+    const hero = el('section', 'aim-hero');
+    hero.appendChild(el('h2', null, t('aim.judul')));
+    hero.appendChild(el('p', null, t('aim.sub')));
+    hero.appendChild(button('btn btn-primary btn-block aim-acak', t('aim.acak'), { ai: 'acak' }));
+    hero.appendChild(el('p', 'aim-scope', t('aim.dari') + ': ' + scopeLabel() + ' · ' + t('aim.campur')));
+    box.appendChild(hero);
+
+    const s1 = stepCard(1, t('aim.langkahJenjang'));
+    const tabs = el('div', 'aim-tabs');
+    [{ id: '', label: t('aim.semuaTab') }].concat(WS.registry.JENJANG.filter(j => WS.registry.all().some(r => r.ai && r.jenjang === j.id))).forEach(j => {
+      const on = !st.grup && (st.jenjang || '') === j.id;
+      tabs.appendChild(button('aim-tab' + (j.id ? ' j-' + j.id : '') + (on ? ' on' : ''), j.label, { aijenjang: j.id }));
+    });
+    s1.appendChild(tabs);
+    if (st.grup) {
+      const g = WS.registry.group(st.grup);
+      const f = el('div', 'aim-filter j-' + g.jenjang);
+      f.appendChild(el('span', null, t('aim.kategori') + ': '));
+      f.appendChild(el('strong', null, g.label));
+      f.appendChild(button('aim-filter-x', t('aim.hapusFilter'), { aijenjang: g.jenjang }));
+      s1.appendChild(f);
+    }
+    box.appendChild(s1);
+
+    const jenis = jenisList();
+    if (!jenis.some(j => j.id === st.jenis)) st.jenis = jenis.length ? jenis[0].id : null;
+    const s2 = stepCard(2, t('aim.langkahJenis'), t('aim.jenisHint'));
+    s2.appendChild(jenisBlock(jenis));
+    box.appendChild(s2);
+
+    const s3 = stepCard(3, t('aim.tema'), t('aim.temaHint'));
+    const temaChoices = TEMA.map(([v, label]) => ({ v, label })).concat(WS.aiThemes.list().map(th => ({ v: 'ai:' + th.id, label: th.topik })));
+    s3.appendChild(chipRow('tema', temaChoices, st.bebas ? null : st.tema));
+    const input = el('input', 'ai-input');
+    input.type = 'text';
+    input.maxLength = 40;
+    input.placeholder = t('aim.temaBebas');
+    input.value = st.bebas;
+    input.dataset.aiinput = 'bebas';
+    s3.appendChild(input);
+    box.appendChild(s3);
+
+    const s4 = stepCard(4, t('aim.langkahAtur'));
+    s4.appendChild(levelField());
+    s4.appendChild(field(t('aim.jumlah'), chipRow('jumlah', [1, 2, 4, 6, 10].map(v => ({ v, label: String(v) })), st.jumlah)));
+    s4.appendChild(field(t('aim.gaya'), chipRow('gaya', Object.keys(WS.themes).map(k => ({ v: k, label: WS.themes[k].label })), st.gaya)));
+    const more = el('details', 'aim-more');
+    more.open = st.lanjut;
+    more.addEventListener('toggle', () => { st.lanjut = more.open; });
+    more.appendChild(el('summary', null, t('aim.lanjut')));
+    more.appendChild(field(t('opt.kertas'), chipRow('kertas', Object.keys(WS.paper.SIZES).map(k => ({ v: k, label: WS.paper.LABELS[k] })), st.kertas)));
+    more.appendChild(field(t('opt.orientasi'), chipRow('orientasi', [{ v: 'potret', label: t('or.potret') }, { v: 'lanskap', label: t('or.lanskap') }], st.orientasi)));
+    more.appendChild(field(t('aim.cek'), chipRow('cek', [{ v: true, label: t('opt.ya') }, { v: false, label: t('opt.tidak') }], st.cek)));
+    s4.appendChild(more);
+    const pilihan = st.jenis ? WS.registry.get(st.jenis).nama : '';
+    s4.appendChild(button('btn btn-primary btn-block aim-buat', pilihan ? t('aim.buat') + ' ' + st.jumlah + ' ' + t('aim.lembar') + ' ' + pilihan : t('aim.buat'), { ai: 'custom' }));
+    box.appendChild(s4);
+    setRunning(!!st.ctrl);
+  }
+
+  function card(doc, i) {
+    const it = doc.pages[0].items[0];
+    const r = WS.registry.get(doc.resepId);
+    const c = el('div', 'aim-card j-' + r.jenjang + (st.pilih.has(doc) ? ' on' : ''));
+    c.dataset.i = String(i);
+    const prev = el('div', 'aim-prev');
+    prev.innerHTML = WS.page.render(doc, 0);
+    prev.dataset.ai = 'lihat';
+    prev.dataset.i = String(i);
+    prev.appendChild(WS.viewer.eyeButton({ ai: 'lihat', i: String(i) }));
+    c.appendChild(prev);
+    if (BADGE[it.status]) {
+      const b = el('span', 'aim-badge', t(BADGE[it.status]));
+      if (it.masalah && it.masalah.length) b.title = it.masalah.join('; ');
+      c.appendChild(b);
+    }
+    const meta = el('div', 'aim-meta');
+    meta.appendChild(el('span', 'aim-tag', jenjangOf(r.jenjang).label));
+    meta.appendChild(el('span', null, r.nama));
+    c.appendChild(meta);
+    const row = el('div', 'aim-card-actions');
+    row.appendChild(button('btn', t(st.pilih.has(doc) ? 'aim.dipilih' : 'aim.pilih'), { ai: 'pilih', i: String(i) }));
+    row.appendChild(button('btn', t('aim.ulang'), { ai: 'ulang', i: String(i) }));
+    row.appendChild(button('btn', t('aim.hapus'), { ai: 'hapus', i: String(i) }));
+    c.appendChild(row);
+    return c;
+  }
+
+  function renderGallery() {
+    const g = root.querySelector('.aim-gallery');
+    g.textContent = '';
+    if (!st.docs.length) {
+      g.appendChild(el('p', 'aim-empty', t('aim.kosong')));
+      return;
+    }
+    st.docs.forEach((d, i) => g.appendChild(card(d, i)));
+  }
+
+  function updateCard(doc) {
+    const i = st.docs.indexOf(doc);
+    const old = root.querySelector('.aim-card[data-i="' + i + '"]');
+    if (old) old.replaceWith(card(doc, i));
+  }
+
+  function setRunning(on) {
+    root.querySelectorAll('[data-ai="acak"],[data-ai="custom"]').forEach(b => { b.disabled = on || (b.dataset.ai === 'custom' && !st.jenis); });
+    root.querySelector('[data-ai="batal"]').hidden = !on;
+    if (on) root.querySelector('.aim-status').textContent = t('aim.proses');
+  }
+
+  async function start(docs) {
+    st.docs = docs.concat(st.docs);
+    renderGallery();
+    root.querySelector('.aim-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    st.ctrl = new AbortController();
+    setRunning(true);
+    await WS.aiPages.run(docs, { cek: st.cek, signal: st.ctrl.signal, onUpdate: updateCard });
+    st.ctrl = null;
+    setRunning(false);
+    const failed = docs.filter(d => d.pages[0].items[0].status === 'gagal').length;
+    root.querySelector('.aim-status').textContent = failed === docs.length ? t('aim.kuota') : t('aim.selesai');
+  }
+
+  function nextJenis() {
+    const ids = jenisList().map(j => j.id);
+    const key = ids.join(',');
+    if (!bags[key]) bags[key] = WS.rng.bag(WS.rng.create(WS.rng.newSeed()), ids);
+    return bags[key]();
+  }
+
+  function makeDocs(pickId, temaOverride) {
+    return Array.from({ length: st.jumlah }, () => WS.doc.create(pickId(), params(temaOverride), WS.rng.newSeed()));
+  }
+
+  function selection() {
+    const list = st.pilih.size ? st.docs.filter(d => st.pilih.has(d)) : st.docs;
+    return list.filter(d => {
+      const it = d.pages[0].items[0];
+      return it.mode === 'lokal' || !!it.image || !!it.data;
+    });
+  }
+
+  const actions = {
+    acak() {
+      return start(makeDocs(nextJenis, 'acak'));
+    },
+    custom() {
+      if (st.jenis) return start(makeDocs(() => st.jenis));
+    },
+    batal() {
+      if (st.ctrl) st.ctrl.abort();
+    },
+    pdf() {
+      const docs = selection();
+      if (!docs.length) return WS.uiNotify(t('aim.tidakAda'));
+      return WS.app.exportPdf(docs, 'worksheet-ai.pdf');
+    },
+    bundle() {
+      const docs = selection();
+      if (!docs.length) return WS.uiNotify(t('aim.tidakAda'));
+      WS.app.addToBundle(docs);
+      WS.toast(t('aim.ditambah'));
+    },
+    lihat(i) {
+      const pages = [];
+      let start = 0;
+      st.docs.forEach((d, k) => {
+        if (k === i) start = pages.length;
+        const nama = WS.registry.get(d.resepId).nama;
+        WS.page.renderAll(d, {}).forEach((svg, p) => pages.push({ svg, label: nama + ' · ' + (p < d.pages.length ? t('view.hal') + ' ' + (p + 1) : t('view.kunci')) }));
+      });
+      WS.viewer.open(pages, start);
+    },
+    pilih(i) {
+      const d = st.docs[i];
+      if (st.pilih.has(d)) st.pilih.delete(d);
+      else st.pilih.add(d);
+      updateCard(d);
+    },
+    ulang(i) {
+      if (st.ctrl) return WS.uiNotify(t('aim.tunggu'));
+      const old = st.docs[i];
+      const fresh = WS.doc.create(old.resepId, old.params, WS.rng.newSeed());
+      st.docs.splice(i, 1);
+      st.pilih.delete(old);
+      return start([fresh]);
+    },
+    hapus(i) {
+      st.pilih.delete(st.docs[i]);
+      st.docs.splice(i, 1);
+      renderGallery();
+    }
+  };
+
+  function onClick(e) {
+    const jj = e.target.closest('[data-aijenjang]');
+    if (jj) return setJenjang(jj.dataset.aijenjang);
+    const k = e.target.closest('[data-aikey]');
+    if (k) {
+      st[k.dataset.aikey] = JSON.parse(k.dataset.aival);
+      if (k.dataset.aikey === 'tema') st.bebas = '';
+      renderControls();
+      return;
+    }
+    const a = e.target.closest('[data-ai]');
+    if (a && actions[a.dataset.ai]) actions[a.dataset.ai](Number(a.dataset.i));
+  }
+
+  function onInput(e) {
+    if (e.target.dataset.aiinput !== 'bebas') return;
+    st.bebas = e.target.value;
+    root.querySelectorAll('[data-aikey="tema"]').forEach(b => b.classList.toggle('on', !st.bebas && JSON.parse(b.dataset.aival) === st.tema));
+  }
+
+  function mount(host) {
+    root = host;
+    root.innerHTML = '<div class="aim-controls"></div><div class="aim-main"><div class="aim-toolbar"><span class="aim-status"></span>' +
+      '<button type="button" class="btn" data-ai="batal" hidden></button><button type="button" class="btn" data-ai="bundle"></button>' +
+      '<button type="button" class="btn btn-success" data-ai="pdf"></button></div><div class="aim-gallery"></div></div>';
+    root.querySelector('[data-ai="batal"]').textContent = t('aim.batal');
+    root.querySelector('[data-ai="bundle"]').textContent = t('aim.bundle');
+    root.querySelector('[data-ai="pdf"]').textContent = t('aim.pdf');
+    root.addEventListener('click', onClick);
+    root.addEventListener('input', onInput);
+    renderControls();
+    renderGallery();
+  }
+
+  function setGroup(grupId) {
+    st.grup = grupId || null;
+    st.jenjang = st.grup ? WS.registry.group(st.grup).jenjang : null;
+    renderControls();
+  }
+
+  function setJenjang(id) {
+    st.grup = null;
+    st.jenjang = id || null;
+    renderControls();
+    if (WS.app) WS.app.refreshNav();
+  }
+
+  function filter() {
+    return { grup: st.grup, jenjang: st.jenjang };
+  }
+
+  WS.aiMode = { mount, setGroup, setJenjang, filter, refresh: renderControls, state: st };
+})(globalThis.WS);
+
+/* ui/app.js */
+(function (WS) {
+  'use strict';
+
+  const t = WS.t;
+  // Mode Presisi disembunyikan dulu (kodenya tetap ada) — lihat ideas-backlog.md.
+  const PRESISI = false;
+  const state = { mode: 'presisi', grup: null, resepId: null, params: {}, seed: 0, doc: null, svgs: [], page: 0, bundle: [], busy: false, token: 0 };
+  const $ = sel => document.querySelector(sel);
+
+  function presisiRecipes(grupId) {
+    return WS.registry.byGroup(grupId).filter(x => !x.ai);
+  }
+
+  function countFor(grupId) {
+    return WS.registry.byGroup(grupId).filter(x => !!x.ai === (state.mode === 'ai')).length;
+  }
+
+  function navItem(grupId, label, active, count, jenjang) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'nav-item' + (jenjang ? ' j-' + jenjang : '') + (active ? ' on' : '');
+    b.dataset.grup = grupId;
+    const s = document.createElement('span');
+    s.textContent = label;
+    b.appendChild(s);
+    const c = document.createElement('em');
+    c.className = 'nav-count';
+    c.textContent = String(count);
+    b.appendChild(c);
+    return b;
+  }
+
+  function chip(label, active, data) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip' + (active ? ' on' : '');
+    b.textContent = label;
+    Object.keys(data).forEach(k => { b.dataset[k] = data[k]; });
+    return b;
+  }
+
+  function optGroup(title, key, choices, current) {
+    const wrap = document.createElement('div');
+    wrap.className = 'opt';
+    const lb = document.createElement('p');
+    lb.className = 'opt-label';
+    lb.textContent = title;
+    wrap.appendChild(lb);
+    const row = document.createElement('div');
+    row.className = 'chips';
+    (typeof choices === 'function' ? choices() : choices).forEach(c => row.appendChild(chip(c.label, c.v === current, { key, val: JSON.stringify(c.v) })));
+    wrap.appendChild(row);
+    return wrap;
+  }
+
+  function step(nr, title, children) {
+    const card = document.createElement('section');
+    card.className = 'step';
+    const h = document.createElement('h3');
+    const i = document.createElement('i');
+    i.textContent = nr;
+    h.appendChild(i);
+    h.appendChild(document.createTextNode(title));
+    card.appendChild(h);
+    children.forEach(c => card.appendChild(c));
+    return card;
+  }
+
+  function buildSidebar() {
+    const nav = $('#nav');
+    nav.innerHTML = '';
+    const ai = state.mode === 'ai';
+    const f = ai ? WS.aiMode.filter() : { grup: state.grup, jenjang: null };
+    if (ai) nav.appendChild(navItem('', t('aim.semuaJenjang'), !f.grup && !f.jenjang, WS.registry.all().filter(r => r.ai).length));
+    WS.registry.JENJANG.forEach(j => {
+      const groups = WS.registry.GROUPS.filter(g => g.jenjang === j.id && countFor(g.id));
+      if (!groups.length) return;
+      const h = document.createElement('button');
+      h.type = 'button';
+      h.className = 'nav-sec j-' + j.id + (ai && !f.grup && f.jenjang === j.id ? ' on' : '');
+      h.dataset.jenjang = j.id;
+      h.textContent = j.label;
+      nav.appendChild(h);
+      groups.forEach(g => nav.appendChild(navItem(g.id, g.label, g.id === f.grup, countFor(g.id), j.id)));
+    });
+  }
+
+  function setMode(m) {
+    state.mode = m;
+    document.body.classList.toggle('mode-ai', m === 'ai');
+    document.body.classList.toggle('mode-presisi', m !== 'ai');
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('on', b.dataset.mode === m));
+    buildSidebar();
+  }
+
+  function buildSettings() {
+    const r = WS.registry.get(state.resepId);
+    const p = state.params;
+    const box = $('#settings');
+    box.innerHTML = '';
+    let nr = 1;
+    const jenis = document.createElement('div');
+    jenis.className = 'chips';
+    presisiRecipes(state.grup).forEach(x => jenis.appendChild(chip(x.nama, x.id === r.id, { resep: x.id })));
+    box.appendChild(step(nr++, t('step.jenis'), [jenis]));
+    if (r.opsi.length) {
+      box.appendChild(step(nr++, t('step.opsi'), r.opsi.map(o => {
+        const g = optGroup(o.label, o.key, o.choices, p[o.key]);
+        if (o.key === 'tema') {
+          const b = chip(t('ai.chip'), false, { action: 'tema-ai' });
+          b.classList.add('chip-ai');
+          g.querySelector('.chips').appendChild(b);
+        }
+        return g;
+      })));
+    }
+    const levels = ['mudah', 'sedang', 'sulit'].map(v => ({ v, label: t('lvl.' + v) }));
+    const pages = [1, 2, 3, 5].map(v => ({ v, label: String(v) }));
+    box.appendChild(step(nr++, t('step.level'), [optGroup(t('opt.kesulitan'), 'kesulitan', levels, p.kesulitan), optGroup(t('opt.halaman'), 'halaman', pages, p.halaman)]));
+    const gaya = Object.keys(WS.themes).map(k => ({ v: k, label: WS.themes[k].label }));
+    const kertas = Object.keys(WS.paper.SIZES).map(k => ({ v: k, label: WS.paper.LABELS[k] }));
+    const ori = [{ v: 'potret', label: t('or.potret') }, { v: 'lanskap', label: t('or.lanskap') }];
+    const last = [optGroup(t('opt.gaya'), 'gaya', gaya, p.gaya), optGroup(t('opt.kertas'), 'kertas', kertas, p.kertas), optGroup(t('opt.orientasi'), 'orientasi', ori, p.orientasi)];
+    if (r.hasAnswers) last.push(optGroup(t('opt.kunci'), 'kunci', [{ v: true, label: t('opt.ya') }, { v: false, label: t('opt.tidak') }], p.kunci));
+    box.appendChild(step(nr, t('step.gaya'), last));
+  }
+
+  function renderPreview() {
+    const sheet = $('#sheet');
+    sheet.innerHTML = state.svgs[state.page] || '';
+    const thumbs = $('#thumbs');
+    thumbs.innerHTML = '';
+    state.svgs.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'thumb' + (i === state.page ? ' on' : '');
+      b.dataset.page = String(i);
+      b.innerHTML = s;
+      const cap = document.createElement('span');
+      cap.textContent = i < state.doc.pages.length ? String(i + 1) : t('thumb.kunci');
+      b.appendChild(cap);
+      thumbs.appendChild(b);
+    });
+  }
+
+  function renderBundle() {
+    $('#bundle-count').textContent = String(state.bundle.length);
+    const list = $('#bundle-list');
+    list.innerHTML = '';
+    state.bundle.forEach((d, i) => {
+      const item = document.createElement('span');
+      item.className = 'bundle-item';
+      item.appendChild(document.createTextNode(WS.registry.get(d.resepId).nama));
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.dataset.action = 'bundle-hapus';
+      del.dataset.i = String(i);
+      del.setAttribute('aria-label', t('btn.hapus'));
+      del.textContent = '×';
+      item.appendChild(del);
+      list.appendChild(item);
+    });
+  }
+
+  async function generate() {
+    const token = ++state.token;
+    const doc = WS.doc.create(state.resepId, state.params, state.seed);
+    await WS.icons.load(WS.page.iconNames(doc), WS.page.theme(doc.params).iconVariant);
+    if (token !== state.token) return;
+    state.doc = doc;
+    state.svgs = WS.page.renderAll(doc, { profil: {} });
+    state.page = Math.min(state.page, state.svgs.length - 1);
+    renderPreview();
+  }
+
+  function selectRecipe(id) {
+    state.resepId = id;
+    const keep = {};
+    ['gaya', 'kertas', 'orientasi', 'kunci'].forEach(k => { if (state.params[k] != null) keep[k] = state.params[k]; });
+    state.params = WS.doc.normalize(WS.registry.get(id), keep);
+    state.seed = WS.rng.newSeed();
+    state.page = 0;
+    buildSettings();
+    generate();
+  }
+
+  function selectGroup(grupId) {
+    if (state.mode === 'ai') {
+      WS.aiMode.setGroup(grupId || null);
+      buildSidebar();
+      document.body.classList.remove('nav-open');
+      return;
+    }
+    state.grup = grupId;
+    buildSidebar();
+    selectRecipe(presisiRecipes(grupId)[0].id);
+    document.body.classList.remove('nav-open');
+  }
+
+  const NAV_KEY = 'ws.navHidden';
+
+  function isDesktop() {
+    return window.matchMedia('(min-width:1024px)').matches;
+  }
+
+  // Sidebar desktop bisa disembunyikan; pilihan diingat per browser (abaikan kalau storage diblokir).
+  function setNavHidden(on) {
+    document.body.classList.toggle('nav-hidden', on);
+    try { localStorage.setItem(NAV_KEY, on ? '1' : '0'); } catch (e) { /* storage tidak tersedia */ }
+  }
+
+  function setBusy(on) {
+    document.querySelectorAll('[data-action="pdf"],[data-action="bundle-pdf"]').forEach(b => { b.disabled = on; });
+    $('#busy').hidden = !on;
+  }
+
+  async function exportPdf(docs, filename) {
+    if (state.busy) return;
+    state.busy = true;
+    setBusy(true);
+    try {
+      const svgs = [];
+      for (const d of docs) {
+        await WS.icons.load(WS.page.iconNames(d), WS.page.theme(d.params).iconVariant);
+        WS.page.renderAll(d, { profil: {} }).forEach(s => svgs.push(s));
+      }
+      const blob = await WS.pdf.build(svgs);
+      await WS.download(blob, filename);
+    } catch (e) {
+      console.error(e);
+      WS.uiNotify(t('msg.pdfGagal'));
+    } finally {
+      state.busy = false;
+      setBusy(false);
+    }
+  }
+
+  const actions = {
+    buat() {
+      state.seed = WS.rng.newSeed();
+      state.page = 0;
+      generate();
+    },
+    pdf() {
+      return exportPdf([state.doc], 'worksheet-' + state.doc.resepId + '-' + state.doc.seed.toString(36) + '.pdf');
+    },
+    bundle() {
+      state.bundle.push(JSON.parse(JSON.stringify(state.doc)));
+      renderBundle();
+      WS.toast(t('msg.ditambah'));
+    },
+    'bundle-pdf'() {
+      if (!state.bundle.length) return WS.uiNotify(t('bundle.kosong'));
+      return exportPdf(state.bundle, 'bundle-worksheet.pdf');
+    },
+    'bundle-hapus'(el) {
+      state.bundle.splice(Number(el.dataset.i), 1);
+      renderBundle();
+    },
+    'tema-ai'() {
+      WS.aiPanel.open(theme => {
+        if (theme) state.params.tema = 'ai:' + theme.id;
+        else if (String(state.params.tema).startsWith('ai:') && !WS.aiThemes.get(String(state.params.tema).slice(3))) state.params.tema = 'acak';
+        buildSettings();
+        generate();
+      });
+    },
+    mode(el) {
+      setMode(el.dataset.mode);
+    },
+    lihat() {
+      if (!state.doc) return;
+      WS.viewer.open(state.svgs.map((svg, i) => ({ svg, label: i < state.doc.pages.length ? t('view.hal') + ' ' + (i + 1) : t('view.kunci') })), state.page);
+    },
+    'nav-toggle'() {
+      if (isDesktop()) setNavHidden(!document.body.classList.contains('nav-hidden'));
+      else document.body.classList.add('nav-open');
+    },
+    'nav-tutup'() {
+      document.body.classList.remove('nav-open');
+      if (isDesktop()) setNavHidden(true);
+    }
+  };
+  actions.acak = actions.buat;
+
+  function onClick(e) {
+    const sec = e.target.closest('.nav-sec');
+    if (sec) {
+      if (state.mode === 'ai') {
+        WS.aiMode.setJenjang(sec.dataset.jenjang);
+        document.body.classList.remove('nav-open');
+      }
+      return;
+    }
+    const nav = e.target.closest('.nav-item');
+    if (nav) return selectGroup(nav.dataset.grup);
+    const rc = e.target.closest('[data-resep]');
+    if (rc) return selectRecipe(rc.dataset.resep);
+    const opt = e.target.closest('[data-key]');
+    if (opt) {
+      state.params[opt.dataset.key] = JSON.parse(opt.dataset.val);
+      if (opt.dataset.key === 'halaman' || opt.dataset.key === 'kunci') state.page = 0;
+      buildSettings();
+      return generate();
+    }
+    if (e.target.closest('#sheet')) return actions.lihat();
+    const th = e.target.closest('.thumb');
+    if (th) {
+      state.page = Number(th.dataset.page);
+      return renderPreview();
+    }
+    const act = e.target.closest('[data-action]');
+    if (act && actions[act.dataset.action]) return actions[act.dataset.action](act);
+  }
+
+  function init() {
+    document.title = t('app.title');
+    document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+    document.addEventListener('click', onClick);
+    try { document.body.classList.toggle('nav-hidden', localStorage.getItem(NAV_KEY) === '1'); } catch (e) { /* storage tidak tersedia */ }
+    $('.mode-switch').hidden = !PRESISI;
+    if (PRESISI) {
+      const first = WS.registry.GROUPS.find(g => presisiRecipes(g.id).length);
+      selectGroup(first.id);
+    }
+    renderBundle();
+    WS.aiMode.mount($('#ai-mode'));
+    setMode('ai');
+    WS.store.getAll().then(list => {
+      list.forEach(th => WS.aiThemes.add(th));
+      if (list.length && state.resepId) buildSettings();
+      WS.aiMode.refresh();
+    });
+  }
+
+  function addToBundle(docs) {
+    docs.forEach(d => state.bundle.push(JSON.parse(JSON.stringify(d))));
+    renderBundle();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+
+  WS.app = { state, generate, exportPdf, addToBundle, refreshNav: buildSidebar };
+})(globalThis.WS);
+
