@@ -1240,7 +1240,6 @@ globalThis.WS = globalThis.WS || {};
 (function (WS) {
   'use strict';
 
-  // Latihan Menggunting digambar kode (bukan AI): garis potong harus presisi & bisa dipotong anak.
   const TEMA = ['hewan', 'buah', 'kendaraan', 'alam'];
   const LEVEL = {
     mudah: { bentuk: ['lurus', 'lurus', 'lengkung', 'zigzag'], amp: 0.7 },
@@ -1794,7 +1793,16 @@ globalThis.WS = globalThis.WS || {};
     return docs.slice().sort((a, b) => b.created - a.created).slice(0, max);
   }
 
-  WS.aiPool = { JENJANG, pool, prune };
+  function usable(doc) {
+    try {
+      WS.page.render(doc, 0);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  WS.aiPool = { JENJANG, pool, prune, usable };
 })(globalThis.WS);
 
 /* ui/i18n.js */
@@ -1969,13 +1977,17 @@ globalThis.WS = globalThis.WS || {};
   const URL_WORKER = LOCAL ? 'http://127.0.0.1:8790/' : 'https://worksheet-auth.mursalinasrul.workers.dev/';
   const APP_KEY = '076be832d03132e220742b2aacb757022142';
 
+  const mem = new Map();
+
   function store(key, value) {
     try {
       if (value === undefined) return localStorage.getItem(key);
       if (value === null) localStorage.removeItem(key);
       else localStorage.setItem(key, value);
     } catch (e) {
-      return null;
+      if (value === undefined) return mem.has(key) ? mem.get(key) : null;
+      if (value === null) mem.delete(key);
+      else mem.set(key, value);
     }
     return value;
   }
@@ -2439,7 +2451,6 @@ globalThis.WS = globalThis.WS || {};
   }
 
   async function post(model, body, signal) {
-    // Mode CDN: kunci dari shell Canvas (window.__wsApiKey); mode index.html: apiKey di atas.
     const key = apiKey || globalThis.__wsApiKey || '';
     const res = await fetch(BASE + model + ':generateContent?key=' + key, {
       method: 'POST',
@@ -3555,9 +3566,10 @@ globalThis.WS = globalThis.WS || {};
     root.addEventListener('input', onInput);
     renderControls();
     renderGallery();
-    WS.store.docs.getAll().then(list => {
-      const keep = WS.aiPool.prune(list.filter(d => d && d.id && d.pages), MAX_SIMPAN);
+    WS.store.docs.getAll().then(async list => {
+      const keep = WS.aiPool.prune(list.filter(d => d && d.id && WS.aiPool.usable(d)), MAX_SIMPAN);
       list.filter(d => d && d.id && !keep.includes(d)).forEach(d => WS.store.docs.del(d.id));
+      await Promise.all(keep.map(d => WS.icons.load(WS.page.iconNames(d), WS.page.theme(d.params).iconVariant)));
       const ids = new Set(st.docs.map(d => d.id));
       st.docs = st.docs.concat(keep.filter(d => !ids.has(d.id)));
       renderGallery();
@@ -3594,7 +3606,6 @@ globalThis.WS = globalThis.WS || {};
   'use strict';
 
   const t = WS.t;
-  // Mode Presisi disembunyikan dulu (kodenya tetap ada) — lihat ideas-backlog.md.
   const PRESISI = false;
   const state = { mode: 'presisi', grup: null, resepId: null, params: {}, seed: 0, doc: null, svgs: [], page: 0, bundle: [], busy: false, token: 0 };
   const $ = sel => document.querySelector(sel);
@@ -3795,10 +3806,9 @@ globalThis.WS = globalThis.WS || {};
     return window.matchMedia('(min-width:1024px)').matches;
   }
 
-  // Sidebar desktop bisa disembunyikan; pilihan diingat per browser (abaikan kalau storage diblokir).
   function setNavHidden(on) {
     document.body.classList.toggle('nav-hidden', on);
-    try { localStorage.setItem(NAV_KEY, on ? '1' : '0'); } catch (e) { /* storage tidak tersedia */ }
+    try { localStorage.setItem(NAV_KEY, on ? '1' : '0'); } catch (e) { return; }
   }
 
   function setBusy(on) {
@@ -3916,7 +3926,7 @@ globalThis.WS = globalThis.WS || {};
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
     document.addEventListener('click', onClick);
-    try { document.body.classList.toggle('nav-hidden', localStorage.getItem(NAV_KEY) === '1'); } catch (e) { /* storage tidak tersedia */ }
+    try { document.body.classList.toggle('nav-hidden', localStorage.getItem(NAV_KEY) === '1'); } catch (e) { document.body.classList.remove('nav-hidden'); }
     $('.mode-switch').hidden = !PRESISI;
     if (PRESISI) {
       const first = WS.registry.GROUPS.find(g => presisiRecipes(g.id).length);
