@@ -332,6 +332,16 @@ globalThis.WS = globalThis.WS || {};
     tikus: { hex: '1F401', label: 'Tikus', tema: 'hewan' },
     monyet: { hex: '1F412', label: 'Monyet', tema: 'hewan' },
     beruang: { hex: '1F43B', label: 'Beruang', tema: 'hewan' },
+    domba: { hex: '1F411', label: 'Domba', tema: 'hewan' },
+    flamingo: { hex: '1F9A9', label: 'Flamingo', tema: 'hewan' },
+    harimau: { hex: '1F405', label: 'Harimau', tema: 'hewan' },
+    ular: { hex: '1F40D', label: 'Ular', tema: 'hewan' },
+    zebra: { hex: '1F993', label: 'Zebra', tema: 'hewan' },
+    unta: { hex: '1F42A', label: 'Unta', tema: 'hewan' },
+    nanas: { hex: '1F34D', label: 'Nanas', tema: 'buah' },
+    cabai: { hex: '1F336', label: 'Cabai', tema: 'makanan' },
+    'es-krim': { hex: '1F366', label: 'Es Krim', tema: 'makanan' },
+    yoyo: { hex: '1FA80', label: 'Yoyo', tema: 'benda' },
     mobil: { hex: '1F697', label: 'Mobil', tema: 'kendaraan' },
     bus: { hex: '1F68C', label: 'Bus', tema: 'kendaraan' },
     sepeda: { hex: '1F6B2', label: 'Sepeda', tema: 'kendaraan' },
@@ -349,6 +359,7 @@ globalThis.WS = globalThis.WS || {};
   };
 
   const TEMA = { buah: 'Buah', hewan: 'Hewan', kendaraan: 'Kendaraan', alam: 'Alam' };
+  const TEMA_ACAK = ['hewan', 'buah', 'kendaraan', 'alam'];
 
   const PAIRS = [
     { from: 'lebah', to: 'bunga' },
@@ -371,6 +382,17 @@ globalThis.WS = globalThis.WS || {};
   function byTema(tema) {
     if (String(tema).startsWith('ai:')) return WS.aiThemes.names(tema.slice(3));
     return Object.keys(ICONS).filter(k => ICONS[k].tema === tema);
+  }
+
+  function pool(tema, rnd) {
+    const t = String(tema || '');
+    if (t.startsWith('ai:')) {
+      const th = WS.aiThemes.get(t.slice(3));
+      const names = WS.aiThemes.names(t.slice(3));
+      if (th && names.length) return { names, label: th.topik };
+    }
+    const key = TEMA[t] ? t : WS.rng.pick(rnd, TEMA_ACAK);
+    return { names: byTema(key), label: TEMA[key] };
   }
 
   function label(name) {
@@ -425,7 +447,7 @@ globalThis.WS = globalThis.WS || {};
     return WS.svg.el('svg', { x, y, width: size, height: size, viewBox: '0 0 72 72' }, cache[variant][name] || FALLBACK);
   }
 
-  WS.icons = { BASE, ICONS, TEMA, PAIRS, exists, byTema, label, temaChoices, url, innerOf, set, has, load, use };
+  WS.icons = { BASE, ICONS, TEMA, PAIRS, exists, byTema, pool, label, temaChoices, url, innerOf, set, has, load, use };
 })(globalThis.WS);
 
 /* render/themes.js */
@@ -833,6 +855,233 @@ globalThis.WS = globalThis.WS || {};
   WS.layouts = { 'baris-penuh': barisPenuh, 'garis-tulis': garisTulis, 'kanvas-penuh': kanvasPenuh, gunting, 'gambar-ai': gambarAi };
 })(globalThis.WS);
 
+/* render/layouts-kode.js */
+(function (WS) {
+  'use strict';
+
+  const S = WS.svg;
+  const n = WS.svg.n;
+
+  function uniq(list) {
+    return Array.from(new Set(list));
+  }
+
+  function grid(area, cols, rows, gap) {
+    const out = [];
+    WS.fit.rows(area, rows, gap).forEach(r => {
+      const w = (r.w - gap * (cols - 1)) / cols;
+      for (let c = 0; c < cols; c++) out.push({ x: r.x + c * (w + gap), y: r.y, w, h: r.h });
+    });
+    return out;
+  }
+
+  function centered(box, count, max) {
+    const ps = WS.fit.icons(box, count, max);
+    if (!ps.length) return ps;
+    const right = Math.max(...ps.map(p => p.x + p.size));
+    const dx = (box.x + box.w - right) / 2;
+    return ps.map(p => ({ x: p.x + dx, y: p.y, size: p.size }));
+  }
+
+  function frame(theme, x, y, w, h) {
+    return S.el('rect', { x, y, width: w, height: h, rx: Math.min(4, Math.min(w, h) * 0.08), fill: 'none', stroke: theme.ink, 'stroke-opacity': 0.35, 'stroke-width': 0.5 });
+  }
+
+  function ring(theme, cx, cy, r) {
+    return S.el('circle', { cx, cy, r, fill: 'none', stroke: theme.answerColor, 'stroke-width': 0.9 });
+  }
+
+  function label(theme, x, y, str, size, extra) {
+    return S.text(x, y, str, Object.assign({ 'font-family': theme.font.body, 'font-size': size, fill: theme.ink }, extra || {}));
+  }
+
+  const banding = {
+    icons(page) {
+      return uniq(page.items[0].baris.map(b => b.icon));
+    },
+    render(page, area, theme, ctx) {
+      const baris = page.items[0].baris;
+      let out = '';
+      WS.fit.rows(area, baris.length, 3).forEach((r, i) => {
+        const b = baris[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.1);
+        const br = Math.min(r.h * 0.2, 5);
+        out += theme.badge(i + 1, r.x + pad + br, r.y + r.h / 2, br);
+        const x0 = r.x + pad + br * 2 + 4;
+        const gap = 6;
+        const bw = (r.x + r.w - pad - x0 - gap) / 2;
+        const bh = r.h - pad * 2;
+        [b.kiri, b.kanan].forEach((jml, k) => {
+          const bx = x0 + k * (bw + gap);
+          const by = r.y + pad;
+          out += theme.answerBox(bx, by, bw, bh);
+          centered({ x: bx + 2, y: by + 2, w: bw - 4, h: bh - 4 }, jml, 16).forEach(p => {
+            out += WS.icons.use(b.icon, p.x, p.y, p.size, ctx.iconVariant);
+          });
+          if (ctx.kunci && jml > (k ? b.kiri : b.kanan)) {
+            out += S.el('rect', { x: bx - 1, y: by - 1, width: bw + 2, height: bh + 2, rx: 4, fill: 'none', stroke: theme.answerColor, 'stroke-width': 1.1 });
+          }
+        });
+      });
+      return out;
+    }
+  };
+
+  const warnai = {
+    variant: 'black',
+    icons(page) {
+      return uniq([].concat(...page.items[0].kotak.map(k => k.icons)));
+    },
+    render(page, area, theme, ctx) {
+      const kotak = page.items[0].kotak;
+      let out = '';
+      grid(area, 2, 2, 4).forEach((c, i) => {
+        const k = kotak[i];
+        out += frame(theme, c.x, c.y, c.w, c.h);
+        const r = Math.min(7, c.h * 0.12);
+        const cx = c.x + 3 + r;
+        const cy = c.y + 3 + r;
+        out += S.el('circle', { cx, cy, r, fill: 'none', stroke: theme.ink, 'stroke-width': 0.6 });
+        out += S.text(cx, cy + r * 0.42, String(k.n), { 'font-family': theme.font.title, 'font-weight': 'bold', 'font-size': r * 1.25, fill: theme.ink, 'text-anchor': 'middle' });
+        const top = cy + r + 2;
+        centered({ x: c.x + 4, y: top, w: c.w - 8, h: c.y + c.h - 3 - top }, k.icons.length, 30).forEach((p, j) => {
+          out += WS.icons.use(k.icons[j], p.x, p.y, p.size, ctx.iconVariant);
+          if (ctx.kunci && j < k.n) out += ring(theme, p.x + p.size / 2, p.y + p.size / 2, p.size * 0.55);
+        });
+      });
+      return out;
+    }
+  };
+
+  const huruf = {
+    icons(page) {
+      return page.items[0].kotak.map(k => k.icon);
+    },
+    render(page, area, theme, ctx) {
+      const kotak = page.items[0].kotak;
+      const land = area.w > area.h;
+      let out = '';
+      grid(area, land ? 3 : 2, land ? 2 : 3, 4).forEach((c, i) => {
+        const k = kotak[i];
+        out += frame(theme, c.x, c.y, c.w, c.h);
+        const br = Math.min(4, c.h * 0.08);
+        out += theme.badge(i + 1, c.x + 2.5 + br, c.y + 2.5 + br, br);
+        const opts = k.pilihan.length;
+        const lr = Math.min((c.w - 8) / (opts * 2.6), c.h * 0.11, 8);
+        const ly = c.y + c.h - 3 - lr;
+        const top = c.y + 4;
+        const bottom = ly - lr - 3 - (ctx.kunci ? 5 : 0);
+        const s = Math.max(4, Math.min(bottom - top, c.w * 0.6));
+        out += WS.icons.use(k.icon, c.x + (c.w - s) / 2, top + (bottom - top - s) / 2, s, ctx.iconVariant);
+        if (ctx.kunci) out += label(theme, c.x + c.w / 2, bottom + 4, k.kata, 3.6, { fill: theme.answerColor, 'text-anchor': 'middle' });
+        const span = (c.w - 8) / opts;
+        k.pilihan.forEach((h, j) => {
+          const cx = c.x + 4 + span * (j + 0.5);
+          const benar = ctx.kunci && h.toUpperCase() === k.huruf;
+          out += S.el('circle', { cx, cy: ly, r: lr, fill: 'none', stroke: benar ? theme.answerColor : theme.ink, 'stroke-width': benar ? 1.2 : 0.5 });
+          out += S.text(cx, ly + lr * 0.43, h, { 'font-family': theme.font.title, 'font-weight': 'bold', 'font-size': lr * 1.25, fill: theme.ink, 'text-anchor': 'middle' });
+        });
+      });
+      return out;
+    }
+  };
+
+  const beda = {
+    icons(page) {
+      const it = page.items[0];
+      return uniq(it.a.concat(it.beda.filter(d => d.icon).map(d => d.icon)));
+    },
+    render(page, area, theme, ctx) {
+      const it = page.items[0];
+      const strip = Math.min(10, area.h * 0.08);
+      const body = { x: area.x, y: area.y, w: area.w, h: area.h - strip - 2 };
+      const gap = 5;
+      const panels = body.h >= body.w
+        ? [{ x: body.x, y: body.y, w: body.w, h: (body.h - gap) / 2 }, { x: body.x, y: body.y + (body.h + gap) / 2, w: body.w, h: (body.h - gap) / 2 }]
+        : [{ x: body.x, y: body.y, w: (body.w - gap) / 2, h: body.h }, { x: body.x + (body.w + gap) / 2, y: body.y, w: (body.w - gap) / 2, h: body.h }];
+      const diff = {};
+      it.beda.forEach(d => { diff[d.i] = d; });
+      let out = '';
+      panels.forEach((p, k) => {
+        out += frame(theme, p.x, p.y, p.w, p.h);
+        out += theme.badge(k + 1, p.x + 4.5, p.y + 5, 3);
+        const inner = { x: p.x + 9, y: p.y + 3, w: p.w - 12, h: p.h - 6 };
+        const cw = inner.w / it.cols;
+        const ch = inner.h / it.rows;
+        const s = Math.min(cw, ch) * 0.72;
+        it.a.forEach((name, i) => {
+          const cx = inner.x + cw * (i % it.cols + 0.5);
+          const cy = inner.y + ch * (Math.floor(i / it.cols) + 0.5);
+          const d = k === 1 ? diff[i] : null;
+          if (!d || d.jenis !== 'hilang') {
+            const sz = d && d.jenis === 'kecil' ? s * 0.55 : s;
+            out += WS.icons.use(d && d.jenis === 'ganti' ? d.icon : name, cx - sz / 2, cy - sz / 2, sz, ctx.iconVariant);
+          }
+          if (d && ctx.kunci) out += ring(theme, cx, cy, s * 0.62);
+        });
+      });
+      const sy = area.y + area.h - strip / 2;
+      out += label(theme, area.x, sy + 1.3, ctx.kunci ? 'Ada ' + it.beda.length + ' perbedaan.' : 'Centang setiap perbedaan yang kamu temukan:', 3.6, ctx.kunci ? { fill: theme.answerColor } : null);
+      it.beda.forEach((_, i) => {
+        out += S.el('circle', { cx: area.x + area.w - (it.beda.length - i) * 7 + 3, cy: sy, r: 2.6, fill: 'none', stroke: theme.ink, 'stroke-width': 0.5 });
+      });
+      return out;
+    }
+  };
+
+  const titik = {
+    icons() {
+      return [];
+    },
+    render(page, area, theme, ctx) {
+      const it = page.items[0];
+      const foot = Math.min(14, area.h * 0.1);
+      const box = { x: area.x, y: area.y, w: area.w, h: area.h - foot - 3 };
+      const pad = 7;
+      const k = Math.min((box.w - pad * 2) / it.lebar, (box.h - pad * 2) / it.tinggi);
+      const ox = box.x + (box.w - it.lebar * k) / 2;
+      const oy = box.y + (box.h - it.tinggi * k) / 2;
+      const P = it.titik.map(([x, y]) => [ox + x * k, oy + y * k]);
+      const cx = P.reduce((a, p) => a + p[0], 0) / P.length;
+      const cy = P.reduce((a, p) => a + p[1], 0) / P.length;
+      const fs = P.length <= 12 ? 5 : P.length <= 20 ? 4.2 : 3.6;
+      let out = '';
+      if (ctx.kunci) out += S.el('polygon', { points: P.map(p => n(p[0]) + ',' + n(p[1])).join(' '), fill: 'none', stroke: theme.answerColor, 'stroke-width': 0.9, 'stroke-linejoin': 'round' });
+      P.forEach((p, i) => {
+        const dx = p[0] - cx, dy = p[1] - cy;
+        const len = Math.hypot(dx, dy) || 1;
+        out += S.el('circle', { cx: p[0], cy: p[1], r: i ? 1.1 : 1.6, fill: i ? theme.ink : '#16a34a' });
+        out += label(theme, p[0] + dx / len * fs * 1.15, p[1] + dy / len * fs * 1.15 + fs * 0.35, String(i + 1), fs, { 'text-anchor': 'middle', 'font-weight': i ? null : 'bold' });
+      });
+      const fy = area.y + area.h - foot;
+      out += label(theme, area.x, fy + foot * 0.62, 'Gambar apakah ini?', 4);
+      out += theme.answerBox(area.x + 44, fy, area.w - 44, foot);
+      if (ctx.kunci) out += label(theme, area.x + 48, fy + foot * 0.66, it.nama, 4.4, { fill: theme.answerColor, 'font-weight': 'bold' });
+      return out;
+    }
+  };
+
+  function legacy(layout) {
+    const lokal = page => page.items[0].mode === 'lokal';
+    return {
+      variant: layout.variant,
+      icons: page => (lokal(page) ? layout.icons(page) : []),
+      render: (page, area, theme, ctx) => (lokal(page) ? layout : WS.layouts['gambar-ai']).render(page, area, theme, ctx),
+      hasKunci: page => lokal(page) || !!(page.items[0].kunci && page.items[0].kunci.length)
+    };
+  }
+
+  Object.assign(WS.layouts, {
+    'kode-labirin': legacy(WS.layouts['kanvas-penuh']),
+    'kode-banding': legacy(banding),
+    'kode-warnai': legacy(warnai),
+    'kode-huruf': legacy(huruf),
+    'kode-beda': legacy(beda),
+    'kode-titik': legacy(titik)
+  });
+})(globalThis.WS);
+
 /* render/text.js */
 (function (WS) {
   'use strict';
@@ -1040,7 +1289,7 @@ globalThis.WS = globalThis.WS || {};
     const layout = WS.layouts[recipe.layout];
     const ctx = ctxFor(doc.params, recipe, {
       judul: doc.judul, instruksi: doc.instruksi, profil: o.profil || WS.page.profil || {},
-      pageNo: i + 1, pageCount: doc.pages.length, kunci: !!o.kunci, iconVariant: th.iconVariant
+      pageNo: i + 1, pageCount: doc.pages.length, kunci: !!o.kunci, iconVariant: layout.variant || th.iconVariant
     });
     const chrome = th.chrome(ctx);
     const body = layout.render(doc.pages[i], chrome.area, th, ctx);
@@ -1051,9 +1300,12 @@ globalThis.WS = globalThis.WS || {};
   function renderAll(doc, opts) {
     const o = opts || {};
     const recipe = WS.registry.get(doc.resepId);
+    const layout = WS.layouts[recipe.layout];
     const out = doc.pages.map((_, i) => render(doc, i, { profil: o.profil }));
     if (doc.params.kunci && recipe.hasAnswers) {
-      doc.pages.forEach((_, i) => out.push(render(doc, i, { profil: o.profil, kunci: true })));
+      doc.pages.forEach((pg, i) => {
+        if (!layout.hasKunci || layout.hasKunci(pg)) out.push(render(doc, i, { profil: o.profil, kunci: true }));
+      });
     }
     return out;
   }
@@ -1066,7 +1318,17 @@ globalThis.WS = globalThis.WS || {};
     return Array.from(s);
   }
 
-  WS.page = { LEVEL, ctxFor, theme, contentArea, render, renderAll, iconNames, profil: {} };
+  function loadIcons(doc) {
+    const recipe = WS.registry.get(doc.resepId);
+    const layout = WS.layouts[recipe.layout];
+    const th = theme(doc.params);
+    const variant = layout.variant || th.iconVariant;
+    const own = new Set();
+    doc.pages.forEach(pg => layout.icons(pg).forEach(nm => own.add(nm)));
+    return Promise.all([WS.icons.load(th.icons, th.iconVariant), WS.icons.load(Array.from(own), variant)]);
+  }
+
+  WS.page = { LEVEL, ctxFor, theme, contentArea, render, renderAll, iconNames, loadIcons, profil: {} };
 })(globalThis.WS);
 
 /* recipes/hitung-tulis.js */
@@ -1247,17 +1509,6 @@ globalThis.WS = globalThis.WS || {};
     sulit: { bentuk: ['zigzag', 'gelombang', 'tangga', 'lengkung', 'zigzag', 'gelombang'], amp: 1.3 }
   };
 
-  function pool(tema, rnd) {
-    const t = String(tema || '');
-    if (t.startsWith('ai:')) {
-      const th = WS.aiThemes.get(t.slice(3));
-      const names = WS.aiThemes.names(t.slice(3));
-      if (th && names.length) return { names, label: th.topik };
-    }
-    const key = TEMA.indexOf(t) >= 0 ? t : WS.rng.pick(rnd, TEMA);
-    return { names: WS.icons.byTema(key), label: WS.icons.TEMA[key] };
-  }
-
   WS.registry.define({
     id: 'ai-gunting',
     grup: 'motorik',
@@ -1273,7 +1524,7 @@ globalThis.WS = globalThis.WS || {};
     opsi: [],
     generatePage(params, rnd) {
       const lv = LEVEL[params.kesulitan] || LEVEL.mudah;
-      const p = pool(params.tema, rnd);
+      const p = WS.icons.pool(params.tema, rnd);
       const next = WS.rng.bag(rnd, p.names);
       const bentuk = [lv.bentuk[0]].concat(WS.rng.shuffle(rnd, lv.bentuk.slice(1)));
       return { items: [{ mode: 'lokal', status: 'ok', tema: p.label, baris: bentuk.map(shape => ({ shape, amp: lv.amp, icon: next() })), image: null, kunci: [], masalah: [] }] };
@@ -1436,20 +1687,6 @@ globalThis.WS = globalThis.WS || {};
       plan: o => ({ activity: 'Pre-writing tracing activity: 5 horizontal rows of thick dotted guide lines (straight, zigzag, wavy, curved and loops); each line leads from a cute ' + o.tema + ' picture on the left to another ' + o.tema + ' picture on the right.' })
     },
     {
-      id: 'ai-huruf-awal', grup: 'huruf', nama: 'Huruf Awal', judul: 'Huruf Awal Gambar', instruksi: 'Lingkari huruf awal dari nama setiap gambar.', kunci: true,
-      plan: (o, rnd) => {
-        const picks = R.shuffle(rnd, HURUF).slice(0, 6);
-        const lines = picks.map((p, i) => {
-          const others = R.shuffle(rnd, HURUF.filter(h => h[0] !== p[0])).slice(0, 2).map(h => h[0]);
-          return 'Box ' + (i + 1) + ': a picture of ' + p[2] + ' (Indonesian word "' + p[1] + '"), letters under it: ' + R.shuffle(rnd, [p[0]].concat(others)).join(', ') + '.';
-        });
-        return {
-          activity: 'Beginning letter worksheet: 6 boxes in a 2 by 3 grid. Each box shows one picture and below it three capital letters inside circles so the child can circle the correct first letter.\n' + lines.join('\n'),
-          expect: picks.map((p, i) => (i + 1) + '. ' + p[0] + ' (' + p[1] + ')')
-        };
-      }
-    },
-    {
       id: 'ai-tebal-huruf', grup: 'huruf', nama: 'Menebalkan Huruf', judul: 'Ayo Menebalkan Huruf!', instruksi: 'Tebalkan huruf mengikuti titik-titik, lalu tulis sendiri.',
       plan: (o, rnd) => {
         const p = R.pick(rnd, HURUF);
@@ -1464,32 +1701,6 @@ globalThis.WS = globalThis.WS || {};
         return {
           activity: 'Counting worksheet: 6 numbered rows (1 to 6). Each row shows a line of identical ' + o.tema + ' pictures, clearly separated and easy to count, with an empty square answer box at the right end of the row. Exact number of pictures per row: ' + c.map((n, i) => 'row ' + (i + 1) + ' = ' + n).join(', ') + '.',
           expect: c.map((n, i) => (i + 1) + '. ' + n)
-        };
-      }
-    },
-    {
-      id: 'ai-warnai-sejumlah', grup: 'angka', nama: 'Warnai Sejumlah', judul: 'Warnai Sesuai Angka', instruksi: 'Warnai gambar sebanyak angka di setiap kotak.', kunci: true,
-      plan: (o, rnd) => {
-        const c = counts(rnd, o.level === 'sulit' ? 'sedang' : 'mudah', 4).map(n => Math.min(n, 8));
-        return {
-          activity: 'Color-the-amount worksheet: 4 large boxes in a 2 by 2 grid. Each box shows one big number at the top-left and exactly 8 small uncolored ' + o.tema + ' outline pictures. Numbers per box: ' + c.map((n, i) => 'box ' + (i + 1) + ' = ' + n).join(', ') + '.',
-          expect: c.map((n, i) => (i + 1) + '. warnai ' + n),
-          lineArt: true
-        };
-      }
-    },
-    {
-      id: 'ai-banyak-sedikit', grup: 'angka', nama: 'Lebih Banyak', judul: 'Mana yang Lebih Banyak?', instruksi: 'Lingkari kelompok yang jumlahnya lebih banyak.', kunci: true,
-      plan: (o, rnd) => {
-        const rows = Array.from({ length: 5 }, () => {
-          const a = R.int(rnd, 1, 8);
-          let b = R.int(rnd, 1, 8);
-          if (b === a) b = a === 8 ? 7 : a + 1;
-          return [a, b];
-        });
-        return {
-          activity: 'More-or-less worksheet: 5 numbered rows, each row split into a left box and a right box with groups of ' + o.tema + ' pictures to compare. Exact counts: ' + rows.map((r, i) => 'row ' + (i + 1) + ' left = ' + r[0] + ', right = ' + r[1]).join('; ') + '.',
-          expect: rows.map((r, i) => (i + 1) + '. ' + (r[0] > r[1] ? 'kiri' : 'kanan'))
         };
       }
     },
@@ -1517,29 +1728,8 @@ globalThis.WS = globalThis.WS || {};
       }
     },
     {
-      id: 'ai-beda', grup: 'logika', nama: 'Cari Perbedaan', judul: 'Cari Perbedaannya', instruksi: 'Lingkari bagian yang berbeda pada gambar kedua.', kunci: true,
-      plan: o => {
-        const n = { mudah: 3, sedang: 5, sulit: 7 }[o.level] || 3;
-        return { activity: 'Spot the difference worksheet: two nearly identical pictures about ' + o.tema + ', one above the other, with exactly ' + n + ' clear differences in the bottom picture.', expect: [n + ' perbedaan'] };
-      }
-    },
-    {
       id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', kunci: true,
       plan: o => ({ activity: 'Size ordering worksheet: 4 numbered rows, each row shows 4 copies of the same ' + o.tema + ' picture in different sizes in a shuffled order, with a small empty box under each picture to write numbers 1 to 4 from smallest to biggest.' })
-    },
-    {
-      id: 'ai-labirin', grup: 'puzzle-paud', nama: 'Labirin', judul: 'Labirin Seru', instruksi: 'Bantu temukan jalan dari awal sampai tujuan.',
-      plan: o => {
-        const size = { sedang: 'medium maze', sulit: 'harder maze with more turns' }[o.level] || 'simple maze with wide corridors';
-        return { activity: 'Maze puzzle: a ' + size + ' with exactly one solvable path, a cute ' + o.tema + ' character at the start and its goal object at the end, start and finish marked with arrows (no words).' };
-      }
-    },
-    {
-      id: 'ai-titik', grup: 'puzzle-paud', nama: 'Hubungkan Titik', judul: 'Hubungkan Titik-titik', instruksi: 'Hubungkan titik sesuai urutan angka, lalu warnai.',
-      plan: o => {
-        const n = { sedang: 20, sulit: 30 }[o.level] || 10;
-        return { activity: 'Connect the dots worksheet: numbered dots from 1 to ' + n + ' forming the outline of one ' + o.tema + ' object, numbers large and clearly readable, plus a small finished preview picture in a corner.', lineArt: true };
-      }
     }
   ];
 
@@ -1562,6 +1752,197 @@ globalThis.WS = globalThis.WS || {};
   }
 
   WS.aiCatalog = { LEVEL, ACAK, HURUF, RULES, style, temaText, ids };
+})(globalThis.WS);
+
+/* recipes/paud-kode.js */
+(function (WS) {
+  'use strict';
+
+  const R = WS.rng;
+
+  const HURUF = [
+    ['A', 'Apel', 'apel'], ['A', 'Anggur', 'anggur'], ['A', 'Anjing', 'anjing'],
+    ['B', 'Bola', 'bola'], ['B', 'Bunga', 'bunga'], ['B', 'Bus', 'bus'], ['B', 'Bintang', 'bintang'], ['B', 'Bulan', 'bulan'], ['B', 'Beruang', 'beruang'],
+    ['C', 'Cabai', 'cabai'], ['D', 'Domba', 'domba'], ['E', 'Es Krim', 'es-krim'], ['F', 'Flamingo', 'flamingo'],
+    ['G', 'Gajah', 'gajah'], ['H', 'Harimau', 'harimau'], ['I', 'Ikan', 'ikan'], ['J', 'Jeruk', 'jeruk'],
+    ['K', 'Kucing', 'kucing'], ['K', 'Kelinci', 'kelinci'], ['K', 'Keju', 'keju'], ['K', 'Kereta', 'kereta'], ['K', 'Kupu-kupu', 'kupu-kupu'],
+    ['L', 'Lebah', 'lebah'], ['M', 'Mobil', 'mobil'], ['M', 'Monyet', 'monyet'], ['M', 'Matahari', 'matahari'], ['N', 'Nanas', 'nanas'],
+    ['P', 'Pisang', 'pisang'], ['P', 'Pesawat', 'pesawat'], ['P', 'Perahu', 'perahu'], ['P', 'Pohon', 'pohon'], ['R', 'Rumah', 'rumah'],
+    ['S', 'Sepeda', 'sepeda'], ['S', 'Stroberi', 'stroberi'], ['S', 'Semangka', 'semangka'], ['T', 'Tikus', 'tikus'],
+    ['U', 'Ular', 'ular'], ['U', 'Unta', 'unta'], ['W', 'Wortel', 'wortel'], ['Y', 'Yoyo', 'yoyo'], ['Z', 'Zebra', 'zebra']
+  ];
+  const HURUF_LEVEL = { mudah: { opsi: 3, kecil: false }, sedang: { opsi: 4, kecil: false }, sulit: { opsi: 4, kecil: true } };
+  const BANDING = { mudah: [1, 5, 5], sedang: [1, 8, 8], sulit: [4, 10, 2] };
+  const WARNAI = { mudah: [1, 5], sedang: [2, 8], sulit: [4, 8] };
+  const BEDA = { mudah: { cols: 3, rows: 3, n: 3 }, sedang: { cols: 4, rows: 3, n: 5 }, sulit: { cols: 5, rows: 4, n: 7 } };
+  const MAZE = { mudah: 6, sedang: 9, sulit: 12 };
+  const TITIK = { mudah: 10, sedang: 20, sulit: 30 };
+
+  function bintang() {
+    return Array.from({ length: 10 }, (_, i) => {
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      const r = i % 2 ? 0.2 : 0.5;
+      return [0.5 + r * Math.cos(a), 0.5 + r * Math.sin(a)];
+    });
+  }
+
+  function hati() {
+    return Array.from({ length: 16 }, (_, i) => {
+      const t = i * Math.PI * 2 / 16;
+      return [16 * Math.pow(Math.sin(t), 3), -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t))];
+    });
+  }
+
+  const BENTUK = {
+    bintang: { nama: 'Bintang', v: bintang() },
+    berlian: { nama: 'Berlian', v: [[0.3, 0.15], [0.7, 0.15], [0.92, 0.38], [0.5, 0.92], [0.08, 0.38]] },
+    rumah: { nama: 'Rumah', v: [[0.15, 0.95], [0.15, 0.5], [0.05, 0.5], [0.5, 0.1], [0.95, 0.5], [0.85, 0.5], [0.85, 0.95], [0.6, 0.95], [0.6, 0.7], [0.4, 0.7], [0.4, 0.95]] },
+    ikan: { nama: 'Ikan', v: [[0.05, 0.5], [0.2, 0.32], [0.4, 0.25], [0.6, 0.3], [0.72, 0.42], [0.92, 0.25], [0.85, 0.5], [0.92, 0.75], [0.72, 0.58], [0.6, 0.7], [0.4, 0.75], [0.2, 0.68]] },
+    perahu: { nama: 'Perahu', v: [[0.08, 0.68], [0.45, 0.68], [0.45, 0.08], [0.82, 0.6], [0.52, 0.6], [0.52, 0.68], [0.92, 0.68], [0.76, 0.88], [0.24, 0.88]] },
+    kucing: { nama: 'Kucing', v: [[0.15, 0.1], [0.35, 0.3], [0.65, 0.3], [0.85, 0.1], [0.88, 0.45], [0.85, 0.7], [0.7, 0.88], [0.5, 0.93], [0.3, 0.88], [0.15, 0.7], [0.12, 0.45]] },
+    roket: { nama: 'Roket', v: [[0.5, 0.03], [0.62, 0.18], [0.64, 0.6], [0.78, 0.75], [0.78, 0.9], [0.62, 0.82], [0.58, 0.9], [0.42, 0.9], [0.38, 0.82], [0.22, 0.9], [0.22, 0.75], [0.36, 0.6], [0.38, 0.18]] },
+    pohon: { nama: 'Pohon Cemara', v: [[0.5, 0.05], [0.72, 0.3], [0.62, 0.3], [0.82, 0.55], [0.7, 0.55], [0.92, 0.8], [0.58, 0.8], [0.58, 0.95], [0.42, 0.95], [0.42, 0.8], [0.08, 0.8], [0.3, 0.55], [0.18, 0.55], [0.38, 0.3], [0.28, 0.3]] },
+    hati: { nama: 'Hati', v: hati() },
+    mobil: { nama: 'Mobil', v: [[0.05, 0.75], [0.05, 0.55], [0.2, 0.5], [0.32, 0.3], [0.68, 0.3], [0.8, 0.5], [0.95, 0.55], [0.95, 0.75], [0.85, 0.75], [0.8, 0.86], [0.68, 0.86], [0.63, 0.75], [0.37, 0.75], [0.32, 0.86], [0.2, 0.86], [0.15, 0.75]] }
+  };
+
+  function normalize(pts) {
+    const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+    const x0 = Math.min(...xs), y0 = Math.min(...ys);
+    const k = Math.max(Math.max(...xs) - x0, Math.max(...ys) - y0);
+    return pts.map(p => [(p[0] - x0) / k, (p[1] - y0) / k]);
+  }
+
+  function sample(verts, target) {
+    const nv = verts.length;
+    const next = i => verts[(i + 1) % nv];
+    const extra = Math.max(0, target - nv);
+    const lens = verts.map((p, i) => Math.hypot(next(i)[0] - p[0], next(i)[1] - p[1]));
+    const total = lens.reduce((a, b) => a + b, 0);
+    const raw = lens.map(l => l / total * extra);
+    const cnt = raw.map(Math.floor);
+    raw.map((r, i) => [r - cnt[i], i]).sort((a, b) => b[0] - a[0] || a[1] - b[1])
+      .slice(0, extra - cnt.reduce((a, b) => a + b, 0)).forEach(([, i]) => { cnt[i]++; });
+    const out = [];
+    verts.forEach((p, i) => {
+      out.push(p);
+      const q = next(i);
+      for (let k = 1; k <= cnt[i]; k++) {
+        const f = k / (cnt[i] + 1);
+        out.push([p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f]);
+      }
+    });
+    return out;
+  }
+
+  function round(v) {
+    return Math.round(v * 1000) / 1000;
+  }
+
+  function lokal(extra) {
+    return { items: [Object.assign({ mode: 'lokal', status: 'ok', image: null, kunci: [], masalah: [] }, extra)] };
+  }
+
+  function define(cfg) {
+    WS.registry.define(Object.assign({ jenjang: 'paud', ai: true, lokal: true, hasAnswers: true, defaults: { tema: 'acak' }, opsi: [] }, cfg));
+  }
+
+  function distinct(rnd, lo, hi) {
+    const a = R.int(rnd, lo, hi);
+    let b = R.int(rnd, lo, hi - 1);
+    if (b >= a) b++;
+    return [a, b];
+  }
+
+  define({
+    id: 'ai-huruf-awal', grup: 'huruf', nama: 'Huruf Awal', judul: 'Huruf Awal Gambar', instruksi: 'Lingkari huruf awal dari nama setiap gambar.', layout: 'kode-huruf',
+    generatePage(params, rnd) {
+      const lv = HURUF_LEVEL[params.kesulitan] || HURUF_LEVEL.mudah;
+      const letters = Array.from(new Set(HURUF.map(h => h[0])));
+      const kotak = R.shuffle(rnd, letters).slice(0, 6).map(L => {
+        const h = R.pick(rnd, HURUF.filter(x => x[0] === L));
+        const lain = R.shuffle(rnd, letters.filter(x => x !== L)).slice(0, lv.opsi - 1);
+        const pilihan = R.shuffle(rnd, [L].concat(lain)).map(x => (lv.kecil ? x.toLowerCase() : x));
+        return { huruf: L, kata: h[1], icon: h[2], pilihan };
+      });
+      return lokal({ kotak });
+    }
+  });
+
+  define({
+    id: 'ai-warnai-sejumlah', grup: 'angka', nama: 'Warnai Sejumlah', judul: 'Warnai Sesuai Angka', instruksi: 'Warnai gambar sebanyak angka di setiap kotak.', layout: 'kode-warnai',
+    generatePage(params, rnd) {
+      const r = WARNAI[params.kesulitan] || WARNAI.mudah;
+      const pool = WS.icons.pool(params.tema, rnd);
+      const ambil = R.bag(rnd, pool.names);
+      const angka = R.bag(rnd, Array.from({ length: r[1] - r[0] + 1 }, (_, i) => r[0] + i));
+      const kotak = Array.from({ length: 4 }, () => {
+        const icon = ambil();
+        return { n: angka(), icons: Array(8).fill(icon) };
+      });
+      return lokal({ tema: pool.label, kotak });
+    }
+  });
+
+  define({
+    id: 'ai-banyak-sedikit', grup: 'angka', nama: 'Lebih Banyak', judul: 'Mana yang Lebih Banyak?', instruksi: 'Lingkari kelompok yang jumlahnya lebih banyak.', layout: 'kode-banding',
+    generatePage(params, rnd) {
+      const [lo, hi, selisih] = BANDING[params.kesulitan] || BANDING.mudah;
+      const pool = WS.icons.pool(params.tema, rnd);
+      const ambil = R.bag(rnd, pool.names);
+      const baris = Array.from({ length: 5 }, () => {
+        let pair = distinct(rnd, lo, hi);
+        while (Math.abs(pair[0] - pair[1]) > selisih) pair = distinct(rnd, lo, hi);
+        return { icon: ambil(), kiri: pair[0], kanan: pair[1] };
+      });
+      return lokal({ tema: pool.label, baris });
+    }
+  });
+
+  define({
+    id: 'ai-beda', grup: 'logika', nama: 'Cari Perbedaan', judul: 'Cari Perbedaannya', instruksi: 'Lingkari bagian yang berbeda pada gambar kedua.', layout: 'kode-beda',
+    generatePage(params, rnd, env) {
+      const lv = BEDA[params.kesulitan] || BEDA.mudah;
+      const tegak = env.aspect >= 1;
+      const cols = tegak ? lv.cols : lv.rows;
+      const rows = tegak ? lv.rows : lv.cols;
+      const pool = WS.icons.pool(params.tema, rnd);
+      const ambil = R.bag(rnd, pool.names);
+      const a = Array.from({ length: cols * rows }, () => ambil());
+      const jenis = R.bag(rnd, ['ganti', 'hilang', 'kecil']);
+      const beda = R.shuffle(rnd, a.map((_, i) => i)).slice(0, lv.n).sort((x, y) => x - y).map(i => {
+        const j = pool.names.length > 1 ? jenis() : R.pick(rnd, ['hilang', 'kecil']);
+        const d = { i, jenis: j };
+        if (j === 'ganti') d.icon = R.pick(rnd, pool.names.filter(nm => nm !== a[i]));
+        return d;
+      });
+      return lokal({ tema: pool.label, cols, rows, a, beda });
+    }
+  });
+
+  define({
+    id: 'ai-labirin', grup: 'puzzle-paud', nama: 'Labirin', judul: 'Labirin Seru', instruksi: 'Bantu temukan jalan dari awal sampai tujuan.', layout: 'kode-labirin',
+    generatePage(params, rnd, env) {
+      const cols = MAZE[params.kesulitan] || MAZE.mudah;
+      const rows = Math.max(4, Math.round(cols * env.aspect));
+      const cells = WS.maze.build(cols, rows, rnd);
+      const pair = R.pick(rnd, WS.icons.PAIRS);
+      return lokal({ type: 'maze', cols, rows, cells, start: [0, 0], end: [cols - 1, rows - 1], solution: WS.maze.solve(cells, cols, rows), from: pair.from, to: pair.to });
+    }
+  });
+
+  define({
+    id: 'ai-titik', grup: 'puzzle-paud', nama: 'Hubungkan Titik', judul: 'Hubungkan Titik-titik', instruksi: 'Hubungkan titik 1 sampai akhir, kembali ke 1, lalu warnai.', layout: 'kode-titik',
+    generatePage(params, rnd) {
+      const target = TITIK[params.kesulitan] || TITIK.mudah;
+      const ids = Object.keys(BENTUK).filter(k => BENTUK[k].v.length <= Math.max(12, target));
+      const b = BENTUK[R.pick(rnd, ids)];
+      const pts = sample(normalize(b.v), target).map(p => [round(p[0]), round(p[1])]);
+      return lokal({ nama: b.nama, titik: pts, lebar: Math.max(...pts.map(p => p[0])), tinggi: Math.max(...pts.map(p => p[1])) });
+    }
+  });
+
+  WS.paudKode = { HURUF, HURUF_LEVEL, BANDING, WARNAI, BEDA, MAZE, TITIK, BENTUK, normalize, sample };
 })(globalThis.WS);
 
 /* ai/checker.js */
@@ -2861,7 +3242,7 @@ globalThis.WS = globalThis.WS || {};
       while (next < docs.length) {
         const doc = docs[next++];
         try {
-          await WS.icons.load(WS.page.iconNames(doc), WS.page.theme(doc.params).iconVariant);
+          await WS.page.loadIcons(doc);
           const mode = doc.pages[0].items[0].mode;
           if (mode !== 'lokal') await (mode === 'teks' ? fillTeks : fill)(doc, opts);
         } catch (e) {
@@ -3569,7 +3950,7 @@ globalThis.WS = globalThis.WS || {};
     WS.store.docs.getAll().then(async list => {
       const keep = WS.aiPool.prune(list.filter(d => d && d.id && WS.aiPool.usable(d)), MAX_SIMPAN);
       list.filter(d => d && d.id && !keep.includes(d)).forEach(d => WS.store.docs.del(d.id));
-      await Promise.all(keep.map(d => WS.icons.load(WS.page.iconNames(d), WS.page.theme(d.params).iconVariant)));
+      await Promise.all(keep.map(d => WS.page.loadIcons(d)));
       const ids = new Set(st.docs.map(d => d.id));
       st.docs = st.docs.concat(keep.filter(d => !ids.has(d.id)));
       renderGallery();
@@ -3768,7 +4149,7 @@ globalThis.WS = globalThis.WS || {};
   async function generate() {
     const token = ++state.token;
     const doc = WS.doc.create(state.resepId, state.params, state.seed);
-    await WS.icons.load(WS.page.iconNames(doc), WS.page.theme(doc.params).iconVariant);
+    await WS.page.loadIcons(doc);
     if (token !== state.token) return;
     state.doc = doc;
     state.svgs = WS.page.renderAll(doc);
@@ -3823,7 +4204,7 @@ globalThis.WS = globalThis.WS || {};
     try {
       const svgs = [];
       for (const d of docs) {
-        await WS.icons.load(WS.page.iconNames(d), WS.page.theme(d.params).iconVariant);
+        await WS.page.loadIcons(d);
         WS.page.renderAll(d).forEach(s => svgs.push(s));
       }
       const blob = await WS.pdf.build(svgs);
