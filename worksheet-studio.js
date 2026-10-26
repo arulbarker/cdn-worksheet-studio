@@ -2282,6 +2282,7 @@ globalThis.WS = globalThis.WS || {};
       'aim.proses': 'AI sedang bekerja…',
       'aim.selesai': 'Selesai.',
       'aim.kuota': 'Semua halaman gagal. Coba lagi nanti, atau akun Google ini sudah mencapai batas.',
+      'aim.koneksi': 'Gambar gagal dimuat. Periksa koneksi internet, lalu tekan Buat lagi.',
       'aim.perluCek': 'Perlu dicek',
       'aim.gagal': 'Gagal',
       'aim.tidakAda': 'Belum ada worksheet yang siap diunduh.',
@@ -3241,14 +3242,20 @@ globalThis.WS = globalThis.WS || {};
     async function worker() {
       while (next < docs.length) {
         const doc = docs[next++];
+        let tahap = 'ikon';
         try {
           await WS.page.loadIcons(doc);
+          tahap = '';
           const mode = doc.pages[0].items[0].mode;
           if (mode !== 'lokal') await (mode === 'teks' ? fillTeks : fill)(doc, opts);
         } catch (e) {
           const it = doc.pages[0].items[0];
-          it.status = opts.signal.aborted || e.name === 'AbortError' ? 'batal' : 'gagal';
-          if (it.status === 'gagal') console.error(e);
+          tahap = tahap || it.status;
+          it.status = opts.signal.aborted || (e && e.name === 'AbortError') ? 'batal' : 'gagal';
+          if (it.status === 'gagal') {
+            it.galat = tahap + ': ' + String((e && e.message) || e).slice(0, 120);
+            console.error(e);
+          }
         }
         opts.onUpdate(doc);
       }
@@ -3256,7 +3263,14 @@ globalThis.WS = globalThis.WS || {};
     await Promise.all(Array.from({ length: Math.min(LIMIT, docs.length) }, worker));
   }
 
-  WS.aiPages = { run, fill, toJpeg };
+  function pesanAkhir(docs) {
+    const items = docs.map(d => d.pages[0].items[0]);
+    const gagal = items.filter(it => it.status === 'gagal');
+    if (gagal.length < items.length) return 'aim.selesai';
+    return gagal.every(it => /^ikon:/.test(it.galat || '')) ? 'aim.koneksi' : 'aim.kuota';
+  }
+
+  WS.aiPages = { run, fill, toJpeg, pesanAkhir };
 })(globalThis.WS);
 
 /* pdf/export.js */
@@ -3824,12 +3838,12 @@ globalThis.WS = globalThis.WS || {};
     st.ctrl = null;
     setRunning(false);
     docs.forEach(d => {
-      const s = d.pages[0].items[0].status;
-      if (s === 'gagal') WS.telemetry.error('ai_gagal', d.resepId);
+      const it = d.pages[0].items[0];
+      const s = it.status;
+      if (s === 'gagal') WS.telemetry.error('ai_gagal', d.resepId + (it.galat ? ' ' + it.galat : ''));
       else if (FINAL.includes(s)) WS.telemetry.event('ai_ok', d.resepId + ' ' + s);
     });
-    const failed = docs.filter(d => d.pages[0].items[0].status === 'gagal').length;
-    root.querySelector('.aim-status').textContent = failed === docs.length ? t('aim.kuota') : t('aim.selesai');
+    root.querySelector('.aim-status').textContent = t(WS.aiPages.pesanAkhir(docs));
   }
 
   function nextJenis() {
