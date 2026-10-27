@@ -895,6 +895,15 @@ globalThis.WS = globalThis.WS || {};
     return S.text(x, y, str, Object.assign({ 'font-family': theme.font.body, 'font-size': size, fill: theme.ink }, extra || {}));
   }
 
+  const hitung = {
+    icons(page) {
+      return WS.layouts['baris-penuh'].icons({ items: page.items[0].baris });
+    },
+    render(page, area, theme, ctx) {
+      return WS.layouts['baris-penuh'].render(Object.assign({}, page, { items: page.items[0].baris }), area, theme, ctx);
+    }
+  };
+
   const banding = {
     icons(page) {
       return uniq(page.items[0].baris.map(b => b.icon));
@@ -1073,6 +1082,7 @@ globalThis.WS = globalThis.WS || {};
   }
 
   Object.assign(WS.layouts, {
+    'kode-hitung': legacy(hitung),
     'kode-labirin': legacy(WS.layouts['kanvas-penuh']),
     'kode-banding': legacy(banding),
     'kode-warnai': legacy(warnai),
@@ -1644,7 +1654,6 @@ globalThis.WS = globalThis.WS || {};
   'use strict';
 
   const R = WS.rng;
-  const LEVEL = { mudah: [1, 5], sedang: [1, 10], sulit: [5, 15] };
   const TEMA_EN = { buah: 'fruits', hewan: 'cute animals', kendaraan: 'vehicles', alam: 'nature such as flowers, trees, sun and stars' };
   const ACAK = ['dinosaurs', 'ocean animals', 'farm animals', 'outer space', 'insects', 'vegetables', 'toys', 'jungle animals', 'transportation', 'weather', 'birds', 'cakes and sweets', 'musical instruments', 'Indonesian traditional food', 'pets', 'fruits', 'garden flowers', 'school supplies', 'camping', 'kitchen tools'];
   const HURUF = [
@@ -1673,14 +1682,6 @@ globalThis.WS = globalThis.WS || {};
     return WS.aiPrompt.cleanTopic(tema) || R.pick(rnd, ACAK);
   }
 
-  function counts(rnd, level, n) {
-    const r = LEVEL[level] || LEVEL.mudah;
-    const nums = [];
-    for (let v = r[0]; v <= r[1]; v++) nums.push(v);
-    const next = R.bag(rnd, nums);
-    return Array.from({ length: n }, () => next());
-  }
-
   const JENIS = [
     {
       id: 'ai-jejak-garis', grup: 'motorik', nama: 'Jejak Garis', judul: 'Ayo Menebalkan Garis!', instruksi: 'Tebalkan garis putus-putus dari gambar kiri ke kanan.',
@@ -1692,16 +1693,6 @@ globalThis.WS = globalThis.WS || {};
         const p = R.pick(rnd, HURUF);
         const l = p[0].toLowerCase();
         return { activity: 'Letter tracing worksheet for the letter "' + p[0] + l + '": a big example of capital ' + p[0] + ' and small ' + l + ' with numbered stroke arrows, then 4 rows of dotted letters ' + p[0] + ' and ' + l + ' to trace on handwriting guide lines, and a cute picture of ' + p[2] + ' (Indonesian word "' + p[1] + '").' };
-      }
-    },
-    {
-      id: 'ai-hitung', grup: 'angka', nama: 'Hitung Gambar', judul: 'Ayo Berhitung!', instruksi: 'Hitung bendanya, lalu tulis angkanya di kotak.', kunci: true,
-      plan: (o, rnd) => {
-        const c = counts(rnd, o.level, 6);
-        return {
-          activity: 'Counting worksheet: 6 numbered rows (1 to 6). Each row shows a line of identical ' + o.tema + ' pictures, clearly separated and easy to count, with an empty square answer box at the right end of the row. Exact number of pictures per row: ' + c.map((n, i) => 'row ' + (i + 1) + ' = ' + n).join(', ') + '.',
-          expect: c.map((n, i) => (i + 1) + '. ' + n)
-        };
       }
     },
     {
@@ -1751,7 +1742,7 @@ globalThis.WS = globalThis.WS || {};
     return JENIS.map(j => j.id);
   }
 
-  WS.aiCatalog = { LEVEL, ACAK, HURUF, RULES, style, temaText, ids };
+  WS.aiCatalog = { ACAK, HURUF, RULES, style, temaText, ids };
 })(globalThis.WS);
 
 /* recipes/paud-kode.js */
@@ -1772,6 +1763,7 @@ globalThis.WS = globalThis.WS || {};
     ['U', 'Ular', 'ular'], ['U', 'Unta', 'unta'], ['W', 'Wortel', 'wortel'], ['Y', 'Yoyo', 'yoyo'], ['Z', 'Zebra', 'zebra']
   ];
   const HURUF_LEVEL = { mudah: { opsi: 3, kecil: false }, sedang: { opsi: 4, kecil: false }, sulit: { opsi: 4, kecil: true } };
+  const HITUNG = { mudah: [1, 5], sedang: [1, 10], sulit: [5, 15] };
   const BANDING = { mudah: [1, 5, 5], sedang: [1, 8, 8], sulit: [4, 10, 2] };
   const WARNAI = { mudah: [1, 5], sedang: [2, 8], sulit: [4, 8] };
   const BEDA = { mudah: { cols: 3, rows: 3, n: 3 }, sedang: { cols: 4, rows: 3, n: 5 }, sulit: { cols: 5, rows: 4, n: 7 } };
@@ -1853,6 +1845,21 @@ globalThis.WS = globalThis.WS || {};
     if (b >= a) b++;
     return [a, b];
   }
+
+  define({
+    id: 'ai-hitung', grup: 'angka', nama: 'Hitung Gambar', judul: 'Ayo Berhitung!', instruksi: 'Hitung bendanya, lalu tulis angkanya di kotak.', layout: 'kode-hitung',
+    generatePage(params, rnd) {
+      const r = HITUNG[params.kesulitan] || HITUNG.mudah;
+      const pool = WS.icons.pool(params.tema, rnd);
+      const ambil = R.bag(rnd, pool.names);
+      const angka = R.bag(rnd, Array.from({ length: r[1] - r[0] + 1 }, (_, i) => r[0] + i));
+      const baris = Array.from({ length: 6 }, () => {
+        const k = angka();
+        return { icons: Array(k).fill(ambil()), answer: String(k) };
+      });
+      return lokal({ tema: pool.label, baris });
+    }
+  });
 
   define({
     id: 'ai-huruf-awal', grup: 'huruf', nama: 'Huruf Awal', judul: 'Huruf Awal Gambar', instruksi: 'Lingkari huruf awal dari nama setiap gambar.', layout: 'kode-huruf',
@@ -1942,7 +1949,7 @@ globalThis.WS = globalThis.WS || {};
     }
   });
 
-  WS.paudKode = { HURUF, HURUF_LEVEL, BANDING, WARNAI, BEDA, MAZE, TITIK, BENTUK, normalize, sample };
+  WS.paudKode = { HURUF, HURUF_LEVEL, HITUNG, BANDING, WARNAI, BEDA, MAZE, TITIK, BENTUK, normalize, sample };
 })(globalThis.WS);
 
 /* ai/checker.js */
