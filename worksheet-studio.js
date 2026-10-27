@@ -2840,7 +2840,26 @@ globalThis.WS = globalThis.WS || {};
       body: JSON.stringify(body),
       signal
     });
-    return res.json();
+    try {
+      return await res.json();
+    } catch (e) {
+      throw new Error('Respons bukan JSON [' + res.status + ']');
+    }
+  }
+
+  function alasan(result) {
+    const err = result && result.error;
+    if (err) return '[' + [err.code, err.status].filter(Boolean).join(' ') + '] ' + (err.message || '');
+    const block = result?.promptFeedback?.blockReason;
+    if (block) return '[blok ' + block + ']';
+    const c = result?.candidates?.[0];
+    const teks = (c?.content?.parts || []).map(p => p.text || '').join(' ').trim();
+    return c?.finishReason ? '[' + c.finishReason + ']' + (teks ? ' ' + teks : '') : teks;
+  }
+
+  function gagal(dasar, result) {
+    const a = alasan(result);
+    return new Error((a ? dasar + ' ' + a : dasar).replace(/AIza[\w-]+'?/g, 'AIza…').slice(0, 120));
   }
 
   function mockSoal() {
@@ -2868,7 +2887,7 @@ globalThis.WS = globalThis.WS || {};
     }, o.signal);
     const parts = result?.candidates?.[0]?.content?.parts || [];
     const out = parts.map(p => p.text || '').join('');
-    if (!out) throw new Error('Respons teks kosong');
+    if (!out) throw gagal('Respons teks kosong', result);
     return out;
   }
 
@@ -2937,7 +2956,7 @@ globalThis.WS = globalThis.WS || {};
       generationConfig: { responseModalities: ['TEXT', 'IMAGE'], imageConfig: { aspectRatio: aspect } }
     }, o.signal);
     const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-    if (!part) throw new Error('Gambar tidak diterima');
+    if (!part) throw gagal('Gambar tidak diterima', result);
     return 'data:' + (part.inlineData.mimeType || 'image/png') + ';base64,' + part.inlineData.data;
   }
 
@@ -2953,7 +2972,7 @@ globalThis.WS = globalThis.WS || {};
       generationConfig: { responseMimeType: 'application/json', temperature: 0.2 }
     }, o.signal);
     const out = (result?.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('');
-    if (!out) throw new Error('Respons cek kosong');
+    if (!out) throw gagal('Respons cek kosong', result);
     return out;
   }
 
