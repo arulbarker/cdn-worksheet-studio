@@ -904,6 +904,35 @@ globalThis.WS = globalThis.WS || {};
     }
   };
 
+  const pola = {
+    icons(page) {
+      return uniq([].concat(...page.items[0].baris.map(b => b.icons)));
+    },
+    render(page, area, theme, ctx) {
+      const baris = page.items[0].baris;
+      const maks = Math.max(...baris.map(b => b.icons.length)) + 1;
+      let out = '';
+      WS.fit.rows(area, baris.length, 3).forEach((r, i) => {
+        const b = baris[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.1);
+        const br = Math.min(r.h * 0.2, 5);
+        out += theme.badge(i + 1, r.x + pad + br, r.y + r.h / 2, br);
+        const x0 = r.x + pad + br * 2 + 4;
+        const sel = Math.min((r.x + r.w - pad - x0) / maks, r.h - pad * 2, 28);
+        const s = sel * 0.82;
+        const cy = r.y + r.h / 2;
+        b.icons.forEach((nm, k) => {
+          out += WS.icons.use(nm, x0 + k * sel + (sel - s) / 2, cy - s / 2, s, ctx.iconVariant);
+        });
+        const bx = x0 + b.icons.length * sel + (sel - s) / 2;
+        out += theme.answerBox(bx, cy - s / 2, s, s);
+        if (ctx.kunci) out += WS.icons.use(b.answer, bx + s * 0.12, cy - s * 0.38, s * 0.76, ctx.iconVariant);
+      });
+      return out;
+    }
+  };
+
   const banding = {
     icons(page) {
       return uniq(page.items[0].baris.map(b => b.icon));
@@ -1083,6 +1112,7 @@ globalThis.WS = globalThis.WS || {};
 
   Object.assign(WS.layouts, {
     'kode-hitung': legacy(hitung),
+    'kode-pola': legacy(pola),
     'kode-labirin': legacy(WS.layouts['kanvas-penuh']),
     'kode-banding': legacy(banding),
     'kode-warnai': legacy(warnai),
@@ -1712,13 +1742,6 @@ globalThis.WS = globalThis.WS || {};
       plan: o => ({ activity: 'Shadow matching worksheet: left column with 5 pictures about ' + o.tema + ', right column with their solid black silhouettes in a shuffled order, a dot next to each picture for drawing lines.' })
     },
     {
-      id: 'ai-pola', grup: 'logika', nama: 'Lanjutkan Pola', judul: 'Lanjutkan Polanya', instruksi: 'Gambar benda berikutnya di kotak kosong.', kunci: true,
-      plan: (o, rnd) => {
-        const rows = Array.from({ length: 5 }, () => R.pick(rnd, ['AB', 'AAB', 'ABB', 'ABC']));
-        return { activity: 'Pattern worksheet: 5 numbered rows. Each row shows a repeating pattern of ' + o.tema + ' pictures followed by one empty box at the end for the next item. Pattern per row: ' + rows.map((p, i) => 'row ' + (i + 1) + ' = ' + p.split('').join('-') + ' repeated twice').join(', ') + '.' };
-      }
-    },
-    {
       id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', kunci: true,
       plan: o => ({ activity: 'Size ordering worksheet: 4 numbered rows, each row shows 4 copies of the same ' + o.tema + ' picture in different sizes in a shuffled order, with a small empty box under each picture to write numbers 1 to 4 from smallest to biggest.' })
     }
@@ -1764,6 +1787,7 @@ globalThis.WS = globalThis.WS || {};
   ];
   const HURUF_LEVEL = { mudah: { opsi: 3, kecil: false }, sedang: { opsi: 4, kecil: false }, sulit: { opsi: 4, kecil: true } };
   const HITUNG = { mudah: [1, 5], sedang: [1, 10], sulit: [5, 15] };
+  const POLA = { mudah: ['AB'], sedang: ['AB', 'AAB', 'ABB', 'ABC'], sulit: ['AAB', 'ABB', 'ABC', 'AABB'] };
   const BANDING = { mudah: [1, 5, 5], sedang: [1, 8, 8], sulit: [4, 10, 2] };
   const WARNAI = { mudah: [1, 5], sedang: [2, 8], sulit: [4, 8] };
   const BEDA = { mudah: { cols: 3, rows: 3, n: 3 }, sedang: { cols: 4, rows: 3, n: 5 }, sulit: { cols: 5, rows: 4, n: 7 } };
@@ -1862,6 +1886,26 @@ globalThis.WS = globalThis.WS || {};
   });
 
   define({
+    id: 'ai-pola', grup: 'logika', nama: 'Lanjutkan Pola', judul: 'Lanjutkan Polanya', instruksi: 'Gambar benda berikutnya di kotak kosong.', layout: 'kode-pola',
+    generatePage(params, rnd) {
+      const pool = WS.icons.pool(params.tema, rnd);
+      const units = (POLA[params.kesulitan] || POLA.mudah).filter(u => new Set(u).size <= pool.names.length);
+      const ambilUnit = R.bag(rnd, units.length ? units : ['AB']);
+      const baris = Array.from({ length: 5 }, () => {
+        const unit = ambilUnit();
+        const huruf = Array.from(new Set(unit));
+        const nama = R.shuffle(rnd, pool.names);
+        const peta = {};
+        huruf.forEach((h, i) => { peta[h] = nama[i % nama.length]; });
+        const len = Math.min(9, unit.length * 2 + R.int(rnd, 0, unit.length - 1));
+        const icons = Array.from({ length: len }, (_, i) => peta[unit[i % unit.length]]);
+        return { unit, peta, icons, answer: peta[unit[len % unit.length]] };
+      });
+      return lokal({ tema: pool.label, baris });
+    }
+  });
+
+  define({
     id: 'ai-huruf-awal', grup: 'huruf', nama: 'Huruf Awal', judul: 'Huruf Awal Gambar', instruksi: 'Lingkari huruf awal dari nama setiap gambar.', layout: 'kode-huruf',
     generatePage(params, rnd) {
       const lv = HURUF_LEVEL[params.kesulitan] || HURUF_LEVEL.mudah;
@@ -1949,7 +1993,7 @@ globalThis.WS = globalThis.WS || {};
     }
   });
 
-  WS.paudKode = { HURUF, HURUF_LEVEL, HITUNG, BANDING, WARNAI, BEDA, MAZE, TITIK, BENTUK, normalize, sample };
+  WS.paudKode = { HURUF, HURUF_LEVEL, HITUNG, POLA, BANDING, WARNAI, BEDA, MAZE, TITIK, BENTUK, normalize, sample };
 })(globalThis.WS);
 
 /* ai/checker.js */
