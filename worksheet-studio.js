@@ -2334,6 +2334,7 @@ globalThis.WS = globalThis.WS || {};
       'aim.selesai': 'Selesai.',
       'aim.kuota': 'Semua halaman gagal. Coba lagi nanti, atau akun Google ini sudah mencapai batas.',
       'aim.koneksi': 'Gambar gagal dimuat. Periksa koneksi internet, lalu tekan Buat lagi.',
+      'aim.akses': 'Google menolak akses AI di halaman ini. Muat ulang halaman Gemini (pastikan sudah masuk akun Google), lalu tekan Buat lagi.',
       'aim.perluCek': 'Perlu dicek',
       'aim.gagal': 'Gagal',
       'aim.tidakAda': 'Belum ada worksheet yang siap diunduh.',
@@ -3337,7 +3338,8 @@ globalThis.WS = globalThis.WS || {};
     const items = docs.map(d => d.pages[0].items[0]);
     const gagal = items.filter(it => it.status === 'gagal');
     if (gagal.length < items.length) return 'aim.selesai';
-    return gagal.every(it => /^ikon:/.test(it.galat || '')) ? 'aim.koneksi' : 'aim.kuota';
+    if (gagal.every(it => /^ikon:/.test(it.galat || ''))) return 'aim.koneksi';
+    return gagal.some(it => /\[40[13](?!\d)/.test(it.galat || '')) ? 'aim.akses' : 'aim.kuota';
   }
 
   WS.aiPages = { run, fill, toJpeg, pesanAkhir };
