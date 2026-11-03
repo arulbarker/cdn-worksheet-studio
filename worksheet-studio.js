@@ -1891,12 +1891,19 @@ globalThis.WS = globalThis.WS || {};
       const pool = WS.icons.pool(params.tema, rnd);
       const units = (POLA[params.kesulitan] || POLA.mudah).filter(u => new Set(u).size <= pool.names.length);
       const ambilUnit = R.bag(rnd, units.length ? units : ['AB']);
+      const dipakai = new Set();
       const baris = Array.from({ length: 5 }, () => {
         const unit = ambilUnit();
         const huruf = Array.from(new Set(unit));
-        const nama = R.shuffle(rnd, pool.names);
-        const peta = {};
-        huruf.forEach((h, i) => { peta[h] = nama[i % nama.length]; });
+        let peta, kunci;
+        for (let coba = 0; coba < 20; coba++) {
+          const nama = R.shuffle(rnd, pool.names);
+          peta = {};
+          huruf.forEach((h, i) => { peta[h] = nama[i % nama.length]; });
+          kunci = huruf.map(h => peta[h]).sort().join(',');
+          if (!dipakai.has(kunci)) break;
+        }
+        dipakai.add(kunci);
         const len = Math.min(9, unit.length * 2 + R.int(rnd, 0, unit.length - 1));
         const icons = Array.from({ length: len }, (_, i) => peta[unit[i % unit.length]]);
         return { unit, peta, icons, answer: peta[unit[len % unit.length]] };
