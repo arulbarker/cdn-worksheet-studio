@@ -348,11 +348,21 @@ globalThis.WS = globalThis.WS || {};
     pesawat: { hex: '2708', label: 'Pesawat', tema: 'kendaraan' },
     perahu: { hex: '26F5', label: 'Perahu', tema: 'kendaraan' },
     kereta: { hex: '1F682', label: 'Kereta', tema: 'kendaraan' },
+    helikopter: { hex: '1F681', label: 'Helikopter', tema: 'kendaraan' },
+    truk: { hex: '1F69A', label: 'Truk', tema: 'kendaraan' },
+    traktor: { hex: '1F69C', label: 'Traktor', tema: 'kendaraan' },
+    kapal: { hex: '1F6A2', label: 'Kapal', tema: 'kendaraan' },
     bunga: { hex: '1F338', label: 'Bunga', tema: 'alam' },
     bintang: { hex: '2B50', label: 'Bintang', tema: 'alam' },
     matahari: { hex: '2600', label: 'Matahari', tema: 'alam' },
     pohon: { hex: '1F333', label: 'Pohon', tema: 'alam' },
     bulan: { hex: '1F319', label: 'Bulan', tema: 'alam' },
+    awan: { hex: '2601', label: 'Awan', tema: 'alam' },
+    pelangi: { hex: '1F308', label: 'Pelangi', tema: 'alam' },
+    daun: { hex: '1F33F', label: 'Daun', tema: 'alam' },
+    gunung: { hex: '26F0', label: 'Gunung', tema: 'alam' },
+    kaktus: { hex: '1F335', label: 'Kaktus', tema: 'alam' },
+    jamur: { hex: '1F344', label: 'Jamur', tema: 'alam' },
     rumah: { hex: '1F3E0', label: 'Rumah', tema: 'benda' },
     bola: { hex: '26BD', label: 'Bola', tema: 'benda' },
     gunting: { hex: '2702', label: 'Gunting', tema: 'alat' }
@@ -1877,9 +1887,17 @@ globalThis.WS = globalThis.WS || {};
       const pool = WS.icons.pool(params.tema, rnd);
       const ambil = R.bag(rnd, pool.names);
       const angka = R.bag(rnd, Array.from({ length: r[1] - r[0] + 1 }, (_, i) => r[0] + i));
+      const dipakai = new Set();
       const baris = Array.from({ length: 6 }, () => {
-        const k = angka();
-        return { icons: Array(k).fill(ambil()), answer: String(k) };
+        let k, icon, kunci;
+        for (let coba = 0; coba < 20; coba++) {
+          k = angka();
+          icon = ambil();
+          kunci = icon + '|' + k;
+          if (!dipakai.has(kunci)) break;
+        }
+        dipakai.add(kunci);
+        return { icons: Array(k).fill(icon), answer: String(k) };
       });
       return lokal({ tema: pool.label, baris });
     }
