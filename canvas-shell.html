@@ -11,17 +11,41 @@
 <body>
 <div id="ws-boot">Memuat Worksheet Studio…</div>
 <script>
-// Shell tipis Gemini Canvas: tempel SEKALI. Aplikasi dimuat dari jsDelivr (arulbarker/cdn-worksheet-studio@main).
+// Shell tipis Gemini Canvas: tempel SEKALI. Bootstrap self-resolving (anti stale-cache):
+// SHA commit terbaru via GitHub API -> bundle dari URL commit-pinned (immutable, kebal cache
+// browser 7 hari milik @main); fallback @main cdn -> fastly. Semua fetch cache:"no-cache".
 const apiKey = ""; // dibiarkan kosong, Canvas mengisi kunci Gemini otomatis
 window.__wsApiKey = apiKey;
 (function () {
-  var s = document.createElement('script');
-  s.src = "https://cdn.jsdelivr.net/gh/arulbarker/cdn-worksheet-studio@main/worksheet-studio.js";
-  s.onerror = function () {
+  var REPO = "arulbarker/cdn-worksheet-studio", FILE = "worksheet-studio.js";
+  async function daftarBase() {
+    var out = [];
+    try {
+      var r = await fetch('https://api.github.com/repos/' + REPO + '/commits/main', { cache: 'no-store' });
+      if (r.ok) { var j = await r.json(); if (j && j.sha) out.push('https://cdn.jsdelivr.net/gh/' + REPO + '@' + j.sha); }
+    } catch (e) { console.warn('[shell] SHA dilewati:', e); }
+    return out.concat(['https://cdn.jsdelivr.net/gh/' + REPO + '@main', 'https://fastly.jsdelivr.net/gh/' + REPO + '@main']);
+  }
+  (async function () {
+    var list = await daftarBase();
+    for (var i = 0; i < list.length; i++) {
+      try {
+        var res = await fetch(list[i] + '/' + FILE, { cache: 'no-cache' });
+        if (!res.ok) continue;
+        var kode = await res.text();
+        var blob = URL.createObjectURL(new Blob([kode], { type: 'text/javascript' }));
+        await new Promise(function (ok, no) {
+          var s = document.createElement('script');
+          s.src = blob; s.onload = ok; s.onerror = no;
+          document.body.appendChild(s);
+        });
+        console.log('[shell] bundle dari', list[i]);
+        return;
+      } catch (e) { console.warn('[shell] base gagal:', list[i], e); }
+    }
     var b = document.getElementById('ws-boot');
     if (b) b.textContent = 'Gagal memuat aplikasi. Periksa koneksi internet, lalu muat ulang halaman.';
-  };
-  document.body.appendChild(s);
+  })();
 })();
 </script>
 </body>
