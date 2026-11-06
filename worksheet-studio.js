@@ -2353,7 +2353,18 @@ globalThis.WS = globalThis.WS || {};
     }
   }
 
-  WS.aiPool = { JENJANG, pool, prune, usable };
+  function siapUnduh(doc) {
+    const it = doc.pages[0].items[0];
+    if (it.status === 'gagal') return false;
+    return it.mode === 'lokal' || !!it.image || !!it.data;
+  }
+
+  function pilihanUnduh(docs, pilih) {
+    const list = pilih.size ? docs.filter(d => pilih.has(d)) : docs;
+    return list.filter(siapUnduh);
+  }
+
+  WS.aiPool = { JENJANG, pool, prune, usable, siapUnduh, pilihanUnduh };
 })(globalThis.WS);
 
 /* ui/i18n.js */
@@ -2448,6 +2459,7 @@ globalThis.WS = globalThis.WS || {};
       'aim.hapus': 'Hapus',
       'aim.pilih': 'Pilih',
       'aim.dipilih': 'Dipilih',
+      'aim.pilihSemua': 'Pilih semua',
       'aim.kosong': 'Belum ada worksheet. Tekan "Acak Sekali Klik" untuk mulai.',
       'aim.proses': 'AI sedang bekerja…',
       'aim.selesai': 'Selesai.',
@@ -4000,6 +4012,7 @@ globalThis.WS = globalThis.WS || {};
   function renderGallery() {
     const g = root.querySelector('.aim-gallery');
     g.textContent = '';
+    renderUnduh();
     if (!st.docs.length) {
       g.appendChild(el('p', 'aim-empty', t('aim.kosong')));
       return;
@@ -4011,6 +4024,7 @@ globalThis.WS = globalThis.WS || {};
     const i = st.docs.indexOf(doc);
     const old = root.querySelector('.aim-card[data-i="' + i + '"]');
     if (old) old.replaceWith(card(doc, i));
+    renderUnduh();
   }
 
   function setRunning(on) {
@@ -4049,19 +4063,34 @@ globalThis.WS = globalThis.WS || {};
   }
 
   function selection() {
-    const list = st.pilih.size ? st.docs.filter(d => st.pilih.has(d)) : st.docs;
-    return list.filter(d => {
-      const it = d.pages[0].items[0];
-      return it.mode === 'lokal' || !!it.image || !!it.data;
-    });
+    return WS.aiPool.pilihanUnduh(st.docs, st.pilih);
+  }
+
+  function renderUnduh() {
+    const n = selection().length;
+    root.querySelector('[data-ai="pdf"]').textContent = n ? t('aim.pdf') + ' (' + n + ' ' + t('aim.lembar') + ')' : t('aim.pdf');
+    const siap = st.docs.filter(WS.aiPool.siapUnduh).length;
+    const semua = root.querySelector('[data-ai="semua"]');
+    semua.hidden = !st.pilih.size || siap <= n;
+    semua.textContent = t('aim.pilihSemua') + ' (' + siap + ')';
+  }
+
+  function startBaru(docs) {
+    st.pilih.clear();
+    docs.forEach(d => st.pilih.add(d));
+    return start(docs);
   }
 
   const actions = {
     acak() {
-      return start(makeDocs(nextJenis, 'acak'));
+      return startBaru(makeDocs(nextJenis, 'acak'));
     },
     custom() {
-      if (st.jenis) return start(makeDocs(() => st.jenis));
+      if (st.jenis) return startBaru(makeDocs(() => st.jenis));
+    },
+    semua() {
+      st.docs.filter(WS.aiPool.siapUnduh).forEach(d => st.pilih.add(d));
+      renderGallery();
     },
     batal() {
       if (st.ctrl) st.ctrl.abort();
@@ -4106,7 +4135,7 @@ globalThis.WS = globalThis.WS || {};
       const old = st.docs[i];
       const fresh = stamp(WS.doc.create(old.resepId, old.params, WS.rng.newSeed()));
       st.docs.splice(i, 1);
-      st.pilih.delete(old);
+      if (st.pilih.delete(old)) st.pilih.add(fresh);
       if (old.id) WS.store.docs.del(old.id);
       return start([fresh]);
     },
@@ -4142,8 +4171,8 @@ globalThis.WS = globalThis.WS || {};
   function mount(host) {
     root = host;
     WS.profil.onChange(renderGallery);
-    root.innerHTML = '<div class="aim-controls"></div><div class="aim-main"><div class="aim-toolbar"><span class="aim-status"></span>' +
-      '<button type="button" class="btn" data-ai="batal" hidden></button><button type="button" class="btn" data-ai="bundle"></button>' +
+    root.innerHTML = '<div class="aim-controls"></div><div class="aim-main"><div class="aim-toolbar" style="position:sticky;top:56px;z-index:5;background:var(--bg);padding:8px 0"><span class="aim-status"></span>' +
+      '<button type="button" class="btn" data-ai="semua" hidden></button><button type="button" class="btn" data-ai="batal" hidden></button><button type="button" class="btn" data-ai="bundle"></button>' +
       '<button type="button" class="btn btn-success" data-ai="pdf"></button></div><div class="aim-gallery"></div></div>';
     root.querySelector('[data-ai="batal"]').textContent = t('aim.batal');
     root.querySelector('[data-ai="bundle"]').textContent = t('aim.bundle');
