@@ -3473,7 +3473,13 @@ globalThis.WS = globalThis.WS || {};
     return gagal.some(it => /\[40[13](?!\d)/.test(it.galat || '')) ? 'aim.akses' : 'aim.kuota';
   }
 
-  WS.aiPages = { run, fill, toJpeg, pesanAkhir };
+  function alasanCek(doc) {
+    const it = doc.pages[0].items[0];
+    if (it.status !== 'perlu-cek' || !it.masalah || !it.masalah.length) return '';
+    return (doc.resepId + ' ' + it.masalah.join(' | ')).slice(0, 240);
+  }
+
+  WS.aiPages = { run, fill, toJpeg, pesanAkhir, alasanCek };
 })(globalThis.WS);
 
 /* pdf/export.js */
@@ -4048,6 +4054,11 @@ globalThis.WS = globalThis.WS || {};
       if (s === 'gagal') WS.telemetry.error('ai_gagal', d.resepId + (it.galat ? ' ' + it.galat : ''));
       else if (FINAL.includes(s)) WS.telemetry.event('ai_ok', d.resepId + ' ' + s);
     });
+    const alasan = docs.map(WS.aiPages.alasanCek).filter(Boolean);
+    if (alasan.length) {
+      WS.telemetry.flush();
+      alasan.forEach(a => WS.telemetry.event('ai_cek', a));
+    }
     root.querySelector('.aim-status').textContent = t(WS.aiPages.pesanAkhir(docs));
   }
 
