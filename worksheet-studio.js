@@ -1021,7 +1021,8 @@ globalThis.WS = globalThis.WS || {};
         out += S.el('circle', { cx: dKiri, cy, r: dot, fill: theme.ink });
         const dKanan = xKanan + 4;
         out += S.el('circle', { cx: dKanan, cy, r: dot, fill: theme.ink });
-        out += WS.icons.shadow(it.kanan[i], dKanan + 4 + (kolom - 12 - s) / 2, cy - s / 2, s);
+        const xk = dKanan + 4 + (kolom - 12 - s) / 2;
+        out += it.siluet === false ? WS.icons.use(it.kanan[i], xk, cy - s / 2, s, ctx.iconVariant) : WS.icons.shadow(it.kanan[i], xk, cy - s / 2, s);
         kiriY.push([dKiri, cy]);
         kananY.push([dKanan, cy]);
       });
@@ -1803,10 +1804,6 @@ globalThis.WS = globalThis.WS || {};
       plan: o => ({ activity: 'Color by number page: a simple picture about ' + o.tema + ' divided into large regions, each region labeled with a number 1 to 4, and a legend at the bottom written in Indonesian: 1 = merah, 2 = biru, 3 = kuning, 4 = hijau.', lineArt: true })
     },
     {
-      id: 'ai-cocok-garis', grup: 'mencocokkan', nama: 'Pasangkan Gambar', judul: 'Pasangkan Gambar', instruksi: 'Tarik garis dari gambar kiri ke pasangannya di kanan.', kunci: true,
-      plan: o => ({ activity: 'Matching worksheet: two columns with 5 pictures each about ' + o.tema + '. Every picture on the left has the same picture on the right but in a shuffled order, with a dot next to each picture for drawing lines between them.' })
-    },
-    {
       id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', kunci: true,
       plan: o => ({ activity: 'Size ordering worksheet: 4 numbered rows, each row shows 4 copies of the same ' + o.tema + ' picture in different sizes in a shuffled order, with a small empty box under each picture to write numbers 1 to 4 from smallest to biggest.' })
     }
@@ -2097,6 +2094,18 @@ globalThis.WS = globalThis.WS || {};
       const b = BENTUK[R.pick(rnd, ids)];
       const pts = sample(normalize(b.v), target).map(p => [round(p[0]), round(p[1])]);
       return lokal({ nama: b.nama, titik: pts, lebar: Math.max(...pts.map(p => p[0])), tinggi: Math.max(...pts.map(p => p[1])) });
+    }
+  });
+
+  define({
+    id: 'ai-cocok-garis', grup: 'mencocokkan', nama: 'Pasangkan Gambar', judul: 'Pasangkan Gambar', instruksi: 'Tarik garis dari gambar kiri ke pasangannya di kanan.', layout: 'kode-bayangan',
+    generatePage(params, rnd) {
+      const pool = WS.icons.pool(params.tema, rnd);
+      const tersedia = Array.from(new Set(R.shuffle(rnd, pool.names)));
+      const n = Math.min(BAYANGAN[params.kesulitan] || BAYANGAN.mudah, tersedia.length);
+      const kiri = tersedia.slice(0, n);
+      const kanan = acakBeda(rnd, kiri);
+      return lokal({ tema: pool.label, siluet: false, kiri, kanan, pasangan: kiri.map(nm => kanan.indexOf(nm)) });
     }
   });
 
