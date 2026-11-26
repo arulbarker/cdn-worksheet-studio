@@ -1169,6 +1169,37 @@ globalThis.WS = globalThis.WS || {};
     }
   };
 
+  const ukuran = {
+    icons(page) {
+      return uniq(page.items[0].baris.map(b => b.icon));
+    },
+    render(page, area, theme, ctx) {
+      const baris = page.items[0].baris;
+      let out = '';
+      WS.fit.rows(area, baris.length, 3).forEach((r, i) => {
+        const b = baris[i];
+        out += theme.rowBg(r.x, r.y, r.w, r.h);
+        const pad = Math.min(3, r.h * 0.1);
+        const br = Math.min(r.h * 0.2, 5);
+        out += theme.badge(i + 1, r.x + pad + br, r.y + pad + br, br);
+        const x0 = r.x + pad + br * 2 + 4;
+        const sel = (r.x + r.w - pad - x0) / b.skala.length;
+        const kotak = Math.min(12, r.h * 0.22, sel * 0.4);
+        const ky = r.y + r.h - pad - kotak;
+        const maks = Math.min(sel * 0.86, ky - r.y - pad - 3);
+        const dasar = ky - 3;
+        b.skala.forEach((k, j) => {
+          const cx = x0 + sel * (j + 0.5);
+          const s = maks * k;
+          out += WS.icons.use(b.icon, cx - s / 2, dasar - s, s, ctx.iconVariant);
+          out += theme.answerBox(cx - kotak / 2, ky, kotak, kotak);
+          if (ctx.kunci) out += S.text(cx, ky + kotak * 0.72, String(b.kunci[j]), { 'font-family': theme.font.title, 'font-weight': 'bold', 'font-size': kotak * 0.7, fill: theme.answerColor, 'text-anchor': 'middle' });
+        });
+      });
+      return out;
+    }
+  };
+
   function legacy(layout) {
     const lokal = page => page.items[0].mode === 'lokal';
     return {
@@ -1188,7 +1219,8 @@ globalThis.WS = globalThis.WS || {};
     'kode-huruf': legacy(huruf),
     'kode-beda': legacy(beda),
     'kode-titik': legacy(titik),
-    'kode-bayangan': legacy(bayangan)
+    'kode-bayangan': legacy(bayangan),
+    'kode-ukuran': legacy(ukuran)
   });
 })(globalThis.WS);
 
@@ -1802,10 +1834,6 @@ globalThis.WS = globalThis.WS || {};
     {
       id: 'ai-warna-angka', grup: 'mewarnai', nama: 'Mewarnai Sesuai Angka', judul: 'Mewarnai Sesuai Angka', instruksi: 'Warnai setiap bagian sesuai angka dan kunci warna.',
       plan: o => ({ activity: 'Color by number page: a simple picture about ' + o.tema + ' divided into large regions, each region labeled with a number 1 to 4, and a legend at the bottom written in Indonesian: 1 = merah, 2 = biru, 3 = kuning, 4 = hijau.', lineArt: true })
-    },
-    {
-      id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', kunci: true,
-      plan: o => ({ activity: 'Size ordering worksheet: 4 numbered rows, each row shows 4 copies of the same ' + o.tema + ' picture in different sizes in a shuffled order, with a small empty box under each picture to write numbers 1 to 4 from smallest to biggest.' })
     }
   ];
 
@@ -1856,6 +1884,7 @@ globalThis.WS = globalThis.WS || {};
   const MAZE = { mudah: 6, sedang: 9, sulit: 12 };
   const TITIK = { mudah: 10, sedang: 20, sulit: 30 };
   const BAYANGAN = { mudah: 4, sedang: 5, sulit: 6 };
+  const UKURAN = { mudah: [0.4, 0.6, 0.8, 1], sedang: [0.55, 0.7, 0.85, 1], sulit: [0.7, 0.8, 0.9, 1] };
   const MIRIP = [['apel', 'jeruk'], ['kucing', 'anjing']];
 
   function bintang() {
@@ -2121,7 +2150,21 @@ globalThis.WS = globalThis.WS || {};
     }
   });
 
-  WS.paudKode = { HURUF, HURUF_LEVEL, HITUNG, POLA, BANDING, WARNAI, BEDA, MAZE, TITIK, BAYANGAN, MIRIP, BENTUK, normalize, sample };
+  define({
+    id: 'ai-urut-ukuran', grup: 'logika', nama: 'Urutkan Ukuran', judul: 'Urutkan dari Kecil ke Besar', instruksi: 'Tulis angka 1 sampai 4 dari yang paling kecil.', layout: 'kode-ukuran',
+    generatePage(params, rnd) {
+      const skala = UKURAN[params.kesulitan] || UKURAN.mudah;
+      const pool = WS.icons.pool(params.tema, rnd);
+      const ambil = R.bag(rnd, pool.names);
+      const baris = Array.from({ length: 4 }, () => {
+        const acak = acakBeda(rnd, skala);
+        return { icon: ambil(), skala: acak, kunci: acak.map(k => skala.indexOf(k) + 1) };
+      });
+      return lokal({ tema: pool.label, baris });
+    }
+  });
+
+  WS.paudKode = { HURUF, HURUF_LEVEL, HITUNG, POLA, BANDING, WARNAI, BEDA, MAZE, TITIK, BAYANGAN, UKURAN, MIRIP, BENTUK, normalize, sample };
 })(globalThis.WS);
 
 /* ai/checker.js */
